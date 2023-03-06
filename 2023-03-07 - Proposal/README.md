@@ -89,3 +89,60 @@ As the judging criteria are quite abstract, in order to create a more concrete s
 - The above checklist should be updated as features are completed, so I can see them with the final submission
 - All instructions should be removed from this file for the final submission with only the checklist remaining
 - 
+
+
+# Specialty
+### Theme or style of decoration that heavily plays into narrative
+
+# Adaptibility 
+
+## Terrain Specific
+
+
+## Biome nature specific (eg. no igloo in dessert)
+
+1. Plains: 
+    - Feature: Windmill
+    - A windmill at the center with buildings and settlements around it.
+2. Jungles
+    - Feature: Bamboo Grove
+    - A big circle of bamboo grove in the middle, with buildings and settlements around the bamboo grove.
+3. Snow Tundra
+    - Feature: Ice Oasis
+    - A big circle of ice in the middle, with buildings and settlements around the ice oasis. 
+
+4. Deserts
+    - Feature: Lava Oasis
+    - A big circle of lava in the middle, with buildings and settlements around the lava oasis. 
+
+
+<br>
+<br>
+
+# Functionality
+
+Your settlements must contain at least 4 "types" of buildings. Some examples of building types might be a house, church, barn, store, etc.
+
+
+
+
+1. Plains: 
+    - Main building: Windmill
+    - Townhall: ![plains-church-idea](https: https://blocksandmining.com/wp-content/uploads/2021/07/Nether_Portal-1024x525.jpg)
+    - Barracks: 
+    - Archer Tower 
+2. Jungles
+    - Main building: Bamboo Groove
+    - ceremonial statue: moawi head
+3. Snow Tundra
+    - Main building: Ice Oasis
+    - inferno tower 
+
+4. Deserts
+    - Main building: Lava Oasis
+    - Townhall: ![desert-church-idea](https: https://i.ytimg.com/vi/cPBWRE5FoFA/maxresdefault.jpg)
+    - Barracks:
+    - Archer Tower: 
+
+
+
