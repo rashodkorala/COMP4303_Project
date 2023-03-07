@@ -1,8 +1,11 @@
+# Project name: Realm Craft
+
 # Specialty
 
 ### Theme or style of decoration that heavily plays into narrative
 
-- heavy use of defend systems (eg. archer towers , inferno towers , etc.)
+- Depicting a specific tribes, depending on biome and terrain!
+- heavy use of defend systems (eg. archer towers , barracks, etc.)
 - heavy use of moving systems (eg. minecarts, boats, etc.)
 - heavy use of lighting (eg. torches, glowstone, etc.)
 - use pathfinding to navigate the village and build walls around the village (eg. villagers walking around, etc.)
@@ -11,9 +14,7 @@
 
 # Adaptibility
 
-## Terrain Specific
-
-## Biome nature specific (eg. no igloo in dessert)
+## Biome nature specific
 
 1. Plains:
    - Feature: Windmill
