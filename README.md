@@ -11,8 +11,8 @@
 
 ## Project Group Members:
 
-* Group Member Name 1 (Student ID #, email)
-* Group Member Name 2 (Student ID #, email)
+* Group Member Rashod Korala (Student ID #201965670, email- rmanamperiko@mun.ca)
+* Group Member Vilakshan Khanna (Student ID #202019519, email- vkhanna@mun.ca)
 
 ## Project Videos:
 
