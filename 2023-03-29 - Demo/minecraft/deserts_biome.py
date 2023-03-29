@@ -117,24 +117,28 @@ for point in buildRect.outline:
 
 
 
-#placing the beacon
-print("Placing beacon...")
-geometry.placeCylinder(editor,addY(buildRect.center, height), 5 , 1, Block("emerald_block"))
-editor.placeBlock(addY(buildRect.center, height+1), Block("beacon"))
-editor.placeBlock(addY(buildRect.center, height+2), Block("yellow_stained_glass"))
+
 
 #build the bamboo grove
-print("Placing bamboo grove...")
+print("Placing lava oasis...")
+#for x in range(4, 39,2):
+geometry.placeCylinder(editor,addY(buildRect.center, height), 39 , 1, Block("lava"))
 
-geometry.placeCylinder(editor,addY(buildRect.center, height), 41 , 1, Block("dark_oak_log"), tube=True)
-geometry.placeCylinder(editor,addY(buildRect.center, height+1), 41 , 1, Block("stone_brick_slab"), tube=True)
-geometry.placeCylinder(editor,addY(buildRect.center, height), 47 , 1, Block("dark_oak_log"), tube=True)
-geometry.placeCylinder(editor,addY(buildRect.center, height), 49 , 1, Block("stone_brick_slab"), tube=True)
 
-for x in range(43,46, 2):
-    geometry.placeCylinder(editor,addY(buildRect.center, height), x , 1, Block("water"), tube=True)
+#geometry.placeCylinder(editor,addY(buildRect.center, height+1), 1 , 1, Block("purple_stained_glass"))
 
-for m in range(7,36,2):
-    geometry.placeCylinder(editor,addY(buildRect.center, height), m , 1, Block("bamboo"), tube=True)
+
+
+geometry.placeCylinder(editor,addY(buildRect.center, height), 41 , 1, Block("sculk"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+1), 41 , 2, Block("warped_fence"), tube=True)
+
+#geometry.placeCylinder(editor,addY(buildRect.center, height+1), 41 , 1, Block("stone_brick_slab"), tube=True)
+#geometry.placeCylinder(editor,addY(buildRect.center, height), 47 , 1, Block("dark_oak_log"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height), 43 , 1, Block("stone_brick_slab"), tube=True)
+
+#for x in range(43,46, 2):
+#    geometry.placeCylinder(editor,addY(buildRect.center, height), x , 1, Block("water"), tube=True)
+
+
 
 

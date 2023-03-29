@@ -106,15 +106,16 @@ print("Placing walls...")
 for point in buildRect.outline:
     
     height = heightmap[tuple(point - buildRect.offset)]
+    """
     for y in range(height, height + 7):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
         
-        # Place the second layer of blocks
+        # Place the second layer of blwocks
         editor.placeBlock(addY(point+1, y+2), Block("mossy_stone_bricks"))
         
         # Place the third layer of blocks
-
+    """
 
 
 
@@ -156,30 +157,4 @@ geometry.placeCylinder(editor,addY(buildRect.center, height+85), 24 , 4, Block("
 
 
 
-"""
-for i in range(0, 86, 5):
-    if i == 0:
-        geometry.placeCylinder(editor, addY(buildRect.center, height), 30, 10, Block("dark_oak_planks"), tube=True)
-        geometry.placeCylinder(editor, addY(buildRect.center, height+9), 28, 1, Block("glowstone"), tube=True)
-    elif i == 15 or i == 25 or i == 35 or i == 45 or i == 55:
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i), 28, 5, Block("dark_oak_planks"), tube=True)
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i+4), 26, 1, Block("glowstone"), tube=True)
-    elif i == 65:
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i), 20, 4, Block("stone_bricks"))
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i+3), 18, 1, Block("glowstone"), tube=True)
-    elif i == 69:
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i), 16, 4, Block("stone_bricks"))
-    elif i == 73:
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i), 14, 4, Block("stone_bricks"))
-    elif i == 77:
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i), 12, 4, Block("stone_bricks"))
-    elif i == 81:
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i), 10, 4, Block("stone_bricks"))
-    elif i == 85:
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i), 24, 4, Block("stone_bricks"))
-    else:
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i), 22, 5, Block("dark_oak_planks"), tube=True)
-        geometry.placeCylinder(editor, addY(buildRect.center, height+i+4), 20, 1, Block("glowstone"), tube=True)
 
-
-"""

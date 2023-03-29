@@ -8,7 +8,7 @@ import sys
 
 import numpy as np
 
-from gdpc import __url__, Editor, Block, geometry
+from gdpc import __url__, Editor, Block, geometry, vector_tools
 from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
 from gdpc.vector_tools import addY
 
@@ -117,24 +117,13 @@ for point in buildRect.outline:
 
 
 
-#placing the beacon
-print("Placing beacon...")
-geometry.placeCylinder(editor,addY(buildRect.center, height), 5 , 1, Block("emerald_block"))
-editor.placeBlock(addY(buildRect.center, height+1), Block("beacon"))
-editor.placeBlock(addY(buildRect.center, height+2), Block("yellow_stained_glass"))
-
-#build the bamboo grove
-print("Placing bamboo grove...")
-
-geometry.placeCylinder(editor,addY(buildRect.center, height), 41 , 1, Block("dark_oak_log"), tube=True)
-geometry.placeCylinder(editor,addY(buildRect.center, height+1), 41 , 1, Block("stone_brick_slab"), tube=True)
-geometry.placeCylinder(editor,addY(buildRect.center, height), 47 , 1, Block("dark_oak_log"), tube=True)
-geometry.placeCylinder(editor,addY(buildRect.center, height), 49 , 1, Block("stone_brick_slab"), tube=True)
-
-for x in range(43,46, 2):
-    geometry.placeCylinder(editor,addY(buildRect.center, height), x , 1, Block("water"), tube=True)
-
-for m in range(7,36,2):
-    geometry.placeCylinder(editor,addY(buildRect.center, height), m , 1, Block("bamboo"), tube=True)
 
 
+from vector_tools import Box
+
+# Place a hollow 3x3x3 cube of stone bricks in the center of the build area.
+
+print("Placing cube...")
+box = Box((0,0,0),(10,10,10))
+
+geometry.placeBoxHollow(editor, box, block=Block("stone_bricks"))
