@@ -100,27 +100,35 @@ print(f"Heightmap shape: {heightmap.shape}")
 
 print("Placing walls...")
 
-
-#build a wall
-
 for point in buildRect.outline:
     
     height = heightmap[tuple(point - buildRect.offset)]
+
+    #building a wall
+    """
     for y in range(height, height + 7):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
         
         # Place the second layer of blocks
-        #editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
+        editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
+    """ 
         
-        # Place the third layer of blocks
 
 
 
 
 
 #build the bamboo grove
-geometry.placeCylinder(editor,addY(buildRect.center, height),
-                        41 , 1, Block("dark_oak_log"), tube=True)
-geometry.placeCylinder(editor,addY(buildRect.center, height),
-                        35 , 1, Block("bamboo"))
+print("Placing bamboo grove...")
+geometry.placeCylinder(editor,addY(buildRect.center, height), 41 , 1, Block("dark_oak_log"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+1), 41 , 1, Block("stone_brick_slab"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height), 47 , 1, Block("dark_oak_log"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height), 49 , 1, Block("stone_brick_slab"), tube=True)
+
+for x in range(43,46, 2):
+    geometry.placeCylinder(editor,addY(buildRect.center, height), x , 1, Block("water"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height), 35 , 1, Block("bamboo"))
+
+
