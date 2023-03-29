@@ -38,11 +38,7 @@ except BuildAreaNotSetError:
     print(
         "Error: failed to get the build area!\n"
         "Make sure to set the build area with the /setbuildarea command in-game.\n"
-        "For example: /setbuildarea ~0 0 ~0 ~64 200 ~64" 
-        # the specific components of the build area mean the following:
-        # ~0 0 ~0: the build area's center
-        # ~64 200 ~64: the build area's size
-        
+        "For example: /setbuildarea ~0 0 ~0 ~64 200 ~64"
     )
     sys.exit(1)
 
@@ -112,4 +108,4 @@ for point in buildRect.outline:
     height = heightmap[tuple(point - buildRect.offset)]
 
     for y in range(height, height + 5):
-        editor.placeBlock(addY(point, y), Block("nether_bricks"))
+        editor.placeBlock(addY(point, y), Block("sandstone"))

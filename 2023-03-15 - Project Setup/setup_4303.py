@@ -84,6 +84,3 @@ editor.placeBlock((-21,200,0), Block("stone"))
 
 
 
-
-# Build a cube
-geometry.placeCuboid(editor, (0,80,2), (2,82,4), Block("oak_planks"))

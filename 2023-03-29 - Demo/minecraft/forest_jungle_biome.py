@@ -8,7 +8,7 @@ import sys
 
 import numpy as np
 
-from gdpc import __url__, Editor, Block
+from gdpc import __url__, Editor, Block, geometry
 from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
 from gdpc.vector_tools import addY
 
@@ -38,11 +38,9 @@ except BuildAreaNotSetError:
     print(
         "Error: failed to get the build area!\n"
         "Make sure to set the build area with the /setbuildarea command in-game.\n"
-        "For example: /setbuildarea ~0 0 ~0 ~64 200 ~64" 
-        # the specific components of the build area mean the following:
-        # ~0 0 ~0: the build area's center
-        # ~64 200 ~64: the build area's size
-        
+        "For example: /setbuildarea ~0 0 ~0 ~64 200 ~64"
+        #~0 0 ~0 is the center of the build area.
+        #~64 200 ~64 is the size of the build area. With 200 being the height. With ~ being the player.
     )
     sys.exit(1)
 
@@ -70,7 +68,8 @@ print("World slice loaded!")
 # coordinates relatve to the rect with which it was constructed, while the global variant expects
 # absolute coorndates.
 
-vec = addY(buildRect.center, 30)
+
+vec = addY(buildRect.center, 0)
 print(f"Block at {vec}: {worldSlice.getBlock(vec - buildArea.offset)}")
 print(f"Block at {vec}: {worldSlice.getBlockGlobal(vec)}")
 
@@ -94,13 +93,6 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 
 print(f"Heightmap shape: {heightmap.shape}")
 
-localCenter = buildRect.size // 2
-# When indexing a numpy array with a vector, you need to convert to a tuple first.
-centerHeight = heightmap[tuple(localCenter)]
-centerTopBlock = worldSlice.getBlock(addY(localCenter, centerHeight - 1))
-print(f"Top block at the center of the build area: {centerTopBlock}")
-
-print(f"Average height: {int(np.mean(heightmap))}")
 
 
 # Place walls of stone bricks on the perimeter of the build area, following the curvature of the
@@ -108,8 +100,27 @@ print(f"Average height: {int(np.mean(heightmap))}")
 
 print("Placing walls...")
 
-for point in buildRect.outline:
-    height = heightmap[tuple(point - buildRect.offset)]
 
-    for y in range(height, height + 5):
-        editor.placeBlock(addY(point, y), Block("nether_bricks"))
+#build a wall
+
+for point in buildRect.outline:
+    
+    height = heightmap[tuple(point - buildRect.offset)]
+    for y in range(height, height + 7):
+        # Place the first layer of blocks
+        editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
+        
+        # Place the second layer of blocks
+        #editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
+        
+        # Place the third layer of blocks
+
+
+
+
+
+#build the bamboo grove
+geometry.placeCylinder(editor,addY(buildRect.center, height),
+                        41 , 1, Block("dark_oak_log"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height),
+                        35 , 1, Block("bamboo"))
