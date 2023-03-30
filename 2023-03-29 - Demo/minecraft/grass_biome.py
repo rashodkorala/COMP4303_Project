@@ -106,7 +106,7 @@ print("Placing walls...")
 for point in buildRect.outline:
     
     height = heightmap[tuple(point - buildRect.offset)]
-    """
+    
     for y in range(height, height + 7):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
@@ -115,7 +115,7 @@ for point in buildRect.outline:
         editor.placeBlock(addY(point+1, y+2), Block("mossy_stone_bricks"))
         
         # Place the third layer of blocks
-    """
+    
 
 
 
@@ -157,4 +157,40 @@ geometry.placeCylinder(editor,addY(buildRect.center, height+85), 24 , 4, Block("
 
 
 
+
+#Make small houses in the build area
+
+import sys
+
+import numpy as np
+from glm import ivec2, ivec3
+
+from gdpc import __url__, Editor, Block, geometry
+from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
+from gdpc.vector_tools import Y, addY, dropY, line3D, circle, fittingCylinder
+
+
+groundCenter = addY(buildRect.center+20, height)
+
+#chose a random point in the build area
+randomPoint = np.random.randint(0, buildRect.size, 2) + buildRect.offset
+
+#place three blocks on top of each other, centered to eachother. The first block is 3x3 second is 5x5 and third is 2x2. on the ground
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-1, 0, -1), # Corner 1
+    groundCenter + ivec3(1,  2, 1), # Corner 2
+    Block("spruce_log")
+)
+
+
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-3, 3, -3), # Corner 1
+    groundCenter + ivec3(3,  8, 3), # Corner 2
+    Block("mossy_stone_bricks")
+)
+
+
+#build roads out of the center of the build area
 

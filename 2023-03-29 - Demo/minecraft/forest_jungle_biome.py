@@ -105,17 +105,18 @@ for point in buildRect.outline:
     height = heightmap[tuple(point - buildRect.offset)]
 
     #building a wall
-    """
+    
     for y in range(height, height + 7):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
         
         # Place the second layer of blocks
         editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
-    """ 
+    
         
 
 
+geometry.placeCylinder(editor,addY(buildRect.center, height-1), 55 , 1, Block("grass_block"))
 
 #placing the beacon
 print("Placing beacon...")
@@ -136,5 +137,6 @@ for x in range(43,46, 2):
 
 for m in range(7,36,2):
     geometry.placeCylinder(editor,addY(buildRect.center, height), m , 1, Block("bamboo"), tube=True)
+
 
 

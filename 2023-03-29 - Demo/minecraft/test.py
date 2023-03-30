@@ -119,11 +119,41 @@ for point in buildRect.outline:
 
 
 
-from vector_tools import Box
+import sys
 
-# Place a hollow 3x3x3 cube of stone bricks in the center of the build area.
+import numpy as np
+from glm import ivec2, ivec3
 
-print("Placing cube...")
-box = Box((0,0,0),(10,10,10))
+from gdpc import __url__, Editor, Block, geometry
+from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
+from gdpc.vector_tools import Y, addY, dropY, line3D, circle, fittingCylinder
 
-geometry.placeBoxHollow(editor, box, block=Block("stone_bricks"))
+
+groundCenter = addY(buildRect.center, height)
+
+
+
+#place three blocks on top of each other, centered to eachother. The first block is 3x3 second is 5x5 and third is 2x2. on the ground
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-1, 0, -1), # Corner 1
+    groundCenter + ivec3(1,  2, 1), # Corner 2
+    Block("spruce_log")
+)
+
+
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-3, 3, -3), # Corner 1
+    groundCenter + ivec3(3,  8, 3), # Corner 2
+    Block("mossy_stone_bricks")
+)
+
+"""
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-1, 5, -1), # Corner 1
+    groundCenter + ivec3(1,  10, 1), # Corner 2
+    Block("red_concrete")
+)
+"""

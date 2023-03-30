@@ -124,8 +124,11 @@ print("Placing lava oasis...")
 #for x in range(4, 39,2):
 geometry.placeCylinder(editor,addY(buildRect.center, height), 39 , 1, Block("lava"))
 
-
-#geometry.placeCylinder(editor,addY(buildRect.center, height+1), 1 , 1, Block("purple_stained_glass"))
+#placing the beacon
+print("Placing beacon...")
+geometry.placeCylinder(editor,addY(buildRect.center, height), 5 , 1, Block("emerald_block"))
+editor.placeBlock(addY(buildRect.center, height+1), Block("beacon"))
+editor.placeBlock(addY(buildRect.center, height+2), Block("purple_stained_glass"))
 
 
 
