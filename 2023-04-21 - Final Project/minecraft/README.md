@@ -1,19 +1,19 @@
-
 # Minecraft Project Feature Checklist
-- [x] Specialty chosen: __________
+
+- [x] Specialty chosen: \***\*\_\_\*\***
 - [ ] Adaptivity
   - [ ] Settlement avoids 'steamroller' approach
-  - [ ] At least 2 structures adapted to terrain features
+  - [x] At least 2 structures adapted to terrain features
     - [ ] Near or on steep cliff
     - [ ] Near or on water or ice
     - [ ] In or around trees
-    - [ ] Flat terrain
-  - [ ] One specific feature for at least 4 biomes
+    - [x] Flat terrain
+  - [x] One specific feature for at least 4 biomes
 - [ ] Functionality
   - [ ] Building count and placement randomized, does not create the exact same city twice
   - [ ] Settlement contains 4 'types' of building
   - [ ] Buildings randomized in size / shape
-  - [ ] Building interiors accessible and decorated  
+  - [ ] Building interiors accessible and decorated
   - [ ] Building interiors randomized
   - [ ] Paths between major builings / attractions
   - [ ] Paths generated via M.S.T. or other algorithm
@@ -28,7 +28,6 @@
   - [ ] Building types constructed with different materials
   - [ ] Decorations places where appropriate
   - [ ] At least 1 outdoor feature (farm, etc)
-
 
 # Minecraft Project Feature Requirements
 
@@ -47,7 +46,7 @@ As the judging criteria are quite abstract, in order to create a more concrete s
   - Heavy use of villagers, farms, or outdoor features
   - Advanced path-finding or building placement algorithms
   - Theme or style of decoration that heavily plays into narrative
-  - Special large features or buildings 
+  - Special large features or buildings
 
 ## Adaptability
 
@@ -58,9 +57,9 @@ As the judging criteria are quite abstract, in order to create a more concrete s
 
 ## Functionality
 
-- You must make sure that your buildings and structures are not simple copy and paste of each other. They must be paramaterized in some way to account for difference sizes and locations, and then those parameters must be randomized when creating your settlement. 
+- You must make sure that your buildings and structures are not simple copy and paste of each other. They must be paramaterized in some way to account for difference sizes and locations, and then those parameters must be randomized when creating your settlement.
 - Your settlements must contain at least 4 "types" of buildings. Some examples of building types might be a house, church, barn, store, etc.
-- All buildings must have doors so that they can be entered 
+- All buildings must have doors so that they can be entered
 - All buildings must have decorated interiors that demonstrate the relevant function of that building (ex: houses have beds)
 - You must use some sort of path-finding algorithm in order to create a road/path system between the major features of your town. For example, you could create paths on the ground based on a [Minimum Spanning Tree](https://en.wikipedia.org/wiki/Minimum_spanning_tree) graph of all the buildings in your town.
 - Your settlement must have at least one major 'moving' feature, such as a minecart, elevator lift, etc)
