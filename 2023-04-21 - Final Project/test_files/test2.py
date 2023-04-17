@@ -114,14 +114,14 @@ for point in buildRect.outline:
         editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
     """ 
         
-from structures.nbt.convert_nbt import convert_nbt
-from structures.nbt.nbt_asset import NBTAsset
-from structures.structure import Structure
-from structures.transformation import Transformation
-from gdpc.editor import Editor
-from gdpc.block import Block
-from palette.palette import Palette
-from palette.palette_swap import palette_swap
+from nbt_lib.structures.nbt.convert_nbt import convert_nbt
+from nbt_lib.structures.nbt.nbt_asset import NBTAsset
+from nbt_lib.structures.structure import Structure
+from nbt_lib.structures.transformation import Transformation
+from gdpc_lib.gdpc_doc.editor import Editor
+from gdpc_lib.gdpc_doc.block import Block
+from nbt_lib.palette.palette import Palette
+from nbt_lib.palette.palette_swap import palette_swap
 
 structure = convert_nbt("C:/Users/vilak/AppData/Roaming/.minecraft/saves/demo/generated/minecraft/structures/teststructure.nbt")
 for (pos, palette_index) in structure.blocks.items():
