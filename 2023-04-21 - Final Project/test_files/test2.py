@@ -114,16 +114,28 @@ for point in buildRect.outline:
         editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
     """ 
         
-from nbt_lib.structures.nbt.convert_nbt import convert_nbt
-from nbt_lib.structures.nbt.nbt_asset import NBTAsset
-from nbt_lib.structures.structure import Structure
-from nbt_lib.structures.transformation import Transformation
-from gdpc_lib.gdpc_doc.editor import Editor
-from gdpc_lib.gdpc_doc.block import Block
-from nbt_lib.palette.palette import Palette
-from nbt_lib.palette.palette_swap import palette_swap
 
-structure = convert_nbt("./../biomes/test_nbt_files/book_well.nbt")
+import sys
+sys.path[0] = sys.path[0].removesuffix('\\test_files')
+
+
+
+
+from structures.nbt.convert_nbt import convert_nbt
+from structures.nbt.nbt_asset import NBTAsset
+from structures.structure import Structure
+from structures.transformation import Transformation
+from gdpc.editor import Editor
+from gdpc.block import Block
+from palette.palette import Palette
+from palette.palette_swap import palette_swap
+
+structure = convert_nbt("C:/Users/vilak/Desktop/Folders/2022-2023/CS4303 Assignment files/COMP4303_Project/2023-04-21 - Final Project/biomes/test_nbt_files/book_well.nbt")
 for (pos, palette_index) in structure.blocks.items():
     block = structure.palette[palette_index]
-    editor.placeBlock(position=pos, block=block.to_gdpc_block())
+    build_pos = buildArea.begin + pos
+    editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
+    print(build_pos, block.to_gdpc_block())
+
+
+
