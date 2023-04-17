@@ -15,6 +15,7 @@ from gdpc.vector_tools import addY
 from gdpc import WorldSlice as ws
 from gdpc import geometry as geo
 
+from biome import Biome
 
 # Create an editor object.
 # The Editor class provides a high-level interface to interact with the Minecraft world.
@@ -99,96 +100,3 @@ centerHeight = heightmap[tuple(localCenter)]
 centerTopBlock = worldSlice.getBlock(addY(localCenter, centerHeight - 1))
 print(f"Top block at the center of the build area: {centerTopBlock}")
 
-
-def cleanarea():
-    print("Clearing build area...")
-    #Calculate the average height
-    min_height = heightmap.min()
-    max_height = heightmap.max()
-
-    for x in range(buildRect._offset[0], buildRect._offset[0] + buildRect.size[0]):
-        for z in range(buildRect._offset[1], buildRect._offset[1] + buildRect.size[1]):
-            for y in range(max_height, min_height - 1, -1):
-                editor.placeBlock((x, y, z), Block("air"))
-    print("Build area cleared!")
-
-def buildwall():
-    print("Building wall...")
-    #Calculate the average height
-    min_height = heightmap.min()
-    max_height = heightmap.max()
-    avg_height = heightmap.mean()
-
-    #Calculate the wall height
-    wall_height = max_height - min_height
-
-    #Calculate the wall width
-    wall_width = 3
-
-    #Calculate the wall length
-    wall_length = 10
-
-    #Calculate the wall position
-    wall_x = buildRect._offset[0] + buildRect.size[0] // 2
-    wall_z = buildRect._offset[1] + buildRect.size[1] // 2
-
-    #Build the wall
-    for point in buildRect.outline:
-        for y in range(min_height, max_height):
-            editor.placeBlock((point[0], y, point[1]), Block("stone"))
-
-    print("Wall built!")
-
-
-def buildfloor():
-    print("Building floor...")
-    #Calculate the average height
-    min_height = heightmap.min()
-    max_height = heightmap.max()
-    avg_height = heightmap.mean()
-    
-    for x in range(buildRect._offset[0], buildRect._offset[0] + buildRect.size[0]):
-        for z in range(buildRect._offset[1], buildRect._offset[1] + buildRect.size[1]):
-            editor.placeBlock((x, min_height, z), Block("stone"))
-
-def buildhouse():
-    print("Building house...")
-    # #Calculate the average height
-    # min_height = heightmap.min()
-    # max_height = heightmap.max()
-    # avg_height = heightmap.mean()
-
-    # #Calculate the house height
-    # house_height = 5
-
-    # #Calculate the house width
-    # house_width = 5
-
-    # #Calculate the house length
-    # house_length = 5
-
-    # #Calculate the house position
-    # house_x = buildRect._offset[0] + buildRect.size[0] // 2
-    # house_z = buildRect._offset[1] + buildRect.size[1] // 2
-
-    # #Build the house
-    # for x in range(house_x - house_width // 2, house_x + house_width // 2):
-    #     for z in range(house_z - house_length // 2, house_z + house_length // 2):
-    #         for y in range(min_height, min_height + house_height):
-    #             editor.placeBlock((x, y, z), Block("stone"))
-    # print("House built!")
-
-    
-
-
-if __name__ == "__main__":
-    cleanarea()
-    buildwall()
-    buildfloor()
-    # buildhouse()
-
-    print("Done!")
-
-
-            
-    
