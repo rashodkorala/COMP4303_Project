@@ -1,3 +1,0 @@
-GitHub does not allow blank directories
-
-This is a 'blank folder' keeper file, delete it
