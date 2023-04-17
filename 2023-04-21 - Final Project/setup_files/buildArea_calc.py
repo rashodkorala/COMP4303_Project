@@ -97,3 +97,5 @@ def get_build_area(buildRect, worldSlice):
     heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 
     print(f"Heightmap shape: {heightmap.shape}")
+
+    return heightmap
