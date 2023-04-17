@@ -123,7 +123,7 @@ from gdpc_lib.gdpc_doc.block import Block
 from nbt_lib.palette.palette import Palette
 from nbt_lib.palette.palette_swap import palette_swap
 
-structure = convert_nbt("C:/Users/vilak/Desktop/Folders/2022-2023/CS4303 Assignment files/COMP4303_Project/2023-04-21 - Final Project/biomes/test_nbt_files/book_well.nbt")
+structure = convert_nbt("./../biomes/test_nbt_files/book_well.nbt")
 for (pos, palette_index) in structure.blocks.items():
     block = structure.palette[palette_index]
     editor.placeBlock(position=pos, block=block.to_gdpc_block())
