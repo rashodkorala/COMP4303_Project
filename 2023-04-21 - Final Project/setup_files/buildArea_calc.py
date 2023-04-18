@@ -1,4 +1,10 @@
 
+import numpy as np
+
+from gdpc import __url__, Editor, Block, geometry
+from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
+from gdpc.vector_tools import addY
+
 def create_editor():
 
     # Create an editor object.
@@ -20,7 +26,7 @@ def create_editor():
     
     if editor.checkConnection():
         print("Connected to GDMC HTTP interface!")
-        return editor
+    return editor
 
 
 
@@ -72,7 +78,7 @@ def get_world_slice (editor):
 
 
 
-def get_build_area(buildRect, worldSlice):
+def get_build_area(buildRect, worldSlice, buildArea):
 
     vec = addY(buildRect.center, 0)
     print(f"Block at {vec}: {worldSlice.getBlock(vec - buildArea.offset)}")
@@ -94,7 +100,7 @@ def get_build_area(buildRect, worldSlice):
 
     print(f"Available heightmaps: {worldSlice.heightmaps.keys()}")
 
-    heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
+    heightmap = worldSlice.heightmaps["OCEAN_FLOOR"]
 
     print(f"Heightmap shape: {heightmap.shape}")
 

@@ -130,7 +130,7 @@ from gdpc.block import Block
 from palette.palette import Palette
 from palette.palette_swap import palette_swap
 
-structure = convert_nbt("C:/Users/vilak/Desktop/Folders/2022-2023/CS4303 Assignment files/COMP4303_Project/2023-04-21 - Final Project/biomes/test_nbt_files/book_well.nbt")
+structure = convert_nbt("C:/Users/vilak/Desktop/Folders/2022-2023/CS4303 Assignment files/COMP4303_Project/2023-04-21 - Final Project/biomes/grass/grass_structures/grass_tower.nbt")
 for (pos, palette_index) in structure.blocks.items():
     block = structure.palette[palette_index]
     build_pos = buildArea.begin + pos

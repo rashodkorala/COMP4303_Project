@@ -94,6 +94,24 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 print(f"Heightmap shape: {heightmap.shape}")
 
 
+print("Clearing build area...")
+    #height = heightmap[tuple(point - build_rect.offset)]
+    #get min max height
+min_height = heightmap.min()
+max_height = heightmap.max()
+print(max_height, min_height)
+
+#get build area
+for x in range(buildRect._offset[0], buildRect._offset[0] + buildRect.size[0]):
+    for z in range(buildRect._offset[1], buildRect._offset[1] + buildRect.size[1]):
+        
+        for y in range(max_height, min_height -1 , -1):
+            
+
+            #clear block
+            editor.placeBlock((x, y, z), Block("air"))
+            
+print("Build area cleared!")
 
 # Place walls of stone bricks on the perimeter of the build area, following the curvature of the
 # terrain.
