@@ -1,9 +1,14 @@
 
 import numpy as np
-
 from gdpc import __url__, Editor, Block, geometry
 from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
 from gdpc.vector_tools import addY
+
+
+import sys
+sys.path.append("setup_files")
+from clearArea_calc import *
+
 
 def create_editor():
 
@@ -105,3 +110,15 @@ def get_build_area(buildRect, worldSlice, buildArea):
     print(f"Heightmap shape: {heightmap.shape}")
 
     return heightmap
+
+
+def set_cleared_area():
+    
+    #setting up build area and heightmap
+    editor = create_editor()
+    world_slice, build_rect, build_area = get_world_slice(editor)
+    heightmap = get_build_area(build_rect, world_slice, build_area)
+
+    #clearing the build area
+    print("flatten build area...")
+    flatten_area(heightmap, build_rect, editor, build_area)
