@@ -25,7 +25,7 @@ def clear_surface(heightmap, buildRect, editor, world_slice):
                 editor.placeBlock((x, y, z), Block("air"))
 
     
-    print("Build area cleared!")
+    print("Build area clearesd!")
 
 
 #flattens the area with the absolute minimum height
