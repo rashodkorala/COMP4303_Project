@@ -19,7 +19,7 @@ heightmap = get_build_area(build_rect, world_slice, build_area)
 
 #clearing the build area
 print("Clearing build area...")
-clear_area(heightmap, build_rect, editor)
+clear_area(heightmap, build_rect, build_area, editor, world_slice)  
 
 
 # Place walls of stone bricks on the perimeter of the build area, following the curvature of the
@@ -36,9 +36,7 @@ for point in build_rect.outline:
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
         
-        # Place the second layer of blocks
-        editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
-    
+
         
 
 
@@ -65,6 +63,11 @@ for m in range(7,36,2):
     geometry.placeCylinder(editor,addY(build_rect.center, height), m , 1, Block("bamboo"), tube=True)
 
 
+import sys
+sys.path[0] = sys.path[0].removesuffix('\\forest_jungle')
+sys.path[0] = sys.path[0].removesuffix('\\biomes')
+
+
 
 from structures.nbt.convert_nbt import convert_nbt
 from structures.nbt.nbt_asset import NBTAsset
@@ -78,7 +81,7 @@ from palette.palette_swap import palette_swap
 structure = convert_nbt("C:/Users/vilak/Desktop/Folders/2022-2023/CS4303 Assignment files/COMP4303_Project/2023-04-21 - Final Project/biomes/grass/grass_structures/grass_tower.nbt")
 for (pos, palette_index) in structure.blocks.items():
     block = structure.palette[palette_index]
-    build_pos = buildArea.begin + pos
+    build_pos = build_area.begin + pos
     editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
     print(build_pos, block.to_gdpc_block())
 
