@@ -30,7 +30,7 @@ def create_editor():
         sys.exit(1)
     
     if editor.checkConnection():
-        print("Connected to GDMC HTTP interface!")
+        print("Connected to GDMC HTTP interface.")
     return editor
 
 
@@ -103,16 +103,17 @@ def get_build_area(buildRect, worldSlice, buildArea):
     #
     # Heightmaps are loaded into 2D numpy arrays of Y coordinates.
 
-    print(f"Available heightmaps: {worldSlice.heightmaps.keys()}")
+    #print(f"Available heightmaps: {worldSlice.heightmaps.keys()}")
 
-    heightmap = worldSlice.heightmaps["OCEAN_FLOOR"]
+    
 
-    print(f"Heightmap shape: {heightmap.shape}")
-
+    #print(f"Heightmap shape: {heightmap.shape}")
+    heightmap = worldSlice.heightmaps["WORLD_SURFACE"]
     return heightmap
 
 def set_cleared_area():
     # setting up build area and heightmap
+    print("Setting up build area and heightmap...")
     editor = create_editor()
     world_slice, build_rect, build_area = get_world_slice(editor)
     heightmap = get_build_area(build_rect, world_slice, build_area)
@@ -122,6 +123,7 @@ def set_cleared_area():
     flatten_area(heightmap, build_rect, editor, build_area)
 
     # resetting heightmap, buildRect, and editor
+    print("Resetting heightmap, buildRect, and editor...")
     editor = create_editor()
     world_slice, build_rect, build_area = get_world_slice(editor)
     heightmap = get_build_area(build_rect, world_slice, build_area)

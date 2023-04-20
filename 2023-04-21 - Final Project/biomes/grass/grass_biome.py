@@ -7,7 +7,9 @@ from buildArea_calc import *
 
 
 
-#setting up build area and heightmap and clearing the area
+#Setting up editor
+#Setting up build area and heightmap
+#Flattening the build area
 editor, world_slice, build_rect, build_area, heightmap = set_cleared_area()
 
 
@@ -34,7 +36,7 @@ for point in build_rect.outline:
 sys.path[0] = sys.path[0].removesuffix('\\biomes\\grass')
 from build_nbt_structure import *
 
-
+print("Placing townhall...")
 grass_townhall = "C:/Users/vilak/Desktop/Folders/2022-2023/CS4303 Assignment files/COMP4303_Project/2023-04-21 - Final Project/biomes/grass/grass_structures/grass_townhall.nbt"
 
 create_nbt_structure(grass_townhall, editor, build_area)
