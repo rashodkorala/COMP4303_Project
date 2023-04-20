@@ -5,12 +5,15 @@ from buildArea_calc import *
 
 
 
+editor = create_editor()
+world_slice, build_rect, build_area = get_world_slice(editor)
+heightmap = get_build_area(build_rect, world_slice, build_area)
 
 
 #Setting up editor
 #Setting up build area and heightmap
 #Flattening the build area
-editor, world_slice, build_rect, build_area, heightmap = set_cleared_area()
+#editor, world_slice, build_rect, build_area, heightmap = set_cleared_area()
 
 
 
@@ -27,18 +30,27 @@ for point in build_rect.outline:
 
 
 
-
-
-
-
-
 #create structure
 sys.path[0] = sys.path[0].removesuffix('\\biomes\\grass')
-from build_nbt_structure import *
-
+from nbt_setup import *
 print("Placing townhall...")
-grass_townhall = "C:/Users/vilak/Desktop/Folders/2022-2023/CS4303 Assignment files/COMP4303_Project/2023-04-21 - Final Project/biomes/grass/grass_structures/grass_townhall.nbt"
 
-create_nbt_structure(grass_townhall, editor, build_area)
+
+
+
+
+
+folder_path = 'biomes\grass\grass_structures' # replace with the actual folder path
+
+
+file_paths = get_files(folder_path)
+print(file_paths)
+build_area_size = build_area.size #returns a ivec3 
+
+
+for building in file_paths:    
+    
+    building.width, building.height, building.depth = get_building_dimensions(building)
+    create_nbt_structure(building, editor, build_area, 5, 5, skips_air=True)
 
 #maybe make a list of all nbt structures and loop throught them each
