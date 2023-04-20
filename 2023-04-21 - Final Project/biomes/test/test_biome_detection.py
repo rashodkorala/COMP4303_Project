@@ -45,6 +45,15 @@ except BuildAreaNotSetError:
     sys.exit(1)
 
 
+area_biome = editor.getBiome(buildArea.begin)
+if area_biome == "minecraft:desert":
+    
+    print("desert biome detected!")
+
+else:
+    print("No plains biome detected!")
+   
+
 # Get a world slice.
 #
 # A world slice contains all kinds of information about a slice of the world, like blocks, biomes
@@ -116,7 +125,7 @@ for point in buildRect.outline:
         
 
 import sys
-sys.path[0] = sys.path[0].removesuffix('\\test_files')
+sys.path[0] = sys.path[0].removesuffix('\\biomes\\test')
 print(sys.path[0])
 input("press to continue")
 

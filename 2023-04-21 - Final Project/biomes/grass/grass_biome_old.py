@@ -100,43 +100,97 @@ print(f"Heightmap shape: {heightmap.shape}")
 
 print("Placing walls...")
 
+
+#build a wall
+
 for point in buildRect.outline:
     
     height = heightmap[tuple(point - buildRect.offset)]
-
-    #building a wall
-    """
+    
     for y in range(height, height + 7):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
         
-        # Place the second layer of blocks
-        editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
-    """ 
+        # Place the second layer of blwocks
+        editor.placeBlock(addY(point+1, y+2), Block("mossy_stone_bricks"))
         
+        # Place the third layer of blocks
+    
+
+
+
+
+#build the center building
+geometry.placeCylinder(editor,addY(buildRect.center, height), 30 , 10, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+9), 28 , 1, Block("glowstone"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+10), 22 , 5, Block("stone_bricks"))
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+15), 28 , 5, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+19), 26 , 1, Block("glowstone"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+20), 20 , 5, Block("stone_bricks"))
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+25), 26 , 5, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+29), 24 , 1, Block("glowstone"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+30), 18 , 5, Block("stone_bricks"))
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+35), 24 , 5, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+39), 22 , 1, Block("glowstone"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+40), 16 , 5, Block("stone_bricks"))
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+45), 22 , 5, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+49), 20 , 1, Block("glowstone"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+50), 14 , 5, Block("stone_bricks"))
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+55), 16 , 10, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+65), 20 , 4, Block("stone_bricks"))
+geometry.placeCylinder(editor,addY(buildRect.center, height+68), 18 , 1, Block("glowstone"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+69), 16 , 4, Block("stone_bricks"))
+geometry.placeCylinder(editor,addY(buildRect.center, height+73), 14, 4, Block("stone_bricks"))
+geometry.placeCylinder(editor,addY(buildRect.center, height+77), 12 , 4, Block("stone_bricks"))
+geometry.placeCylinder(editor,addY(buildRect.center, height+81), 10 , 4, Block("stone_bricks"))
+geometry.placeCylinder(editor,addY(buildRect.center, height+85), 24 , 4, Block("stone_bricks"))
+
+
+
+
+#Make small houses in the build area
 
 import sys
-sys.path[0] = sys.path[0].removesuffix('\\test_files')
-print(sys.path[0])
-input("press to continue")
+
+import numpy as np
+from glm import ivec2, ivec3
+
+from gdpc import __url__, Editor, Block, geometry
+from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
+from gdpc.vector_tools import Y, addY, dropY, line3D, circle, fittingCylinder
 
 
+groundCenter = addY(buildRect.center+20, height)
 
-from structures.nbt.convert_nbt import convert_nbt
-from structures.nbt.nbt_asset import NBTAsset
-from structures.structure import Structure
-from structures.transformation import Transformation
-from gdpc.editor import Editor
-from gdpc.block import Block
-from palette.palette import Palette
-from palette.palette_swap import palette_swap
+#chose a random point in the build area
+randomPoint = np.random.randint(0, buildRect.size, 2) + buildRect.offset
 
-structure = convert_nbt("C:/Users/vilak/Desktop/Folders/2022-2023/CS4303 Assignment files/COMP4303_Project/2023-04-21 - Final Project/biomes/grass/grass_structures/grass_tower.nbt")
-for (pos, palette_index) in structure.blocks.items():
-    block = structure.palette[palette_index]
-    build_pos = buildArea.begin + pos
-    editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
-    print(build_pos, block.to_gdpc_block())
+#place three blocks on top of each other, centered to eachother. The first block is 3x3 second is 5x5 and third is 2x2. on the ground
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-1, 0, -1), # Corner 1
+    groundCenter + ivec3(1,  2, 1), # Corner 2
+    Block("spruce_log")
+)
 
 
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-3, 3, -3), # Corner 1
+    groundCenter + ivec3(3,  8, 3), # Corner 2
+    Block("mossy_stone_bricks")
+)
+
+
+#build roads out of the center of the build area
 

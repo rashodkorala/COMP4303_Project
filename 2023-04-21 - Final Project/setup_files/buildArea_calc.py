@@ -111,14 +111,19 @@ def get_build_area(buildRect, worldSlice, buildArea):
 
     return heightmap
 
-
 def set_cleared_area():
-    
-    #setting up build area and heightmap
+    # setting up build area and heightmap
     editor = create_editor()
     world_slice, build_rect, build_area = get_world_slice(editor)
     heightmap = get_build_area(build_rect, world_slice, build_area)
 
-    #clearing the build area
-    print("flatten build area...")
+    # clearing the build area
+    print("Flattening build area...")
     flatten_area(heightmap, build_rect, editor, build_area)
+
+    # resetting heightmap, buildRect, and editor
+    editor = create_editor()
+    world_slice, build_rect, build_area = get_world_slice(editor)
+    heightmap = get_build_area(build_rect, world_slice, build_area)
+
+    return editor, world_slice, build_rect, build_area, heightmap

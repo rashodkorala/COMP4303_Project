@@ -36,12 +36,9 @@ for point in build_rect.outline:
 
 
 
-import sys
-#sys.path[0] = sys.path[0].removesuffix('\\test') <- change this path
-sys.path[0] = sys.path[0].removesuffix('\\biomes\\grass')
-
-print(sys.path[0])
-input("press to continue")
+#nbt imports
+#change python path so that nbt files can be recognized 
+sys.path[0] = sys.path[0].removesuffix('\\biomes\\test')
 from structures.nbt.convert_nbt import convert_nbt
 from structures.nbt.nbt_asset import NBTAsset
 from structures.structure import Structure
@@ -51,7 +48,11 @@ from gdpc.block import Block
 from palette.palette import Palette
 from palette.palette_swap import palette_swap
 
+
+#set the nbt structure file
 structure = convert_nbt("C:/Users/vilak/Desktop/Folders/2022-2023/CS4303 Assignment files/COMP4303_Project/2023-04-21 - Final Project/biomes/grass/grass_structures/grass_tower.nbt")
+
+#create nbt structure
 for (pos, palette_index) in structure.blocks.items():
     block = structure.palette[palette_index]
     build_pos = buildArea.begin + pos
@@ -59,3 +60,4 @@ for (pos, palette_index) in structure.blocks.items():
     print(build_pos, block.to_gdpc_block())
 
 
+#maybe make a list of all nbt structures and loop throught them each
