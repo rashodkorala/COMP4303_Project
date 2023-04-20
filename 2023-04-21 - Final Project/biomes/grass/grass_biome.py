@@ -30,27 +30,11 @@ for point in build_rect.outline:
 
 
 
-#create structure
+#Create village
 sys.path[0] = sys.path[0].removesuffix('\\biomes\\grass')
 from nbt_setup import *
-print("Placing townhall...")
-
-
-
-
-
 
 folder_path = 'biomes\grass\grass_structures' # replace with the actual folder path
-
-
 file_paths = get_files(folder_path)
-print(file_paths)
-build_area_size = build_area.size #returns a ivec3 
-
-
-for building in file_paths:    
-    
-    building.width, building.height, building.depth = get_building_dimensions(building)
-    create_nbt_structure(building, editor, build_area, 5, 5, skips_air=True)
-
-#maybe make a list of all nbt structures and loop throught them each
+build_area_size = build_area.size
+placed_buildings = place_buildings(file_paths, build_area_size, editor)
