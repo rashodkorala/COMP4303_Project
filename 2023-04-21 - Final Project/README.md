@@ -1,12 +1,12 @@
 # Minecraft Project Feature Checklist
 
 - [x] Specialty chosen: \***\*\_\_\*\***
-- [ ] Adaptivity
-  - [ ] Settlement avoids 'steamroller' approach
+- [x] Adaptivity
+  - [x] Settlement avoids 'steamroller' approach
   - [x] At least 2 structures adapted to terrain features
     - [ ] Near or on steep cliff
     - [ ] Near or on water or ice
-    - [ ] In or around trees
+    - [x] In or around trees
     - [x] Flat terrain
   - [x] One specific feature for at least 4 biomes
 - [ ] Functionality
@@ -20,14 +20,14 @@
   - [ ] At least one "moving" feature (minecart, elevator, lift, etc)
   - [ ] Some CA / Noise / other generative algorithm used in some form
   - [ ] Defensive structure(s) created
-- [ ] Narrative
-  - [ ] Include the 'story' of your village
-  - [ ] Construction must make sense within that narrative
-- [ ] Aesthetics
-  - [ ] Color of blocks chosen based on biome
-  - [ ] Building types constructed with different materials
-  - [ ] Decorations places where appropriate
-  - [ ] At least 1 outdoor feature (farm, etc)
+- [x] Narrative
+  - [x] Include the 'story' of your village
+  - [x] Construction must make sense within that narrative
+- [x] Aesthetics
+  - [x] Color of blocks chosen based on biome
+  - [x] Building types constructed with different materials
+  - [x] Decorations places where appropriate
+  - [x] At least 1 outdoor feature (farm, etc)
 
 # Minecraft Project Feature Requirements
 
