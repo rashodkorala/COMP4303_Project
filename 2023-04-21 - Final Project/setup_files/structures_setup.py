@@ -61,9 +61,11 @@ def random_building_position(building_width, building_depth, build_area_size):
     return x, z
 
 
+# Place buildings in the build area, avoiding overlaps
 def place_buildings(file_paths, build_area_size, editor, max_attempts=100):
     existing_buildings = []
 
+    
     for building in file_paths:
         building_width, building_height, building_depth = get_building_dimensions(building)
 
