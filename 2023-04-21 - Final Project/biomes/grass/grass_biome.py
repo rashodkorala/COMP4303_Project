@@ -141,6 +141,52 @@ def buildRoadAroundbuildings(editor, WORLDSLICE, grid, BuildingBeginX, BuildingB
     print("Finished building road around town hall")
 
 
+from collections import deque
+
+def bfs_search(grid, start_node, end_node):
+    queue = deque([start_node])
+    visited = set([(start_node.x, start_node.y)])
+
+    while queue:
+        current_node = queue.popleft()
+
+        if current_node.x == end_node.x and current_node.y == end_node.y:
+            path = []
+            while current_node.parent:
+                path.append(current_node.action)
+                current_node = current_node.parent
+            return path[::-1]
+
+        for action, direction in enumerate(ACTIONS):
+            new_x, new_y = current_node.x + direction[0], current_node.y + direction[1]
+
+            if (new_x, new_y) in visited or grid.is_oob(new_x, new_y) or grid.is_type(new_x, new_y, GRID_TYPES["OBSTACLE"]):
+                continue
+
+            new_node = Node(new_x, new_y, DIRECTIONS[action], current_node)
+            queue.append(new_node)
+            visited.add((new_x, new_y))
+
+    return None
+
+def connect_goals_bfs(grid):
+    goal_nodes = find_goals(grid)
+    paths = []
+
+    for i in range(len(goal_nodes) - 1):
+        start_node = goal_nodes[i]
+        end_node = goal_nodes[i + 1]
+        path = bfs_search(grid, start_node, end_node)
+
+        if path is not None:
+            paths.append(path)
+        else:
+            print(f"Failed to connect goals {i} and {i + 1}")
+
+    return paths
+
+
+
 import heapq
 
 def heuristic(node1, node2):
@@ -247,7 +293,12 @@ for item in placed_buildings:
     depth = item['depth']
     buildRoadAroundbuildings(editor, world_slice, grid, building_x, building_z,width,depth)
 
-paths=connect_goals(grid)
+# paths=connect_goals(grid)
+# place_blocks(grid, paths)
+# build_paths_from_grid(editor, grid)
+
+paths = connect_goals_bfs(grid)
 place_blocks(grid, paths)
 build_paths_from_grid(editor, grid)
+
 
