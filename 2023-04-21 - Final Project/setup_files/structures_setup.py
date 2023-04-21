@@ -63,27 +63,44 @@ def random_building_position(building_width, building_depth, build_area_size):
     return x, z
 
 
+
+
+
+
+
+
 # Place buildings in the build area, avoiding overlaps
 def place_buildings(file_paths, build_area_size, build_area, editor, max_attempts=100):
     existing_buildings = []
 
-    
     for building in file_paths:
         building_width, building_height, building_depth = get_building_dimensions(building)
+        
+        is_townhall = "townhall" in os.path.basename(building)
+
+        if not is_townhall:
+            print("Not townhall: ", building)
+            # Generate random number of building placements
+            building_number = random.randint(1, 3)
+        else:
+            print("Townhall: ", building)
+            building_number = 0
 
         # Try to find a non-overlapping position for the building
-        attempts = 0
-        while attempts < max_attempts:
-            x, z = random_building_position(building_width, building_depth, build_area_size)
-            new_building = {"x": x, "z": z, "width": building_width, "depth": building_depth}
+        for i in range(building_number):
+            attempts = 0
+            while attempts < max_attempts:
+                x, z = random_building_position(building_width, building_depth, build_area_size)
+                new_building = {"x": x, "z": z, "width": building_width, "depth": building_depth}
 
-            if not is_overlapping(new_building, existing_buildings):
-                existing_buildings.append(new_building)
-                create_nbt_structure(building, editor, build_area, x, z, skips_air=True)
-                break
-            attempts += 1
+                if not is_overlapping(new_building, existing_buildings):
+                    existing_buildings.append(new_building)
+                    create_nbt_structure(building, editor, build_area, x, z, skips_air=True)
+                    break
 
-        if attempts == max_attempts:
-            print(f"Failed to place {building} without overlapping after {max_attempts} attempts.")
+                attempts += 1
+
+            if attempts == max_attempts:
+                print(f"Failed to place {building} without overlapping after {max_attempts} attempts.")
 
     return existing_buildings
