@@ -46,6 +46,7 @@ def create_nbt_structure(filepath, editor, build_area, x, y,z, skips_air=True,gr
         block = structure.palette[palette_index]
         if block.to_gdpc_block().id == "minecraft:air" and skips_air:
             continue
+        
         build_pos = build_area.begin + pos + [x,y,z]
         if grid != None:
             grid.set_grid(x, z, GRID_TYPES["OBSTACLE"])

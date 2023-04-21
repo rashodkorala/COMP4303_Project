@@ -78,134 +78,6 @@ class Grid:
     def is_type(self, x, z, type):
         return self._grid[x][z] == type
 
-
-def buildRemainingRoads(STARTX, STARTZ, ENDX, ENDZ, grid, editor, WORLDSLICE):
-    print("Started building remaining roads")
-    # find "GOALS" in the grid
-    center_x = (STARTX + ENDX) // 2
-    center_z = (STARTZ + ENDZ) // 2
-    for i in range(STARTX, grid.width()):
-        for j in range(STARTZ,grid.height()):
-            if grid.get_grid(i,j) == GRID_TYPES["GOAL"]:
-                # Initialize a open list (x,y,)
-                open_list = []
-                # Initialize a closed list
-                closed_list = [[0] * grid.height() for i in  range(grid.width())]
-                node = Node(i,j,None,None)
-                open_list.append(node)
-
-                while len(open_list) > 0:
-                    # Find the node with the lowest f value
-                    lowest_f = open_list[0].f
-                    lowest_f_index = 0
-                    for k in range(len(open_list)):
-                        if open_list[k].f < lowest_f:
-                            lowest_f = open_list[k].f
-                            lowest_f_index = k
-                    current_node = open_list[lowest_f_index]
-                    # Remove the node from the open list
-                    open_list.pop(lowest_f_index)
-                    # Add the node to the closed list
-                    closed_list[current_node.x][current_node.y] = 1
-                    # # Check if the node is a road
-                    if grid.get_grid(current_node.x,current_node.y) == GRID_TYPES["ROAD"]:
-                        # If it is, build the road
-                        path = []
-                        while current_node.parent != None:
-                            path.append(current_node.action)
-                            current_node = current_node.parent
-                        path.reverse()
-                        grid.set_grid(i,j,GRID_TYPES["ROAD"])
-                        grid.set_grid(i,j,GRID_TYPES["ROAD"])
-                        editor.placeBlock(i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,j)]-1,j, "grass_path")
-                        buildRoadForAstar(path,i,j)
-                        break
-                    # Find the neighbors of the current node
-                    for action in ACTIONS:
-                        neighbor_x = current_node.x + action[0]
-                        neighbor_y = current_node.y + action[1]
-                        if grid.is_oob(neighbor_x, neighbor_y) or grid.is_type(neighbor_x, neighbor_y, GRID_TYPES["OBSTACLE"]) or closed_list[neighbor_x][neighbor_y] == 1 or grid.is_type(neighbor_x, neighbor_y, GRID_TYPES["GOAL"]):
-                            continue
-                        node = Node(neighbor_x,neighbor_y,action,current_node)
-                        node.g = current_node.g + 1
-                        node.h = abs(neighbor_x - center_x) + abs(neighbor_y - center_z)
-                        node.f = node.g + node.h
-                        open_list.append(node)
-                        closed_list[neighbor_x][neighbor_y] = 1
-                    
-
-                    
-
-    print("Finished building remaining roads")
-
-
-    center_x = (STARTX + ENDX) // 2
-    center_z = (STARTZ + ENDZ) // 2
-    for i in range(STARTX, grid.width()):
-        for j in range(STARTZ,grid.height()):
-            if grid.is_type(i,j,GRID_TYPES["GOAL"]):
-                print("Found goal at", i, j)
-                dx = i - center_x
-                dz = j - center_z
-                print("Ec distance:", dx, dz)
-                for x in range(i,abs(dx)):
-                    if dx > 0:
-                        editor.placeBlock(i+x,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(x+i,j)]-1,j, "grass_path")
-                        print("Building road at", i+x, j)
-                        if grid.is_type(x+i,j,GRID_TYPES["ROAD"]):
-                            break
-                        grid.set_grid(i+x,j,GRID_TYPES["ROAD"])
-                        
-                    else:
-                        editor.placeBlock(i-x,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i-x,j)]-1,j, "grass_path")
-                        print("Building road at", i-x, j)
-                        if grid.is_type(i-x,j,GRID_TYPES["ROAD"]):
-                            break
-                        grid.set_grid(i-x,j,GRID_TYPES["ROAD"])
-                for z in range(j,abs(dz)):
-                    if dz > 0:
-                        editor.placeBlock(i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,j+z)]-1,j+z, "grass_path")
-                        print("Building road at", i, j+z)
-                        if grid.is_type(i,j+z,GRID_TYPES["ROAD"]):
-                            break
-                        grid.set_grid(i,j+z,GRID_TYPES["ROAD"])
-                    else:
-                        editor.placeBlock(i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,j-z)]-1,j-z, "grass_path")
-                        print("Building road at", i, j-z)
-                        if grid.is_type(i,j-z,GRID_TYPES["ROAD"]):
-                            break
-                        grid.set_grid(i,j-z,GRID_TYPES["ROAD"])
-
-def buildRoadForAstar(path,x,y,editor, WORLDSLICE, grid):
-    for i in range(len(path)):
-        x += path[i][0]
-        y += path[i][1]
-        if grid.is_type(x,y,GRID_TYPES["ROAD"]):
-            continue
-        if path[i][0] == 0 :
-            block = editor.getBlock(x-1,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(x-1,y)]-1,y)
-            road = "oak_planks" if block == "minecraft:water" else "grass_path"
-            grid.set_grid(x-1,y,GRID_TYPES["ROAD"])
-            editor.placeBlock(x-1,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(x-1,y)]-1,y, road)
-            block = editor.getBlock(x+1,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(x+1,y)]-1,y)
-            road = "oak_planks" if block == "minecraft:water" else "grass_path"
-            grid.set_grid(x+1,y,GRID_TYPES["ROAD"])
-            editor.placeBlock(x+1,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(x+1,y)]-1,y, road)
-        else:
-            block = editor.getBlock(x,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(x,y-1)]-1,y-1)
-            road = "oak_planks" if block == "minecraft:water" else "grass_path"
-            grid.set_grid(x,y-1,GRID_TYPES["ROAD"])
-            editor.placeBlock(x,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(x,y-1)]-1,y-1, road)
-            block = editor.getBlock(x,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(x,y+1)]-1,y+1)
-            road = "oak_planks" if block == "minecraft:water" else "grass_path"
-            grid.set_grid(x,y+1,GRID_TYPES["ROAD"])
-            editor.placeBlock(x,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(x,y+1)]-1,y+1, road)
-        grid.set_grid(x,y,GRID_TYPES["ROAD"])
-        editor.placeBlock(x,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(x,y)]-1,y, road)
-
-
-
-
 # def buildRoadAroundbuildings(editor, WORLDSLICE, grid,building_x,building_z,width,depth):
 #     print("Started building road around town hall")
 #     start_x = building_x+build_area.begin.x-1
@@ -245,31 +117,116 @@ def buildRoadAroundbuildings(editor, WORLDSLICE, grid, BuildingBeginX, BuildingB
     y = -1
 
     road_block = "minecraft:dirt_path"  # Replace with the desired road block type
-
+    #set the middle block of the road to goal
+    grid.set_grid(start_x,start_z,GRID_TYPES["GOAL"])
     # Build the top and bottom horizontal roads
     for x in range(start_x, end_x):
-        print("x: " + str(x))
-        print("start_z: " + str(start_z))
-        print("end_z: " + str(end_z))
-        print("start_x: " + str(start_x))
-        print("end_x: " + str(end_x))
         pos=build_area.begin+[x,y,start_z]
         pos2=build_area.begin+[x,y,end_z-1]
-        editor.placeBlock(pos, Block(road_block))
-        editor.placeBlock(pos2, Block(road_block))
+        # editor.placeBlock(pos, Block(road_block))
+        # editor.placeBlock(pos2, Block(road_block))
         grid.set_grid(x,start_z,GRID_TYPES["ROAD"])
         grid.set_grid(x,end_z-1,GRID_TYPES["ROAD"])
+        
 
     # Build the left and right vertical roads
     for z in range(start_z+1, end_z-1):
         pos=build_area.begin+[start_x,y,z]
         pos2=build_area.begin+[end_x-1,y,z]
-        editor.placeBlock(pos, Block(road_block))
-        editor.placeBlock(pos2, Block(road_block))
+        # editor.placeBlock(pos, Block(road_block))
+        # editor.placeBlock(pos2, Block(road_block))
         grid.set_grid(start_x,z,GRID_TYPES["ROAD"])
         grid.set_grid(end_x-1,z,GRID_TYPES["ROAD"])
 
     print("Finished building road around town hall")
+
+
+import heapq
+
+def heuristic(node1, node2):
+    return abs(node1.x - node2.x) + abs(node1.y - node2.y)
+
+def a_star_search(grid, start_node, end_node):
+    open_list = []
+    closed_list = set()
+
+    heapq.heappush(open_list, (start_node.f, start_node))
+
+    while open_list:
+        _, current_node = heapq.heappop(open_list)
+        closed_list.add((current_node.x, current_node.y))
+
+        if current_node.x == end_node.x and current_node.y == end_node.y:
+            path = []
+            while current_node.parent:
+                path.append(current_node.action)
+                current_node = current_node.parent
+            return path[::-1]
+
+        for action, direction in enumerate(ACTIONS):
+            new_x, new_y = current_node.x + direction[0], current_node.y + direction[1]
+
+            if grid.is_oob(new_x, new_y) or grid.is_type(new_x, new_y, GRID_TYPES["OBSTACLE"]):
+                continue
+
+            new_node = Node(new_x, new_y, DIRECTIONS[action], current_node)
+            if (new_node.x, new_node.y) in closed_list:
+                continue
+
+            new_node.g = current_node.g + 1
+            new_node.h = heuristic(new_node, end_node)
+            new_node.f = new_node.g + new_node.h
+
+            for _, existing_node in open_list:
+                if existing_node.x == new_node.x and existing_node.y == new_node.y and existing_node.g < new_node.g:
+                    break
+            else:
+                heapq.heappush(open_list, (new_node.f, new_node))
+
+    return None
+
+def find_goals(grid):
+    goal_nodes = []
+    for x in range(grid.width()):
+        for z in range(grid.height()):
+            if grid.is_type(x, z, GRID_TYPES["GOAL"]):
+                goal_nodes.append(Node(x, z, None, None))
+    return goal_nodes
+
+def connect_goals(grid):
+    goal_nodes = find_goals(grid)
+    paths = []
+
+    for i in range(len(goal_nodes) - 1):
+        start_node = goal_nodes[i]
+        end_node = goal_nodes[i + 1]
+        path = a_star_search(grid, start_node, end_node)
+
+        if path is not None:
+            paths.append(path)
+        else:
+            print(f"Failed to connect goals {i} and {i + 1}")
+
+    return paths
+
+def place_blocks(grid, paths):
+    for path in paths:
+        for action in path:
+            direction = ACTIONS[DIRECTIONS.index(action)]
+            x, y = direction
+
+            if not grid.is_type(x, y, GRID_TYPES["GOAL"]):
+                grid.set_grid(x, y, GRID_TYPES["ROAD"])
+
+def build_paths_from_grid(editor, grid):
+    road_block = "minecraft:dirt_path"
+    y = build_area.begin.y
+
+    for x in range(grid.width()):
+        for z in range(grid.height()):
+            if grid.get_grid(x, z) == GRID_TYPES["ROAD"]:
+                pos = build_area.begin + [x, y, z]
+                editor.placeBlock(pos, Block(road_block))
 
 
 
@@ -289,3 +246,8 @@ for item in placed_buildings:
     width = item['width']
     depth = item['depth']
     buildRoadAroundbuildings(editor, world_slice, grid, building_x, building_z,width,depth)
+
+paths=connect_goals(grid)
+place_blocks(grid, paths)
+build_paths_from_grid(editor, grid)
+
