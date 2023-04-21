@@ -16,12 +16,12 @@ editor, world_slice, build_rect, build_area, heightmap = set_build_area()
 
 # Placing walls
 print("Placing walls...")
-""" for point in build_rect.outline:
+for point in build_rect.outline:
     height = heightmap[tuple(point - build_rect.offset)]
     #building a wall
     for y in range(height, height+9):
         # Place the first layer of blocks
-        editor.placeBlock(addY(point, y), Block("cobblestone"))  """
+        editor.placeBlock(addY(point, y), Block("cobblestone")) 
       
 
 
@@ -110,8 +110,8 @@ class Grid:
 def buildRoadAroundbuildings(editor, WORLDSLICE, grid, BuildingBeginX, BuildingBeginZ, width, depth):
     print("Started building road around town hall")
 
-    start_x = BuildingBeginX - 1  # -1 to make sure the road is not built on the building
-    start_z = BuildingBeginZ - 1  # -1 to make sure the road is not built on the building
+    start_x = BuildingBeginX - 2  # -1 to make sure the road is not built on the building
+    start_z = BuildingBeginZ - 2  # -1 to make sure the road is not built on the building
     end_x = start_x + width + 3  # +2 to make sure the road is not built on the building
     end_z = start_z + depth + 3  # +2 to make sure the road is not built on the building
     y = -1
@@ -119,6 +119,7 @@ def buildRoadAroundbuildings(editor, WORLDSLICE, grid, BuildingBeginX, BuildingB
     road_block = "minecraft:dirt_path"  # Replace with the desired road block type
     #set the middle block of the road to goal
     grid.set_grid(start_x,start_z,GRID_TYPES["GOAL"])
+    editor.placeBlock((build_area.begin.x+start_x,0,build_area.begin.z+start_z), Block("minecraft:gold_block"))
     # Build the top and bottom horizontal roads
     for x in range(start_x, end_x):
         pos=build_area.begin+[x,y,start_z]
@@ -261,9 +262,9 @@ def connect_goals(grid):
 def place_blocks(grid, paths):
     print("placing paths in grid")
     for path in paths:
+        x,y=path[0].x,path[0].y
         for action in path:
-            direction = ACTIONS[DIRECTIONS.index(action)]
-            x, y = direction
+            x,y=x+action[0],y+action[1]
 
             if not grid.is_type(x, y, GRID_TYPES["GOAL"]):
                 grid.set_grid(x, y, GRID_TYPES["ROAD"])
@@ -298,12 +299,12 @@ for item in placed_buildings:
     depth = item['depth']
     buildRoadAroundbuildings(editor, world_slice, grid, building_x, building_z,width,depth)
 
-# paths=connect_goals(grid)
-# place_blocks(grid, paths)
-# build_paths_from_grid(editor, grid)
-
-paths = connect_goals_bfs(grid)
+paths=connect_goals(grid)
 place_blocks(grid, paths)
 build_paths_from_grid(editor, grid)
+
+# paths = connect_goals_bfs(grid)
+# place_blocks(grid, paths)
+# build_paths_from_grid(editor, grid)
 
 
