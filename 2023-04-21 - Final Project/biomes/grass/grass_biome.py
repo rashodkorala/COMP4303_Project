@@ -16,12 +16,12 @@ editor, world_slice, build_rect, build_area, heightmap = set_build_area()
 
 # Placing walls
 print("Placing walls...")
-for point in build_rect.outline:
+""" for point in build_rect.outline:
     height = heightmap[tuple(point - build_rect.offset)]
     #building a wall
     for y in range(height, height+9):
         # Place the first layer of blocks
-        editor.placeBlock(addY(point, y), Block("cobblestone")) 
+        editor.placeBlock(addY(point, y), Block("cobblestone"))  """
       
 
 
@@ -240,21 +240,34 @@ def buildRoadAroundbuildings(editor, WORLDSLICE, grid, BuildingBeginX, BuildingB
 
     start_x = BuildingBeginX - 1  # -1 to make sure the road is not built on the building
     start_z = BuildingBeginZ - 1  # -1 to make sure the road is not built on the building
-    end_x = start_x + width + 2  # +2 to make sure the road is not built on the building
-    end_z = start_z + depth + 2  # +2 to make sure the road is not built on the building
-    y = build_area.begin.y
+    end_x = start_x + width + 3  # +2 to make sure the road is not built on the building
+    end_z = start_z + depth + 3  # +2 to make sure the road is not built on the building
+    y = -1
 
-    road_block = "minecraft:cobblestone"  # Replace with the desired road block type
+    road_block = "minecraft:dirt_path"  # Replace with the desired road block type
 
     # Build the top and bottom horizontal roads
     for x in range(start_x, end_x):
-        editor.placeBlock(position=WORLDSLICE.getAbsolute(x, y, start_z), block=road_block)
-        editor.placeBlock(position=WORLDSLICE.getAbsolute(x, y, end_z - 1), block=road_block)
+        print("x: " + str(x))
+        print("start_z: " + str(start_z))
+        print("end_z: " + str(end_z))
+        print("start_x: " + str(start_x))
+        print("end_x: " + str(end_x))
+        pos=build_area.begin+[x,y,start_z]
+        pos2=build_area.begin+[x,y,end_z-1]
+        editor.placeBlock(pos, Block(road_block))
+        editor.placeBlock(pos2, Block(road_block))
+        grid.set_grid(x,start_z,GRID_TYPES["ROAD"])
+        grid.set_grid(x,end_z-1,GRID_TYPES["ROAD"])
 
     # Build the left and right vertical roads
-    for z in range(start_z, end_z):
-        editor.placeBlock(position=WORLDSLICE.getAbsolute(start_x, y, z), block=road_block)
-        editor.placeBlock(position=WORLDSLICE.getAbsolute(end_x - 1, y, z), block=road_block)
+    for z in range(start_z+1, end_z-1):
+        pos=build_area.begin+[start_x,y,z]
+        pos2=build_area.begin+[end_x-1,y,z]
+        editor.placeBlock(pos, Block(road_block))
+        editor.placeBlock(pos2, Block(road_block))
+        grid.set_grid(start_x,z,GRID_TYPES["ROAD"])
+        grid.set_grid(end_x-1,z,GRID_TYPES["ROAD"])
 
     print("Finished building road around town hall")
 
@@ -271,7 +284,7 @@ placed_buildings,grid = place_or_get_buildings(draw_buildings, file_paths, build
 print(placed_buildings)
 # buildRoadAroundbuildings(editor, world_slice, grid,placed_buildings.,placed_buildings[0][1],placed_buildings[0][2],placed_buildings[0][3])
 for item in placed_buildings:
-    buildin_x = item['x']
+    building_x = item['x']
     building_z = item['z']
     width = item['width']
     depth = item['depth']
