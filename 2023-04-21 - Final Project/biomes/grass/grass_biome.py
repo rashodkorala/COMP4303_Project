@@ -193,6 +193,7 @@ def heuristic(node1, node2):
     return abs(node1.x - node2.x) + abs(node1.y - node2.y)
 
 def a_star_search(grid, start_node, end_node):
+    print("Started A* search")
     open_list = []
     closed_list = set()
 
@@ -232,6 +233,7 @@ def a_star_search(grid, start_node, end_node):
     return None
 
 def find_goals(grid):
+    print("finding goals")
     goal_nodes = []
     for x in range(grid.width()):
         for z in range(grid.height()):
@@ -240,6 +242,7 @@ def find_goals(grid):
     return goal_nodes
 
 def connect_goals(grid):
+    print("connecting goals")
     goal_nodes = find_goals(grid)
     paths = []
 
@@ -256,6 +259,7 @@ def connect_goals(grid):
     return paths
 
 def place_blocks(grid, paths):
+    print("placing paths in grid")
     for path in paths:
         for action in path:
             direction = ACTIONS[DIRECTIONS.index(action)]
@@ -266,11 +270,12 @@ def place_blocks(grid, paths):
 
 def build_paths_from_grid(editor, grid):
     road_block = "minecraft:dirt_path"
-    y = build_area.begin.y
-
+    y = -1
+    print("building paths")
     for x in range(grid.width()):
         for z in range(grid.height()):
             if grid.get_grid(x, z) == GRID_TYPES["ROAD"]:
+                print("building road at", x, z)
                 pos = build_area.begin + [x, y, z]
                 editor.placeBlock(pos, Block(road_block))
 
