@@ -260,14 +260,15 @@ def connect_goals(grid):
     return paths
 
 def place_blocks(grid, paths):
-    print("placing paths in grid")
     for path in paths:
-        x,y=path[0].x,path[0].y
+        current_node = path[0]
         for action in path:
-            x,y=x+action[0],y+action[1]
+            dx, dy = action
+            x, y = current_node.x + dx, current_node.y + dy
 
             if not grid.is_type(x, y, GRID_TYPES["GOAL"]):
                 grid.set_grid(x, y, GRID_TYPES["ROAD"])
+            current_node = Node(x, y, action, current_node)
 
 def build_paths_from_grid(editor, grid):
     road_block = "minecraft:dirt_path"
