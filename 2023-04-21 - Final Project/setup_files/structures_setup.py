@@ -8,6 +8,8 @@ from palette.palette import Palette
 from palette.palette_swap import palette_swap
 import os
 import random
+from gdpc import __url__, Editor, Block, geometry
+
 
 # returns the dimensions of the structure
 def get_building_dimensions(filepath):
@@ -62,7 +64,7 @@ def random_building_position(building_width, building_depth, build_area_size):
 
 
 # Place buildings in the build area, avoiding overlaps
-def place_buildings(file_paths, build_area_size, editor, max_attempts=100):
+def place_buildings(file_paths, build_area_size, build_area, editor, max_attempts=100):
     existing_buildings = []
 
     

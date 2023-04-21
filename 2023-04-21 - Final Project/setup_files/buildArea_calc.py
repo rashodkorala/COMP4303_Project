@@ -83,7 +83,7 @@ def get_world_slice (editor):
 
 
 
-def get_build_area(buildRect, worldSlice, buildArea):
+def get_heightmap(buildRect, worldSlice, buildArea):
 
     vec = addY(buildRect.center, 0)
     print(f"Block at {vec}: {worldSlice.getBlock(vec - buildArea.offset)}")
@@ -111,12 +111,21 @@ def get_build_area(buildRect, worldSlice, buildArea):
     heightmap = worldSlice.heightmaps["WORLD_SURFACE"]
     return heightmap
 
+
+def set_build_area():
+    # setting up build area and heightmap
+    print("Setting up build area and heightmap...")
+    editor = create_editor()
+    world_slice, build_rect, build_area = get_world_slice(editor)
+    heightmap = get_heightmap(build_rect, world_slice, build_area)
+    return editor, world_slice, build_rect, build_area, heightmap
+
 def set_cleared_area():
     # setting up build area and heightmap
     print("Setting up build area and heightmap...")
     editor = create_editor()
     world_slice, build_rect, build_area = get_world_slice(editor)
-    heightmap = get_build_area(build_rect, world_slice, build_area)
+    heightmap = get_heightmap(buildRect, worldSlice, buildArea)(build_rect, world_slice, build_area)
 
     # clearing the build area
     print("Flattening build area...")
@@ -126,6 +135,6 @@ def set_cleared_area():
     print("Resetting heightmap, buildRect, and editor...")
     editor = create_editor()
     world_slice, build_rect, build_area = get_world_slice(editor)
-    heightmap = get_build_area(build_rect, world_slice, build_area)
+    heightmap = get_heighmap(build_rect, world_slice, build_area)
 
     return editor, world_slice, build_rect, build_area, heightmap
