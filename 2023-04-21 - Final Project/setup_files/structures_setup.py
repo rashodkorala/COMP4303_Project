@@ -17,7 +17,27 @@ def get_building_dimensions(filepath):
     return structure.width, structure.height, structure.depth 
 
 
-#creates the structure from the nbt file
+""" #creates the structure from the nbt file
+def create_nbt_structure(filepath, editor, buildArea, x, z, skips_air=True):
+    structure = convert_nbt(filepath)
+    transformation = random_building_transformation()
+    transformed_palette = transformation.apply_to_palette(structure.palette)
+
+    #create nbt structure
+    for (pos, palette_index) in structure.blocks.items():
+        block = transformed_palette[palette_index]
+
+
+
+        build_pos = buildArea.begin + pos+[x,0,z]
+        x, y, z = transformation.apply_to_point(
+            point=pos,
+            structure=structure,
+            asset= asset
+        )
+        editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
+        #print(build_pos, block.to_gdpc_block()) """
+
 def create_nbt_structure(filepath, editor, buildArea, x, z, skips_air=True):
     structure = convert_nbt(filepath)
 
@@ -29,7 +49,6 @@ def create_nbt_structure(filepath, editor, buildArea, x, z, skips_air=True):
         build_pos = buildArea.begin + pos+[x,0,z]
         editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
         #print(build_pos, block.to_gdpc_block())
-
 
 def get_files(folder_path):
     file_paths = []
@@ -64,8 +83,15 @@ def random_building_position(building_width, building_depth, build_area_size):
 
 
 
+def random_building_transformation():
+    mirror_x = bool(random.getrandbits(1))
+    mirror_z = bool(random.getrandbits(1))
 
+    transformation = Transformation(
+        mirror=(mirror_x, False, mirror_z),
+    )
 
+    return transformation
 
 
 
@@ -79,11 +105,9 @@ def place_buildings(file_paths, build_area_size, build_area, editor, max_attempt
         is_townhall = "townhall" in os.path.basename(building)
 
         if not is_townhall:
-            print("Not townhall: ", building)
             # Generate random number of building placements
             building_number = random.randint(1, 3)
         else:
-            print("Townhall: ", building)
             building_number = 0
 
         # Try to find a non-overlapping position for the building

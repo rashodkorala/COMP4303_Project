@@ -22,7 +22,7 @@ for point in build_rect.outline:
     for y in range(height, height+9):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("cobblestone")) 
-     """
+      """
 
 
 
