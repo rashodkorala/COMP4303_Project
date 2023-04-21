@@ -206,34 +206,58 @@ def buildRoadForAstar(path,x,y,editor, WORLDSLICE, grid):
 
 
 
-def buildRoadAroundbuildings(editor, WORLDSLICE, grid,building_x,building_z,width,depth):
-    print("Started building road around town hall")
-    start_x = building_x+build_area.begin.x-1
-    start_z = building_z+build_area.begin.z-1
-    end_x = start_x + width+2
-    end_z = start_z + depth+2
-    for i in range(start_x, end_x):
-        for j in range(2):
-            block = editor.getBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(i,start_z+j)]-1,start_z+j))
-            road = "oak_planks" if block == "minecraft:water" else "dirt_path"
-            editor.placeBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,start_z+j)]-1,start_z+j), Block(road))
-            block = editor.getBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(i,end_z-j)]-1,end_z-j))
-            road = "oak_planks" if block == "minecraft:water" else "dirt_path"
-            editor.placeBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,end_z-j)]-1,end_z-j), Block(road))
-            grid.set_grid(i,start_z+j,GRID_TYPES["ROAD"])
-            grid.set_grid(i,end_z-j,GRID_TYPES["ROAD"])
+# def buildRoadAroundbuildings(editor, WORLDSLICE, grid,building_x,building_z,width,depth):
+#     print("Started building road around town hall")
+#     start_x = building_x+build_area.begin.x-1
+#     start_z = building_z+build_area.begin.z-1
+#     end_x = start_x + width+2
+#     end_z = start_z + depth+2
+#     for i in range(start_x, end_x):
+#         for j in range(2):
+#             block = editor.getBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(i,start_z+j)]-1,start_z+j))
+#             road = "oak_planks" if block == "minecraft:water" else "dirt_path"
+#             editor.placeBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,start_z+j)]-1,start_z+j), Block(road))
+#             block = editor.getBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(i,end_z-j)]-1,end_z-j))
+#             road = "oak_planks" if block == "minecraft:water" else "dirt_path"
+#             editor.placeBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,end_z-j)]-1,end_z-j), Block(road))
+#             grid.set_grid(i,start_z+j,GRID_TYPES["ROAD"])
+#             grid.set_grid(i,end_z-j,GRID_TYPES["ROAD"])
     
-    for i in range(start_z, end_z):
-        for j in range(2):
-            block = editor.getBlock((start_x+j,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(start_x+j,i)]-1,i))
-            road = "oak_planks" if block == "minecraft:water" else "dirt_path"
-            editor.placeBlock((start_x+j,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(start_x+j,i)]-1,i), Block(road))
-            block = editor.getBlock((end_x-j,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(end_x-j,i)]-1,i))
-            road = "oak_planks" if block == "minecraft:water" else "dirt_path"
-            editor.placeBlock((end_x-j,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(end_x-j,i)]-1,i), Block(road))
-            grid.set_grid(start_x+j,i,GRID_TYPES["ROAD"])
-            grid.set_grid(end_x-j,i,GRID_TYPES["ROAD"])
+#     for i in range(start_z, end_z):
+#         for j in range(2):
+#             block = editor.getBlock((start_x+j,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(start_x+j,i)]-1,i))
+#             road = "oak_planks" if block == "minecraft:water" else "dirt_path"
+#             editor.placeBlock((start_x+j,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(start_x+j,i)]-1,i), Block(road))
+#             block = editor.getBlock((end_x-j,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(end_x-j,i)]-1,i))
+#             road = "oak_planks" if block == "minecraft:water" else "dirt_path"
+#             editor.placeBlock((end_x-j,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(end_x-j,i)]-1,i), Block(road))
+#             grid.set_grid(start_x+j,i,GRID_TYPES["ROAD"])
+#             grid.set_grid(end_x-j,i,GRID_TYPES["ROAD"])
+#     print("Finished building road around town hall")
+
+def buildRoadAroundbuildings(editor, WORLDSLICE, grid, BuildingBeginX, BuildingBeginZ, width, depth):
+    print("Started building road around town hall")
+
+    start_x = BuildingBeginX - 1  # -1 to make sure the road is not built on the building
+    start_z = BuildingBeginZ - 1  # -1 to make sure the road is not built on the building
+    end_x = start_x + width + 2  # +2 to make sure the road is not built on the building
+    end_z = start_z + depth + 2  # +2 to make sure the road is not built on the building
+    y = build_area.begin.y
+
+    road_block = "minecraft:cobblestone"  # Replace with the desired road block type
+
+    # Build the top and bottom horizontal roads
+    for x in range(start_x, end_x):
+        editor.placeBlock(position=WORLDSLICE.getAbsolute(x, y, start_z), block=road_block)
+        editor.placeBlock(position=WORLDSLICE.getAbsolute(x, y, end_z - 1), block=road_block)
+
+    # Build the left and right vertical roads
+    for z in range(start_z, end_z):
+        editor.placeBlock(position=WORLDSLICE.getAbsolute(start_x, y, z), block=road_block)
+        editor.placeBlock(position=WORLDSLICE.getAbsolute(end_x - 1, y, z), block=road_block)
+
     print("Finished building road around town hall")
+
 
 
 folder_path = 'biomes\grass\grass_structures' # replace with the actual folder path
