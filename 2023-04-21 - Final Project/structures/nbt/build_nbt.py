@@ -40,4 +40,3 @@ def build_nbt(
         )
 
         editor.placeBlock(position=(x, y, z), block=block.to_gdpc_block()) 
-

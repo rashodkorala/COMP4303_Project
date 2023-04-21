@@ -48,7 +48,7 @@ def create_nbt_structure(filepath, editor, build_area, x, y,z, skips_air=True,gr
             continue
         build_pos = build_area.begin + pos + [x,y,z]
         if grid != None:
-            grid.set_grid(build_pos.x, build_pos.z, GRID_TYPES["OBSTACLE"])
+            grid.set_grid(x, z, GRID_TYPES["OBSTACLE"])
         editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
         #print(build_pos, block.to_gdpc_block())
 
@@ -97,7 +97,7 @@ def random_building_transformation():
 
 
 
-def place_or_get_buildings(draw, file_paths, build_area_size, build_area, editor, max_attempts=100,grid=None,GRID_TYPES=None):
+def place_or_get_buildings(draw, file_paths, build_area_size, build_area, editor, max_attempts=100, grid=None, GRID_TYPES=None):
     existing_buildings = []
     
     for building in file_paths:
@@ -117,6 +117,7 @@ def place_or_get_buildings(draw, file_paths, build_area_size, build_area, editor
             attempts = 0
             while attempts < max_attempts:
                 x, z = random_building_position(building_width, building_depth, build_area_size)
+                y = 0
                 new_building = {"x": x, "z": z, "width": building_width, "depth": building_depth}
 
                 if not is_overlapping(new_building, existing_buildings):

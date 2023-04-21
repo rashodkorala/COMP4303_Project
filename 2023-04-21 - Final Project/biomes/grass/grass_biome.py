@@ -206,31 +206,31 @@ def buildRoadForAstar(path,x,y,editor, WORLDSLICE, grid):
 
 
 
-def buildRoadAroundbuildings(editor, WORLDSLICE, grid,BuildingBeginX,BuildingBeginZ,width,depth):
+def buildRoadAroundbuildings(editor, WORLDSLICE, grid,building_x,building_z,width,depth):
     print("Started building road around town hall")
-    start_x = BuildingBeginX
-    start_z = BuildingBeginZ
-    end_x = BuildingBeginX + width
-    end_z = BuildingBeginZ + depth
+    start_x = building_x+build_area.begin.x-1
+    start_z = building_z+build_area.begin.z-1
+    end_x = start_x + width+2
+    end_z = start_z + depth+2
     for i in range(start_x, end_x):
         for j in range(2):
-            block = editor.getBlock(i,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(i,start_z+j)]-1,start_z+j)
-            road = "oak_planks" if block == "minecraft:water" else "grass_path"
-            editor.placeBlock(i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,start_z+j)]-1,start_z+j, road)
-            block = editor.getBlock(i,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(i,end_z-j)]-1,end_z-j)
-            road = "oak_planks" if block == "minecraft:water" else "grass_path"
-            editor.placeBlock(i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,end_z-j)]-1,end_z-j, road)
+            block = editor.getBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(i,start_z+j)]-1,start_z+j))
+            road = "oak_planks" if block == "minecraft:water" else "dirt_path"
+            editor.placeBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,start_z+j)]-1,start_z+j), Block(road))
+            block = editor.getBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(i,end_z-j)]-1,end_z-j))
+            road = "oak_planks" if block == "minecraft:water" else "dirt_path"
+            editor.placeBlock((i,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(i,end_z-j)]-1,end_z-j), Block(road))
             grid.set_grid(i,start_z+j,GRID_TYPES["ROAD"])
             grid.set_grid(i,end_z-j,GRID_TYPES["ROAD"])
     
     for i in range(start_z, end_z):
         for j in range(2):
-            block = editor.getBlock(start_x+j,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(start_x+j,i)]-1,i)
-            road = "oak_planks" if block == "minecraft:water" else "grass_path"
-            editor.placeBlock(start_x+j,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(start_x+j,i)]-1,i, road)
-            block = editor.getBlock(end_x-j,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(end_x-j,i)]-1,i)
-            road = "oak_planks" if block == "minecraft:water" else "grass_path"
-            editor.placeBlock(end_x-j,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(end_x-j,i)]-1,i, road)
+            block = editor.getBlock((start_x+j,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(start_x+j,i)]-1,i))
+            road = "oak_planks" if block == "minecraft:water" else "dirt_path"
+            editor.placeBlock((start_x+j,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(start_x+j,i)]-1,i), Block(road))
+            block = editor.getBlock((end_x-j,WORLDSLICE.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(end_x-j,i)]-1,i))
+            road = "oak_planks" if block == "minecraft:water" else "dirt_path"
+            editor.placeBlock((end_x-j,WORLDSLICE.heightmaps["MOTION_BLOCKING"][(end_x-j,i)]-1,i), Block(road))
             grid.set_grid(start_x+j,i,GRID_TYPES["ROAD"])
             grid.set_grid(end_x-j,i,GRID_TYPES["ROAD"])
     print("Finished building road around town hall")
@@ -243,12 +243,12 @@ draw_buildings = True
 
 # draw_roads = draw_roads(file_paths, build_area_size, build_area, editor)
 grid=Grid(build_area_size.x+1, build_area_size.z+1)
-placed_buildings,grid = place_or_get_buildings(draw_buildings, file_paths, build_area_size, build_area, editor,grid,GRID_TYPES=GRID_TYPES)
+placed_buildings,grid = place_or_get_buildings(draw_buildings, file_paths, build_area_size, build_area, editor,  100, grid,GRID_TYPES=GRID_TYPES)
 print(placed_buildings)
 # buildRoadAroundbuildings(editor, world_slice, grid,placed_buildings.,placed_buildings[0][1],placed_buildings[0][2],placed_buildings[0][3])
 for item in placed_buildings:
-    x = item['x']
-    z = item['z']
+    buildin_x = item['x']
+    building_z = item['z']
     width = item['width']
     depth = item['depth']
-    buildRoadAroundbuildings(editor, world_slice, grid,x,z,width,depth)
+    buildRoadAroundbuildings(editor, world_slice, grid, building_x, building_z,width,depth)
