@@ -38,7 +38,7 @@ def create_nbt_structure(filepath, editor, buildArea, x, z, skips_air=True):
         editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
         #print(build_pos, block.to_gdpc_block()) """
 
-def create_nbt_structure(filepath, editor, build_area, x, z, skips_air=True):
+def create_nbt_structure(filepath, editor, build_area, x, y,z, skips_air=True,grid=None,GRID_TYPES=None):
     structure = convert_nbt(filepath)
 
     #create nbt structure
@@ -46,7 +46,9 @@ def create_nbt_structure(filepath, editor, build_area, x, z, skips_air=True):
         block = structure.palette[palette_index]
         if block.to_gdpc_block().id == "minecraft:air" and skips_air:
             continue
-        build_pos = build_area.begin + pos + [x,0,z]
+        build_pos = build_area.begin + pos + [x,y,z]
+        if grid != None:
+            grid.set_grid(build_pos.x, build_pos.z, GRID_TYPES["OBSTACLE"])
         editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
         #print(build_pos, block.to_gdpc_block())
 
@@ -95,7 +97,7 @@ def random_building_transformation():
 
 
 
-def place_or_get_buildings(draw, file_paths, build_area_size, build_area, editor, max_attempts=100):
+def place_or_get_buildings(draw, file_paths, build_area_size, build_area, editor, max_attempts=100,grid=None,GRID_TYPES=None):
     existing_buildings = []
     
     for building in file_paths:
@@ -120,7 +122,7 @@ def place_or_get_buildings(draw, file_paths, build_area_size, build_area, editor
                 if not is_overlapping(new_building, existing_buildings):
                     existing_buildings.append(new_building)
                     if draw:
-                        create_nbt_structure(building, editor, build_area, x, z, skips_air=True)
+                        create_nbt_structure(building, editor, build_area, x,y, z, skips_air=True,grid=grid,GRID_TYPES=GRID_TYPES)
                     break
 
                 attempts += 1
@@ -128,6 +130,6 @@ def place_or_get_buildings(draw, file_paths, build_area_size, build_area, editor
             if attempts == max_attempts:
                 print(f"Failed to place {building} without overlapping after {max_attempts} attempts.")
 
-    return existing_buildings
+    return existing_buildings,grid
 
 
