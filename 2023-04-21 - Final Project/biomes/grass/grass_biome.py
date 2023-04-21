@@ -29,10 +29,14 @@ for point in build_rect.outline:
 #Create village
 sys.path[0] = sys.path[0].removesuffix('\\biomes\\grass')
 from structures_setup import *
+from road_system import *
 
 
 
 folder_path = 'biomes\grass\grass_structures' # replace with the actual folder path
 file_paths = get_files(folder_path)
 build_area_size = build_area.size
-placed_buildings = place_buildings(file_paths, build_area_size, build_area, editor)
+draw_buildings = True
+placed_buildings = place_or_get_buildings(draw_buildings, file_paths, build_area_size, build_area, editor)
+draw_roads = draw_roads(file_paths, build_area_size, build_area, editor)
+

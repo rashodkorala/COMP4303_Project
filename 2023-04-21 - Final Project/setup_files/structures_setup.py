@@ -38,7 +38,7 @@ def create_nbt_structure(filepath, editor, buildArea, x, z, skips_air=True):
         editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
         #print(build_pos, block.to_gdpc_block()) """
 
-def create_nbt_structure(filepath, editor, buildArea, x, z, skips_air=True):
+def create_nbt_structure(filepath, editor, build_area, x, z, skips_air=True):
     structure = convert_nbt(filepath)
 
     #create nbt structure
@@ -46,7 +46,7 @@ def create_nbt_structure(filepath, editor, buildArea, x, z, skips_air=True):
         block = structure.palette[palette_index]
         if block.to_gdpc_block().id == "minecraft:air" and skips_air:
             continue
-        build_pos = buildArea.begin + pos+[x,0,z]
+        build_pos = build_area.begin + pos + [x,0,z]
         editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
         #print(build_pos, block.to_gdpc_block())
 
@@ -95,10 +95,9 @@ def random_building_transformation():
 
 
 
-# Place buildings in the build area, avoiding overlaps
-def place_buildings(file_paths, build_area_size, build_area, editor, max_attempts=100):
+def place_or_get_buildings(draw, file_paths, build_area_size, build_area, editor, max_attempts=100):
     existing_buildings = []
-
+    
     for building in file_paths:
         building_width, building_height, building_depth = get_building_dimensions(building)
         
@@ -120,7 +119,8 @@ def place_buildings(file_paths, build_area_size, build_area, editor, max_attempt
 
                 if not is_overlapping(new_building, existing_buildings):
                     existing_buildings.append(new_building)
-                    create_nbt_structure(building, editor, build_area, x, z, skips_air=True)
+                    if draw:
+                        create_nbt_structure(building, editor, build_area, x, z, skips_air=True)
                     break
 
                 attempts += 1
@@ -129,3 +129,5 @@ def place_buildings(file_paths, build_area_size, build_area, editor, max_attempt
                 print(f"Failed to place {building} without overlapping after {max_attempts} attempts.")
 
     return existing_buildings
+
+
