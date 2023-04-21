@@ -38,5 +38,6 @@ file_paths = get_files(folder_path)
 build_area_size = build_area.size
 draw_buildings = True
 placed_buildings = place_or_get_buildings(draw_buildings, file_paths, build_area_size, build_area, editor)
-draw_roads = draw_roads(file_paths, build_area_size, build_area, editor)
+#draw_roads = draw_roads(file_paths, build_area_size, build_area, editor)
 
+print(placed_buildings)
