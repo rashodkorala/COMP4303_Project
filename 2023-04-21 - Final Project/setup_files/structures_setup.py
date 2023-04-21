@@ -58,7 +58,7 @@ def get_files(folder_path):
             if filename.endswith('.nbt'):
                 full_path = os.path.join(foldername, filename)
                 file_paths.append(full_path)
-                print("Current folder path plus name of file: ", full_path)
+               
 
     return file_paths
 
@@ -106,9 +106,10 @@ def place_buildings(file_paths, build_area_size, build_area, editor, max_attempt
 
         if not is_townhall:
             # Generate random number of building placements
-            building_number = random.randint(1, 3)
+            building_number = random.randint(2, 3)
         else:
-            building_number = 0
+            print("Townhall found: ", building)
+            building_number = 1
 
         # Try to find a non-overlapping position for the building
         for i in range(building_number):

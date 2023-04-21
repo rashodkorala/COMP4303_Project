@@ -14,7 +14,7 @@ editor, world_slice, build_rect, build_area, heightmap = set_build_area()
 
 
 
-""" # Placing walls
+# Placing walls
 print("Placing walls...")
 for point in build_rect.outline:
     height = heightmap[tuple(point - build_rect.offset)]
@@ -22,7 +22,7 @@ for point in build_rect.outline:
     for y in range(height, height+9):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("cobblestone")) 
-      """
+      
 
 
 
