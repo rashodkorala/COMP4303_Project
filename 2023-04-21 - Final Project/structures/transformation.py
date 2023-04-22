@@ -99,7 +99,7 @@ class Transformation:
         self,
         point : ivec3,
         structure : Structure,
-        asset : NBTAsset, 
+        
     ) -> ivec3:
         point = ivec3(*point) # copy point
 
@@ -114,9 +114,7 @@ class Transformation:
         if self.diagonal_mirror:
             point = ivec3(point.z, point.y, point.x)
 
-        # Shift according to origin
-        origin = self.apply_to_origin(asset.origin)
-        point -= origin
+       
 
         # translation
         point += self.offset

@@ -22,7 +22,7 @@ def get_building_dimensions(filepath):
     return structure.width, structure.height, structure.depth 
 
 
-""" #creates the structure from the nbt file
+ #creates the structure from the nbt file
 def create_nbt_structure(filepath, editor, buildArea, x, z, skips_air=True):
     structure = convert_nbt(filepath)
     transformation = random_building_transformation()
@@ -41,9 +41,9 @@ def create_nbt_structure(filepath, editor, buildArea, x, z, skips_air=True):
             asset= asset
         )
         editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
-        #print(build_pos, block.to_gdpc_block()) """
+        #print(build_pos, block.to_gdpc_block()) 
 
-def create_nbt_structure(filepath, editor, build_area, x, z, skips_air=True):
+""" def create_nbt_structure(filepath, editor, build_area, x, z, skips_air=True):
     structure = convert_nbt(filepath)
 
     #create nbt structure
@@ -53,7 +53,7 @@ def create_nbt_structure(filepath, editor, build_area, x, z, skips_air=True):
             continue
         build_pos = build_area.begin + pos + [x,0,z]
         editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
-        #print(build_pos, block.to_gdpc_block())
+        #print(build_pos, block.to_gdpc_block()) """
 
 def get_files(folder_path):
     file_paths = []
