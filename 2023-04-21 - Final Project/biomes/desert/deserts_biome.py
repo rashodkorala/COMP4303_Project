@@ -21,9 +21,12 @@ print("Placing walls...")
 for point in build_rect.outline:
     height = heightmap[tuple(point - build_rect.offset)]
     #building a wall
-    
-        # Place the first layer of blocks
-    editor.placeBlock(addY(point, y), Block("spruce_log")) 
+    for y in range(height, height + 5):
+        editor.placeBlock(point + np.array([0, y, 0]), Block("sandstone"))
+        editor.placeBlock(point + np.array([0, y, 1]), Block("red_sandstone"))
+        editor.placeBlock(point + np.array([1, y, 0]), Block("sandstone"))
+        editor.placeBlock(point + np.array([1, y, 1]), Block("red_sandstone"))
+        editor.placeBlock(point + np.array([0, y, -1]), Block("torch"))
         
         
 
