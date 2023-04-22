@@ -10,8 +10,8 @@ editor, world_slice, build_rect, build_area, heightmap = set_build_area()
 
 #Setting up editor
 #Setting up build area and heightmap
-#Flattening the build area
-#editor, world_slice, build_rect, build_area, heightmap = set_cleared_area()
+#clearing the build area
+editor, world_slice, build_rect, build_area, heightmap = set_build_area()
 
 
 
