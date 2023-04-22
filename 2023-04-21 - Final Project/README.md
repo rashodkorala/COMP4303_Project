@@ -1,6 +1,6 @@
 # Minecraft Project Feature Checklist
 
-- [x] Specialty chosen: \***\*\_\_\*\***
+- [x] Specialty chosen:Theme or style of decoration that heavily plays into narrative
 - [x] Adaptivity
   - [x] Settlement avoids 'steamroller' approach
   - [x] At least 2 structures adapted to terrain features
@@ -15,7 +15,7 @@
   - [x] Buildings randomized in size / shape
   - [x] Building interiors accessible and decorated
   - [ ] Building interiors randomized
-  - [ ] Paths between major builings / attractions
+  - [x] Paths between major builings / attractions
   - [ ] Paths generated via M.S.T. or other algorithm
   - [ ] At least one "moving" feature (minecart, elevator, lift, etc)
   - [ ] Some CA / Noise / other generative algorithm used in some form
