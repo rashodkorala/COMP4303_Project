@@ -8,7 +8,7 @@
 ## Project Videos:
 
 * Project Demo: https://youtu.be/PuGqi19sx1Y
-* Project Trailer: YouTube URL
+* Project Trailer: https://youtu.be/inD8aGprgAg
 * Project  Presentation: YouTube URL
 
 
