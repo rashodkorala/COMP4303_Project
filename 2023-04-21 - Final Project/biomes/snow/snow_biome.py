@@ -21,10 +21,13 @@ for point in build_rect.outline:
     height = heightmap[tuple(point - build_rect.offset)]
     #building a wall
 
-    for y in range(height, height+9):
+    for y in range(height, height):
         # Place the first layer of blocks
-        editor.placeBlock(addY(point, y), Block("cobblestone")) 
-     
+        editor.placeBlock(addY(point, y), Block("ice"))
+        editor.placeBlock(addY(point, y+2), Block("blue_ice"))
+        editor.placeBlock(addY(point, y+3), Block("snow_block"))
+        editor.placeBlock(addY(point, y+4), Block("snow_block"))
+        editor.placeBlock(addY(point, y+5), Block("torch"))
  
 
 
