@@ -24,8 +24,6 @@ for point in build_rect.outline:
         editor.placeBlock(addY(point, y), Block("cobblestone")) 
       
 
-
-
 #Create village
 sys.path[0] = sys.path[0].removesuffix('\\biomes\\grass')
 from structures_setup import *
@@ -144,31 +142,74 @@ def buildRoadAroundbuildings(editor, WORLDSLICE, grid, BuildingBeginX, BuildingB
 
 from collections import deque
 
-def bfs_search(grid, start_node, end_node):
+# def bfs_search(grid, start_node, end_node):
+#     queue = deque([start_node])
+#     visited = set([(start_node.x, start_node.y)])
+
+#     while queue:
+#         current_node = queue.popleft()
+
+#         if current_node.x == end_node.x and current_node.y == end_node.y:
+#             path = []
+#             while current_node.parent:
+#                 path.append(current_node.action)
+#                 current_node = current_node.parent
+#             return path[::-1]
+
+#         for action, direction in enumerate(ACTIONS):
+#             new_x, new_y = current_node.x + direction[0], current_node.y + direction[1]
+
+#             if (new_x, new_y) in visited or grid.is_oob(new_x, new_y) or grid.is_type(new_x, new_y, GRID_TYPES["OBSTACLE"]):
+#                 continue
+
+#             new_node = Node(new_x, new_y, DIRECTIONS[action], current_node)
+#             queue.append(new_node)
+#             visited.add((new_x, new_y))
+
+#     return None
+
+from collections import deque
+
+def bfs(grid, start_pos, goal):
+    def reconstruct_path(came_from, current_node):
+        path = []
+        while current_node is not None:
+            path.append((current_node.x, current_node.y))
+            current_node = came_from[current_node]
+        return path[::-1]
+
+    start_node = Node(start_pos[0], start_pos[1], None, None)
+    goal_node = Node(goal[0], goal[1], None, None)
+
+    visited = [[False for _ in range(grid.height())] for _ in range(grid.width())]
+    visited[start_node.x][start_node.y] = True
+
+    came_from = dict()
     queue = deque([start_node])
-    visited = set([(start_node.x, start_node.y)])
 
     while queue:
         current_node = queue.popleft()
 
-        if current_node.x == end_node.x and current_node.y == end_node.y:
-            path = []
-            while current_node.parent:
-                path.append(current_node.action)
-                current_node = current_node.parent
-            return path[::-1]
+        if current_node.x == goal_node.x and current_node.y == goal_node.y:
+            print("Found path")
+            return reconstruct_path(came_from, current_node)
 
-        for action, direction in enumerate(ACTIONS):
-            new_x, new_y = current_node.x + direction[0], current_node.y + direction[1]
+        for action in ACTIONS:
+            next_x, next_y = current_node.x + action[0], current_node.y + action[1]
 
-            if (new_x, new_y) in visited or grid.is_oob(new_x, new_y) or grid.is_type(new_x, new_y, GRID_TYPES["OBSTACLE"]):
+            if (grid.is_oob(next_x, next_y) or 
+                visited[next_x][next_y] or 
+                grid.is_type(next_x, next_y, GRID_TYPES["OBSTACLE"])):
                 continue
 
-            new_node = Node(new_x, new_y, DIRECTIONS[action], current_node)
-            queue.append(new_node)
-            visited.add((new_x, new_y))
+            next_node = Node(next_x, next_y, action, current_node)
+            visited[next_x][next_y] = True
+            came_from[next_node] = current_node
+            queue.append(next_node)
 
-    return None
+    print("Failed to find path")
+    return None  # No path found
+
 
 def connect_goals_bfs(grid):
     goal_nodes = find_goals(grid)
@@ -177,7 +218,7 @@ def connect_goals_bfs(grid):
     for i in range(len(goal_nodes) - 1):
         start_node = goal_nodes[i]
         end_node = goal_nodes[i + 1]
-        path = bfs_search(grid, start_node, end_node)
+        path = bfs(grid, start_node, end_node)
 
         if path is not None:
             paths.append(path)
@@ -300,12 +341,12 @@ for item in placed_buildings:
     depth = item['depth']
     buildRoadAroundbuildings(editor, world_slice, grid, building_x, building_z,width,depth)
 
-paths=connect_goals(grid)
-place_blocks(grid, paths)
-build_paths_from_grid(editor, grid)
-
-# paths = connect_goals_bfs(grid)
+# paths=connect_goals(grid)
 # place_blocks(grid, paths)
 # build_paths_from_grid(editor, grid)
+
+paths = connect_goals_bfs(grid)
+place_blocks(grid, paths)
+build_paths_from_grid(editor, grid)
 
 
