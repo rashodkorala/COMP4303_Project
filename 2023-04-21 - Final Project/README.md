@@ -5,7 +5,7 @@
   - [x] Settlement avoids 'steamroller' approach
   - [x] At least 2 structures adapted to terrain features
     - [x] Near or on steep cliff
-    - [x] Near or on water or ice
+    - [ ] Near or on water or ice
     - [x] In or around trees
     - [x] Flat terrain
   - [x] One specific feature for at least 4 biomes
