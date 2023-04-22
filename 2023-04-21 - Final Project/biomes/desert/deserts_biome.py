@@ -21,12 +21,12 @@ print("Placing walls...")
 for point in build_rect.outline:
     height = heightmap[tuple(point - build_rect.offset)]
     #building a wall
-    for y in range(height, height + 5):
-        editor.placeBlock(point + np.array([0, y, 0]), Block("sandstone"))
-        editor.placeBlock(point + np.array([0, y, 1]), Block("red_sandstone"))
-        editor.placeBlock(point + np.array([1, y, 0]), Block("sandstone"))
-        editor.placeBlock(point + np.array([1, y, 1]), Block("red_sandstone"))
-        editor.placeBlock(point + np.array([0, y, -1]), Block("torch"))
+    for y in range(height, height ):
+        editor.placeBlock(addY(point, y), Block("red_sandstone"))
+        editor.placeBlock(addY(point, y+1), Block("sandstone"))
+        editor.placeBlock(addY(point, y+2), Block("sandstone"))
+        editor.placeBlock(addY(point, y+3), Block("red_sandstone"))
+        editor.placeBlock(addY(point, y+4), Block("torch"))
         
         
 
