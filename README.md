@@ -13,5 +13,5 @@
 
 ## Project Setup / Installation:
 
-* Your project setup and installation instructions go here
+* clone the repo and run main.py
 * Feel free to include screenshots if you want
