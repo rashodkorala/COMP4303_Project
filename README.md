@@ -11,7 +11,3 @@
 * Project Trailer: YouTube URL
 * Project  Presentation: YouTube URL
 
-## Project Setup / Installation:
-
-* clone the repo and run main.py
-* Feel free to include screenshots if you want
