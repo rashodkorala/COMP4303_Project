@@ -48,9 +48,17 @@ except BuildAreaNotSetError:
 area_biome = editor.getBiome(buildArea.begin)
 if area_biome == "minecraft:desert":
     
-    print("desert biome detected!")
+    #run desert code
+    print("Desert biome detected!")
+elif area_biome == "minecraft:plains":
+    #run plains code
+    print("Plains biome detected!")
 
+elif area_biome == "minecraft:jungle":
+    #run jungle code
+    print("Jungle biome detected!")
 else:
+    #run default code
     print("No plains biome detected!")
    
 

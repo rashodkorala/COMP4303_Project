@@ -104,42 +104,6 @@ class Grid:
                     goals.append((x, z))
         return goals
 
-""" def bfs_search(grid: Grid, start: Tuple[int, int]) -> List[Tuple[int, int]]:
-    visited = set()
-    queue = deque([(start, 0, None)])  # Add parent to the queue element
-    parents = {}  # Keep track of parents for each visited cell
-    goals_distances = []
-
-    while queue:
-        (x, z), distance, parent = queue.popleft()
-        if grid.is_oob(x, z) or (x, z) in visited:
-            continue
-
-        visited.add((x, z))
-        parents[(x, z)] = parent
-
-        if grid.is_type(x, z, 1):  # Obstacle
-            continue
-
-        if grid.is_type(x, z, 3):  # Goal
-            goals_distances.append(((x, z), distance))
-
-            # Reconstruct the path from start to goal
-            path = [(x, z)]
-            while parents[path[-1]] is not None:
-                path.append(parents[path[-1]])
-
-            # Set the path in the grid as roads
-            for px, pz in path[:-1]:  # Exclude the start position
-                grid.set_grid(px, pz, 2)
-
-        for dx, dz in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
-            nx, nz = x + dx, z + dz
-            if (nx, nz) not in visited:
-                queue.append(((nx, nz), distance + 1, (x, z)))  # Add current cell as parent
-
-    return goals_distances """
-
 def build_paths_from_grid(editor, grid):
     road_block = "minecraft:dirt_path"
     y = -1
@@ -201,42 +165,6 @@ class Grid:
                 if self.is_type(x, z, 3):
                     goals.append((x, z))
         return goals
-
-""" def bfs_search(grid: Grid, start: Tuple[int, int]) -> List[Tuple[int, int]]:
-    visited = set()
-    queue = deque([(start, 0, None)])  # Add parent to the queue element
-    parents = {}  # Keep track of parents for each visited cell
-    goals_distances = []
-
-    while queue:
-        (x, z), distance, parent = queue.popleft()
-        if grid.is_oob(x, z) or (x, z) in visited:
-            continue
-
-        visited.add((x, z))
-        parents[(x, z)] = parent
-
-        if grid.is_type(x, z, 1):  # Obstacle
-            continue
-
-        if grid.is_type(x, z, 3):  # Goal
-            goals_distances.append(((x, z), distance))
-
-            # Reconstruct the path from start to goal
-            path = [(x, z)]
-            while parents[path[-1]] is not None:
-                path.append(parents[path[-1]])
-
-            # Set the path in the grid as roads
-            for px, pz in path[:-1]:  # Exclude the start position
-                grid.set_grid(px, pz, 2)
-
-        for dx, dz in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
-            nx, nz = x + dx, z + dz
-            if (nx, nz) not in visited:
-                queue.append(((nx, nz), distance + 1, (x, z)))  # Add current cell as parent
-
-    return goals_distances """
 
 def build_paths_from_grid(editor, grid):
     road_block = "minecraft:soul_sand"
