@@ -1,7 +1,9 @@
 import sys
-sys.path.append("setup_files")
+sys.path.append("/2023-04-21 - Final Project/setup_files")
+print(sys.path.append)
 
 from buildArea_calc import *
+
 
 
 editor, world_slice, build_rect, build_area, heightmap = set_build_area()
@@ -53,6 +55,104 @@ def buildRoadAroundbuildings(editor, WORLDSLICE, grid, BuildingBeginX, BuildingB
         grid.set_grid(x,start_z,2)
         grid.set_grid(x,end_z-1,2)
         
+
+    # Build the left and right vertical roads
+    for z in range(start_z+1, end_z-1):
+        pos=build_area.begin+[start_x,y,z]
+        pos2=build_area.begin+[end_x-1,y,z]
+        # editor.placeBlock(pos, Block(road_block))
+        # editor.placeBlock(pos2, Block(road_block))
+        grid.set_grid(start_x,z,2)
+        grid.set_grid(end_x-1,z,2)
+
+    grid.set_grid(start_x,start_z,3)
+    editor.placeBlock((build_area.begin.x+start_x,build_area.begin.y,build_area.begin.z+start_z), Block("minecraft:gold_block"))
+    print("Finished building road around town hall")
+
+
+from collections import deque
+
+from collections import deque
+from typing import List, Tuple
+
+class Grid:
+    def __init__(self, x: int, z: int):
+        self.x = x
+        self.z = z
+        self._grid = [[0] * z for _ in range(x)]
+
+    def set_grid(self, x: int, z: int, type: int):
+        self._grid[x][z] = type
+
+    def get_grid(self, x: int, z: int) -> int:
+        return self._grid[x][z]
+
+    def width(self) -> int:
+        return self.x
+
+    def height(self) -> int:
+        return self.z
+
+    def is_oob(self, x: int, z: int) -> bool:
+        return x < 0 or z < 0 or x >= self.width() or z >= self.height()
+
+    def is_type(self, x: int, z: int, type: int) -> bool:
+        return self._grid[x][z] == type
+
+    def get_goals(self) -> List[Tuple[int, int]]:
+        goals = []
+        for x in range(self.width()):
+            for z in range(self.height()):
+                if self.is_type(x, z, 3):
+                    goals.append((x, z))
+        return goals
+
+""" def bfs_search(grid: Grid, start: Tuple[int, int]) -> List[Tuple[int, int]]:
+    visited = set()
+    queue = deque([(start, 0, None)])  # Add parent to the queue element
+    parents = {}  # Keep track of parents for each visited cell
+    goals_distances = []
+
+    while queue:
+        (x, z), distance, parent = queue.popleft()
+        if grid.is_oob(x, z) or (x, z) in visited:
+            continue
+
+        visited.add((x, z))
+        parents[(x, z)] = parent
+
+        if grid.is_type(x, z, 1):  # Obstacle
+            continue
+
+        if grid.is_type(x, z, 3):  # Goal
+            goals_distances.append(((x, z), distance))
+
+            # Reconstruct the path from start to goal
+            path = [(x, z)]
+            while parents[path[-1]] is not None:
+                path.append(parents[path[-1]])
+
+            # Set the path in the grid as roads
+            for px, pz in path[:-1]:  # Exclude the start position
+                grid.set_grid(px, pz, 2)
+
+        for dx, dz in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+            nx, nz = x + dx, z + dz
+            if (nx, nz) not in visited:
+                queue.append(((nx, nz), distance + 1, (x, z)))  # Add current cell as parent
+
+    return goals_distances """
+
+def build_paths_from_grid(editor, grid):
+    road_block = "minecraft:dirt_path"
+    y = -1
+    print("building paths")
+    for x in range(grid.width()):
+        for z in range(grid.height()):
+            if grid.get_grid(x, z) == 2:
+                print("building road at", x, z)
+                pos = build_area.begin + [x, y, z]
+                editor.placeBlock(pos, Block(road_block))
 
     # Build the left and right vertical roads
     for z in range(start_z+1, end_z-1):

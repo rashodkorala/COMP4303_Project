@@ -10,11 +10,6 @@ import os
 import random
 from gdpc import __url__, Editor, Block, geometry
 
-from collections import deque
-
-from collections import deque
-from typing import List, Tuple
-
 
 # returns the dimensions of the structure
 def get_building_dimensions(filepath):
@@ -30,7 +25,7 @@ def create_nbt_structure(filepath, editor, build_area, x, y,z,grid=None):
         build_pos = build_area.begin + pos + [x,y,z]
         grid.set_grid(x, z, 1)
         editor.placeBlock(position=build_pos, block=block.to_gdpc_block())
-        #print(build_pos, block.to_gdpc_block())
+        #print(build_pos, block.to_gdpc_block()) """
 
 def get_files(folder_path):
     file_paths = []
