@@ -1,5 +1,6 @@
 import sys
-sys.path.append("setup_files")
+sys.path.append("/2023-04-21 - Final Project/setup_files")
+print(sys.path.append)
 
 from buildArea_calc import *
 
