@@ -15,7 +15,7 @@ editor, world_slice, build_rect, build_area, heightmap = set_build_area()
 
 
 
-# Placing walls
+""" # Placing walls
 print("Placing walls...")
 for point in build_rect.outline:
     height = heightmap[tuple(point - build_rect.offset)]
@@ -23,13 +23,13 @@ for point in build_rect.outline:
 
     for y in range(height, height+9):
         # Place the first layer of blocks
-        editor.placeBlock(addY(point, y), Block("cobblestone")) 
+        editor.placeBlock(addY(point, y), Block("cobblestone"))  """
      
  
 
 
 #Create village
-sys.path[0] = sys.path[0].removesuffix('\\biomes\\grass')
+sys.path[0] = sys.path[0].removesuffix('\\biomes\\snow')
 from structures_setup import *
 from road_system import *
 
@@ -254,14 +254,14 @@ def build_paths_from_grid(editor, grid):
                 pos = build_area.begin + [x, y, z]
                 editor.placeBlock(pos, Block(road_block))
 
-folder_path = 'biomes\grass\grass_structures' # replace with the actual folder path
+folder_path = 'biomes\snow\snow_structures' # replace with the actual folder path
 file_paths = get_files(folder_path)
 build_area_size = build_area.size
 draw_buildings = True
 
 # draw_roads = draw_roads(file_paths, build_area_size, build_area, editor)
 grid=Grid(build_area_size.x, build_area_size.z)
-placed_buildings= place_or_get_buildings(draw_buildings, file_paths, build_area_size, build_area, editor,  100, grid,bunker_height=-7 )
+placed_buildings= place_or_get_buildings(draw_buildings, file_paths, build_area_size, build_area, editor,  100, grid,bunker_height=-4 )
 print(placed_buildings)
 # buildRoadAroundbuildings(editor, world_slice, grid,placed_buildings.,placed_buildings[0][1],placed_buildings[0][2],placed_buildings[0][3])
 for item in placed_buildings:

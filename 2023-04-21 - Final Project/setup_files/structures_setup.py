@@ -55,8 +55,8 @@ def is_overlapping(new_building, existing_buildings, gap=5):
 
 # Generate random building position within the build area
 def random_building_position(building_width, building_depth, build_area_size):
-    x = random.randint(0, build_area_size.x - building_width)
-    z = random.randint(0, build_area_size.z - building_depth)
+    x = random.randint(0, build_area_size.x- 4 - building_width)
+    z = random.randint(0, build_area_size.z- 4 - building_depth)
     return x, z
 
 
