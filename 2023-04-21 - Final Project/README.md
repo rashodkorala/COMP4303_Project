@@ -2,7 +2,7 @@
 
 - [x] Specialty chosen:Theme or style of decoration that heavily plays into narrative
 - [x] Adaptivity
-  - [x] Settlement avoids 'steamroller' approach
+  - [ ] Settlement avoids 'steamroller' approach
   - [x] At least 2 structures adapted to terrain features
     - [x] Near or on steep cliff
     - [ ] Near or on water or ice
