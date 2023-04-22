@@ -267,6 +267,7 @@ draw_buildings = True
 grid=Grid(build_area_size.x, build_area_size.z)
 placed_buildings= place_or_get_buildings(draw_buildings, file_paths, build_area_size, build_area, editor,  100, grid,bunker_height=-7 )
 print(placed_buildings)
+
 # buildRoadAroundbuildings(editor, world_slice, grid,placed_buildings.,placed_buildings[0][1],placed_buildings[0][2],placed_buildings[0][3])
 for item in placed_buildings:
     building_x = item['x']
