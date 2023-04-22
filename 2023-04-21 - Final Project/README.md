@@ -28,3 +28,7 @@
   - [x] Building types constructed with different materials
   - [x] Decorations places where appropriate
   - [x] At least 1 outdoor feature (farm, etc)
+
+
+* Biomes folder contain the all the files which creates structures for each biome
+*
