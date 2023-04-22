@@ -4,7 +4,7 @@
 - [x] Adaptivity
   - [x] Settlement avoids 'steamroller' approach
   - [x] At least 2 structures adapted to terrain features
-    - [ ] Near or on steep cliff
+    - [x] Near or on steep cliff
     - [ ] Near or on water or ice
     - [x] In or around trees
     - [x] Flat terrain
