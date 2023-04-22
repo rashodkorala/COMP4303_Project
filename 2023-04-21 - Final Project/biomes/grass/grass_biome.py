@@ -2,8 +2,7 @@ import sys
 sys.path.append("setup_files")
 
 from buildArea_calc import *
-from structures_setup import *
-from road_system import *
+
 
 
 editor, world_slice, build_rect, build_area, heightmap = set_build_area()
@@ -16,13 +15,13 @@ editor, world_slice, build_rect, build_area, heightmap = set_build_area()
 
 # Create village
 sys.path[0] = sys.path[0].removesuffix('\\biomes\\grass')
-
-# Placing walls
+from structures_setup import *
+""" # Placing walls
 print("Placing walls...")
 for point in build_rect.outline:
     height = heightmap[tuple(point - build_rect.offset)]
     #building a wall
-    create_nbt_structure()
+    create_nbt_structure() """
     
         
 
@@ -34,11 +33,11 @@ for point in build_rect.outline:
 
 
 
-folder_path = 'biomes\desert\desert_structures' # replace with the actual folder path
+folder_path = 'biomes\grass\grass_structures' # replace with the actual folder path
 file_paths = get_files(folder_path)
 build_area_size = build_area.size
 draw_buildings = True
 placed_buildings = place_or_get_buildings(draw_buildings, file_paths, build_area_size, build_area, editor)
 #draw_roads = draw_roads(file_paths, build_area_size, build_area, editor)
 
-#print(placed_buildings)
+print(placed_buildings)
