@@ -1,34 +1,30 @@
 # Minecraft Project Feature Checklist
 
-- [x] Specialty chosen:Theme or style of decoration that heavily plays into narrative
-- [x] Adaptivity
+- [ ] Specialty chosen:Theme or style of decoration that heavily plays into narrative
+- [ ] Adaptivity
   - [ ] Settlement avoids 'steamroller' approach
-  - [x] At least 2 structures adapted to terrain features
-    - [x] Near or on steep cliff
+  - [ ] At least 2 structures adapted to terrain features
+    - [ ] Near or on steep cliff
     - [ ] Near or on water or ice
-    - [x] In or around trees
-    - [x] Flat terrain
-  - [x] One specific feature for at least 4 biomes
+    - [ ] In or around trees
+    - [ ] Flat terrain
+  - [ ] One specific feature for at least 4 biomes
 - [ ] Functionality
-  - [x] Building count and placement randomized, does not create the exact same city twice
-  - [x] Settlement contains 4 'types' of building
-  - [x] Buildings randomized in size / shape
-  - [x] Building interiors accessible and decorated
+  - [ ] Building count and placement randomized, does not create the exact same city twice
+  - [ ] Settlement contains 4 'types' of building
+  - [ ] Buildings randomized in size / shape
+  - [ ] Building interiors accessible and decorated
   - [ ] Building interiors randomized
-  - [x] Paths between major builings / attractions
+  - [ ] Paths between major builings / attractions
   - [ ] Paths generated via M.S.T. or other algorithm
   - [ ] At least one "moving" feature (minecart, elevator, lift, etc)
   - [ ] Some CA / Noise / other generative algorithm used in some form
-  - [x] Defensive structure(s) created
-- [x] Narrative
-  - [x] Include the 'story' of your village
-  - [x] Construction must make sense within that narrative
-- [x] Aesthetics
-  - [x] Color of blocks chosen based on biome
-  - [x] Building types constructed with different materials
-  - [x] Decorations places where appropriate
-  - [x] At least 1 outdoor feature (farm, etc)
-
-
-* Biomes folder contain the all the files which creates structures for each biome
-*
+  - [ ] Defensive structure(s) created
+- [ ] Narrative
+  - [ ] Include the 'story' of your village
+  - [ ] Construction must make sense within that narrative
+- [ ] Aesthetics
+  - [ ] Color of blocks chosen based on biome
+  - [ ] Building types constructed with different materials
+  - [ ] Decorations places where appropriate
+  - [ ] At least 1 outdoor feature (farm, etc)
