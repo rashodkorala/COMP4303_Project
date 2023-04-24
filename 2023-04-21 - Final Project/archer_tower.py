@@ -89,3 +89,50 @@ print(f"Block at {vec}: {worldSlice.getBlockGlobal(vec)}")
 print(f"Available heightmaps: {worldSlice.heightmaps.keys()}")
 
 heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
+
+
+def create_archer_tower(editor, starting_pos, wall_block_type, floor_block_type):
+    base_length = 12
+    base_width = 12
+    tower_length = 8
+    tower_width = 8
+    wall_height = 10
+    battlement_height = 2
+    num_floors = 3
+
+    # Create base
+    for x in range(base_length):
+        for z in range(base_width):
+            position = starting_pos + np.array([x, 0, z])
+            editor.placeBlock(position, Block(wall_block_type))
+
+    # Create tower walls
+    for floor in range(num_floors):
+        for x in range(tower_length):
+            for y in range(wall_height):
+                for z in range(tower_width):
+                    if x == 0 or x == tower_length - 1 or z == 0 or z == tower_width - 1:
+                        position = starting_pos + np.array([x + 2, 1 + floor * (wall_height + 1) + y, z + 2])
+                        editor.placeBlock(position, Block(wall_block_type))
+
+        # Create tower floors
+        for x in range(tower_length):
+            for z in range(tower_width):
+                position = starting_pos + np.array([x + 2, 1 + floor * (wall_height + 1), z + 2])
+                editor.placeBlock(position, Block(floor_block_type))
+
+    # Create battlements
+    for x in range(tower_length):
+        for y in range(battlement_height):
+            for z in range(tower_width):
+                if (x == 0 or x == tower_length - 1 or z == 0 or z == tower_width - 1) and (y == 0 or (x + y) % 2 == 0):
+                    position = starting_pos + np.array([x + 2, 1 + num_floors * (wall_height + 1) + y, z + 2])
+                    editor.placeBlock(position, Block(wall_block_type))
+
+# Set the starting position and block types
+starting_pos = np.array([0, 0, 0])
+wall_block_type = 'stone_bricks'
+floor_block_type = 'stone_bricks'
+
+# Call the function to create the archer tower in Minecraft
+create_archer_tower(editor, starting_pos, wall_block_type, floor_block_type)
