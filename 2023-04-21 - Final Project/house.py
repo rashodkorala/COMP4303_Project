@@ -5,6 +5,7 @@ Load and use a world slice.
 """
 
 import sys
+import random
 
 import numpy as np
 
@@ -96,6 +97,13 @@ print(f"Heightmap shape: {heightmap.shape}")
 def add(vec1, vec2):
     return tuple(a + b for a, b in zip(vec1, vec2))
 
+floor_blocks = ["minecraft:red_nether_bricks", "minecraft:deepslate_bricks", "minecraft:stone_bricks", "minecraft:bricks"]
+wall_blocks = ["minecraft:stone_bricks", "minecraft:sandstone", "minecraft:infested_chiseled_stone_bricks", "minecraft:chiseled_red_sandstone"]
+roof_blocks = ["minecraft:crimson_planks", "minecraft:dark_oak_planks", "minecraft:birch_planks", "minecraft:acacia_planks"]
+block_selection = random.randint(0,3)
+
+
+
 def make_roof(editor, length, width, height, starting_pos, block_type, line_height, size_reduction):
     for y in range(0, height * line_height, line_height):
         for x in range(-length // 2 + y // line_height * size_reduction + 2, length // 2 - y // line_height * size_reduction):
@@ -129,18 +137,20 @@ def build_tiny_house(center, editor, base_level=0):
     #build the floor
     for x in range(-house_width // 2, house_width // 2 + 1):
         for z in range(-house_width // 2, house_width // 2 + 1):
-            editor.placeBlock(add(center, (x, base_level-1, z)), Block("minecraft:polished_andesite"))
+
+            #replaces the default floor with preferred block    
+            editor.placeBlock(add(center, (x, base_level-1, z)), Block(floor_blocks[block_selection]))
 
     # Build the walls
     for x in range(-house_width // 2, house_width // 2 + 1):
         for y in range(base_level, base_level + house_height):
             for z in range(-house_width // 2, house_width // 2 + 1):
                 if x == -house_width // 2 or x == house_width // 2 or z == -house_width // 2 or z == house_width // 2:
-                    editor.placeBlock(add(center, (x, y, z)), Block("minecraft:spruce_planks"))
+                    editor.placeBlock(add(center, (x, y, z)), Block(wall_blocks[block_selection]))
                 else:
                     editor.placeBlock(add(center, (x, y, z)), Block("minecraft:air"))
 
-    make_roof(editor, house_width+5, house_width+5, house_height+1, starting_pos,"minecraft:stone", 1, 1)
+    make_roof(editor, house_width+5, house_width+5, house_height+1, starting_pos,roof_blocks[block_selection], 1, 1)
 
     # Build the door
     # editor.placeBlock(add(center, (0, base_level, -house_width // 2)), Block("iron door"))
