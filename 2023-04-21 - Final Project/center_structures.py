@@ -100,9 +100,9 @@ print(f"Heightmap shape: {heightmap.shape}")
 
 
 
+#NEED TO CLEAR THE AREA FIRST BEFORE BUILDING
 
 def desert_center():
-
     
     for point in buildRect.outline:
         
@@ -114,11 +114,14 @@ def desert_center():
 
     #placing the beacon
     print("Placing beacon...")
-    geometry.placeCylinder(editor,addY(buildRect.center, height), 5 , 5, Block("stone_bricks"))
-    geometry.placeCylinder(editor,addY(buildRect.center, height+5), 5 , 1, Block("emerald_block"))
-    geometry.placeCylinder(editor,addY(buildRect.center, height), 39 , 1, Block("lava"))
+    sgeometry.placeCylinder(editor,addY(buildRect.center, height), 55 , 20, Block("air"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height), 41 , 1, Block("stone_bricks"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height+1), 41 , 4, Block("glass"), tube=True, hollow=True)
 
-    editor.placeBlock(addY(buildRect.center, height+6), Block("beacon"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height+6), 9 , 1, Block("emerald_block"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height+5), 39 , 1, Block("lava"))
+
+    editor.placeBlock(addY(buildRect.center, height+7   ), Block("beacon"))
     editor.placeBlock(addY(buildRect.center, height+8), Block("purple_stained_glass"))
 
 
@@ -134,5 +137,54 @@ def desert_center():
     #    geometry.placeCylinder(editor,addY(buildRect.center, height), x , 1, Block("water"), tube=True)
 
 
-desert_center()
+#desert_center()
+
+
+def jungle_center():
+
+    
+    for point in buildRect.outline:
+        
+        height = heightmap[tuple(point - buildRect.offset)]
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height-1), 55 , 1, Block("grass_block"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height), 55 , 20, Block("air"))
+
+    #placing the beaconss
+    print("Placing beacon...")
+    geometry.placeCylinder(editor,addY(buildRect.center, height), 5 , 1, Block("emerald_block"))
+    editor.placeBlock(addY(buildRect.center, height+1), Block("beacon"))
+    editor.placeBlock(addY(buildRect.center, height+2), Block("yellow_stained_glass"))
+
+    #build the bamboo grove
+    print("Placing bamboo grove...")
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height), 41 , 1, Block("dark_oak_log"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+5), 41 , 1, Block("dark_oak_log"), tube=True)
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+6), 41 , 1, Block("stone_brick_slab"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height), 47 , 1, Block("dark_oak_log"), tube=True)
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+5), 47 , 1, Block("dark_oak_log"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+5), 49 , 1, Block("stone_brick_slab"), tube=True)
+
+    for x in range(43,46, 2):
+        geometry.placeCylinder(editor,addY(buildRect.center, height+5), x , 1, Block("water"), tube=True)
+
+    for m in range(7,36,2):
+        geometry.placeCylinder(editor,addY(buildRect.center, height), m , 1, Block("bamboo"), tube=True)
+
+
+jungle_center()
+
+
+
+""" def plain_center():
+def snow_center(): """
+
+
+
+
+
+
 
