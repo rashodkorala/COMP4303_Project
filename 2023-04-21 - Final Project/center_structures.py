@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """
 Load and use a world slice.
@@ -10,15 +11,6 @@ import numpy as np
 from gdpc import __url__, Editor, Block, geometry
 from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
 from gdpc.vector_tools import addY
-
-
-#importing structures
-from house import *
-from archer_tower import *
-from townhall import *
-from barracks import *
-#from center_structures import *
-
 
 
 # Create an editor object.
@@ -102,26 +94,45 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 print(f"Heightmap shape: {heightmap.shape}")
 
 
-#randomization of the building positions
+
+# Place walls of stone bricks on the perimeter of the build area, following the curvature of the
+# terrain.
 
 
 
 
-#detect the biome 
-biome=editor.getBiome(buildArea.center)
-print(f"Biome at {vec}: {biome}")
+def desert_center():
 
-if "plains" in biome:
-    #add code for plains
-    print("Plains biome detected")
+    
+    for point in buildRect.outline:
+        
+        height = heightmap[tuple(point - buildRect.offset)]
+        
+    #build the lava center
+    print("Placing lava oasis...")
+    #for x in range(4, 39,2):
 
-elif "jungle" in biome:
-    print("Jungle biome detected")
-elif "snow" in biome:
-    #add code for snow
-    print("Snow biome detected")
-elif "desert" in biome:
-    print("Desert biome detected")
-else:
-    print({biome} + " biome detected")
-    #add code for desert
+    #placing the beacon
+    print("Placing beacon...")
+    geometry.placeCylinder(editor,addY(buildRect.center, height), 5 , 5, Block("stone_bricks"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height+5), 5 , 1, Block("emerald_block"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height), 39 , 1, Block("lava"))
+
+    editor.placeBlock(addY(buildRect.center, height+6), Block("beacon"))
+    editor.placeBlock(addY(buildRect.center, height+8), Block("purple_stained_glass"))
+
+
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+5), 41 , 1, Block("sculk"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+6), 41 , 2, Block("warped_fence"), tube=True)
+
+    #geometry.placeCylinder(editor,addY(buildRect.center, height+1), 41 , 1, Block("stone_brick_slab"), tube=True)
+    #geometry.placeCylinder(editor,addY(buildRect.center, height), 47 , 1, Block("dark_oak_log"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+5), 43 , 1, Block("stone_brick_slab"), tube=True)
+
+    #for x in range(43,46, 2):
+    #    geometry.placeCylinder(editor,addY(buildRect.center, height), x , 1, Block("water"), tube=True)
+
+
+desert_center()
+

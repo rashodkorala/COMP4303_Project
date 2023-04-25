@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 """
 Load and use a world slice.
@@ -10,15 +11,6 @@ import numpy as np
 from gdpc import __url__, Editor, Block, geometry
 from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
 from gdpc.vector_tools import addY
-
-
-#importing structures
-from house import *
-from archer_tower import *
-from townhall import *
-from barracks import *
-#from center_structures import *
-
 
 
 # Create an editor object.
@@ -102,26 +94,49 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 print(f"Heightmap shape: {heightmap.shape}")
 
 
-#randomization of the building positions
+
+# Place walls of stone bricks on the perimeter of the build area, following the curvature of the
+# terrain.
+
+print("Placing walls...")
+
+for point in buildRect.outline:
+    
+    height = heightmap[tuple(point - buildRect.offset)]
+
+    #building a wall
+    
+    for y in range(height, height + 7):
+        # Place the first layer of blocks
+        editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
+        
+        # Place the second layer of blocks
+        editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
+    
+        
+
+
+geometry.placeCylinder(editor,addY(buildRect.center, height-1), 55 , 1, Block("grass_block"))
+
+#placing the beacon
+print("Placing beacon...")
+geometry.placeCylinder(editor,addY(buildRect.center, height), 5 , 1, Block("emerald_block"))
+editor.placeBlock(addY(buildRect.center, height+1), Block("beacon"))
+editor.placeBlock(addY(buildRect.center, height+2), Block("yellow_stained_glass"))
+
+#build the bamboo grove
+print("Placing bamboo grove...")
+
+geometry.placeCylinder(editor,addY(buildRect.center, height), 41 , 1, Block("dark_oak_log"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+1), 41 , 1, Block("stone_brick_slab"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height), 47 , 1, Block("dark_oak_log"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height), 49 , 1, Block("stone_brick_slab"), tube=True)
+
+for x in range(43,46, 2):
+    geometry.placeCylinder(editor,addY(buildRect.center, height), x , 1, Block("water"), tube=True)
+
+for m in range(7,36,2):
+    geometry.placeCylinder(editor,addY(buildRect.center, height), m , 1, Block("bamboo"), tube=True)
 
 
 
-
-#detect the biome 
-biome=editor.getBiome(buildArea.center)
-print(f"Biome at {vec}: {biome}")
-
-if "plains" in biome:
-    #add code for plains
-    print("Plains biome detected")
-
-elif "jungle" in biome:
-    print("Jungle biome detected")
-elif "snow" in biome:
-    #add code for snow
-    print("Snow biome detected")
-elif "desert" in biome:
-    print("Desert biome detected")
-else:
-    print({biome} + " biome detected")
-    #add code for desert
