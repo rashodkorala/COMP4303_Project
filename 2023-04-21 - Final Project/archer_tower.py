@@ -91,14 +91,65 @@ print(f"Available heightmaps: {worldSlice.heightmaps.keys()}")
 heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 
 
-def create_archer_tower(editor, starting_pos, wall_block_type, floor_block_type):
+""" def make_archerTower(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type):
+    # Define dimensions and parameters
+    length = 7
+    width = 7
+    wall_height = 7
+    roof_height = 7
+    line_height = 1
+    size_reduction = 1
+    
+    # Create walls
+    for x in range(length):
+        for y in range(2 * wall_height):
+            for z in range(width):
+                if x == 0 or x == length - 1 or z == 0 or z == width - 1 or (y == wall_height and (x != 0 and x != length - 1 and z != 0 and z != width - 1)):
+                    position = starting_pos + np.array([x, y, z])
+                    editor.placeBlock(position, Block(wall_block_type))
+                else:
+                    position = starting_pos + np.array([x, y, z])
+                    editor.placeBlock(position, Block("minecraft:air"))
+
+    # Create floors
+    for x in range(1, length - 1):
+        for y in range(0, 2 * wall_height-2 , wall_height):
+            for z in range(1, width - 1):
+                position = starting_pos + np.array([x, y, z])
+                editor.placeBlock(position, Block(floor_block_type))
+
+    # Create windows
+    window_height = 2
+    window_width = 2
+    for y in range(1, 2 * wall_height, wall_height - window_height):
+        for x in range(1, length - 1, window_width + 1):
+            for z in range(1, width - 1, window_width + 1):
+                if x + window_width < length - 1 and z + window_width < width - 1:
+                    for i in range(window_width):
+                        for j in range(window_height):
+                            position = starting_pos + np.array([x + i-1, y + j, 0])
+                            editor.placeBlock(position, Block(window_block_type))
+                            editor.placeBlock(position+np.array([0,0,width-1]), Block(window_block_type))
+
+    # Create roof
+    roof_starting_pos = starting_pos + np.array([length // 2 - 1, 2 * wall_height   , width // 2 - 1])
+    # Set the height of the pyramid
+    height = 5
+    # roof_starting_pos =buildArea.begin+np.array([0,0,0])
+    block_type = 'stone_bricks'
+
+# Call the function to create the pyramid and its reflection in Minecraft
+    create_pyramid_and_reflection_in_xz_plane(editor, roof_starting_pos, block_type, height)
+    # make_roof(editor, length+3, width+3, roof_height, roof_starting_pos, roof_block_type, line_height, size_reduction) """
+
+""" def create_archer_tower(editor, starting_pos, wall_block_type, floor_block_type, ladder_block_type):
     base_length = 12
     base_width = 12
-    tower_length = 8
-    tower_width = 8
+    tower_length = 6
+    tower_width = 6
     wall_height = 10
     battlement_height = 2
-    num_floors = 3
+    num_floors = 2  
 
     # Create base
     for x in range(base_length):
@@ -106,33 +157,222 @@ def create_archer_tower(editor, starting_pos, wall_block_type, floor_block_type)
             position = starting_pos + np.array([x, 0, z])
             editor.placeBlock(position, Block(wall_block_type))
 
-    # Create tower walls
+    # Create tower walls and ladder
     for floor in range(num_floors):
         for x in range(tower_length):
             for y in range(wall_height):
                 for z in range(tower_width):
                     if x == 0 or x == tower_length - 1 or z == 0 or z == tower_width - 1:
-                        position = starting_pos + np.array([x + 2, 1 + floor * (wall_height + 1) + y, z + 2])
+                        position = starting_pos + np.array([x + 2, 1 + floor * (wall_height)-1 + y, z + 2])
                         editor.placeBlock(position, Block(wall_block_type))
-
+                    else:
+                        position = starting_pos + np.array([x + 2, 1 + floor * (wall_height + 1)-1 + y, z + 2])
+                        editor.placeBlock(position, Block("air"))
+                        
         # Create tower floors
         for x in range(tower_length):
             for z in range(tower_width):
-                position = starting_pos + np.array([x + 2, 1 + floor * (wall_height + 1), z + 2])
+                position = starting_pos + np.array([x + 2, 1 + floor * (wall_height), z + 2])
                 editor.placeBlock(position, Block(floor_block_type))
+
+        
+        for y in range(wall_height):
+            position = starting_pos + np.array([tower_length - 2, 1 + floor * (wall_height+1) + y, tower_width])
+            # editor.placeBlock(position+np.array([0,0,1]), Block(wall_block_type))
+            editor.placeBlock(position, Block("air"))
+            editor.placeBlock(position, Block(ladder_block_type + "[facing=north]"))
 
     # Create battlements
     for x in range(tower_length):
         for y in range(battlement_height):
             for z in range(tower_width):
                 if (x == 0 or x == tower_length - 1 or z == 0 or z == tower_width - 1) and (y == 0 or (x + y) % 2 == 0):
-                    position = starting_pos + np.array([x + 2, 1 + num_floors * (wall_height + 1) + y, z + 2])
+                    position = starting_pos + np.array([x + 2,num_floors * (wall_height) + y, z + 2])
                     editor.placeBlock(position, Block(wall_block_type))
-
+    
+    # Create battlement floor
+    for x in range(tower_length):
+        for z in range(tower_width):
+            position = starting_pos + np.array([x + 2,num_floors * (wall_height-2), z + 2])
+            editor.placeBlock(position, Block(floor_block_type))
+    
 # Set the starting position and block types
-starting_pos = np.array([0, 0, 0])
+starting_pos = buildArea.begin+np.array([0, 0, 0])
 wall_block_type = 'stone_bricks'
 floor_block_type = 'stone_bricks'
+ladder_block_type = 'ladder'
 
 # Call the function to create the archer tower in Minecraft
-create_archer_tower(editor, starting_pos, wall_block_type, floor_block_type)
+create_archer_tower(editor, starting_pos, wall_block_type, floor_block_type, ladder_block_type) """
+
+""" def make_roof(editor, length, width, height, starting_pos, block_type, line_height, size_reduction):
+    for y in range(0, height * line_height, line_height):
+        for x in range(-length // 2 + y // line_height * size_reduction + 2, length // 2 - y // line_height * size_reduction):
+            for z in range(-width // 2 + y // line_height * size_reduction + 2, width // 2 - y // line_height * size_reduction):
+                for i in range(line_height):
+                    is_edge = (
+                        x == -length // 2 + y // line_height * size_reduction + 2
+                        or x == length // 2 - y // line_height * size_reduction - 1
+                        or z == -width // 2 + y // line_height * size_reduction + 2
+                        or z == width // 2 - y // line_height * size_reduction - 1
+                    )
+
+                    if (is_edge and i == line_height - 1) or (i == line_height - 1 and (x == -length // 2 + y // line_height * size_reduction + 2 or x == length // 2 - y // line_height * size_reduction - 1 or z == -width // 2 + y // line_height * size_reduction + 2 or z == width // 2 - y // line_height * size_reduction - 1)):
+                        position = starting_pos + np.array([x, y + i, z])
+                        editor.placeBlock(position, Block(block_type))
+                    
+                    else:
+                        position = starting_pos + np.array([x, y + i, z])
+                        editor.placeBlock(position, Block("minecraft:air")) """
+
+    
+def build_floor(editor, starting_pos, block_type, floor_width, floor_height):
+    for i in range(-floor_width, floor_width + 1):
+        for j in range(-floor_width, floor_width + 1):
+            position = starting_pos + np.array([i, floor_height, j])
+            editor.placeBlock(position, Block(block_type))
+
+def build_ladders(editor, starting_pos, ladder_type, size, building_h):
+    for y in range(1,building_h):
+        position = starting_pos + np.array([-size+2, y, 0])
+        editor.placeBlock(position, Block("air"))
+        editor.placeBlock(position, Block(ladder_type))
+
+def add_torches(editor, starting_pos, torch_type,base_block, size, building_h, interval):
+
+    for y in range(0, building_h, interval):
+        for i in range(size):
+            # Add torches to the left wall
+            position_left = starting_pos + np.array([-size + i + 1, y, i])
+            editor.placeBlock(position_left, Block(base_block))
+            position_left = position_left + np.array([0,1,0])
+            editor.placeBlock(position_left, Block(torch_type))
+
+            # Add torches to the right wall
+            position_right = starting_pos + np.array([size - i - 1, y, i])
+            editor.placeBlock(position_right, Block(base_block))
+            position_right = position_right + np.array([0,1,0])
+            editor.placeBlock(position_right, Block(torch_type))
+
+            # Add torches to the reflected left wall
+            position_ref_left = starting_pos + np.array([-size + i + 1, y, -i])
+            editor.placeBlock(position_ref_left, Block(base_block))
+            position_ref_left = position_ref_left + np.array([0,1,0])
+            editor.placeBlock(position_ref_left, Block(torch_type))
+
+            # Add torches to the reflected right wall
+            position_ref_right = starting_pos + np.array([size - i - 1, y, -i])
+            editor.placeBlock(position_ref_right, Block(base_block))
+            position_ref_right = position_ref_right + np.array([0,1,0])
+            editor.placeBlock(position_ref_right, Block(torch_type))
+
+# In the archerTowerpy() function, call add_torches() after build_ladders()
+
+def add_windows(editor, starting_pos, window_type, height, building_h, interval, window_size):
+    for y in range(1, building_h, interval):
+        for i in range(height):
+            for w in range(1, window_size + 1):
+                # Add windows to the left wall
+                position_left = starting_pos + np.array([-height + i + 1, y + w, i])
+                editor.placeBlock(position_left, Block(window_type))
+
+                # Add windows to the right wall
+                position_right = starting_pos + np.array([height - i - 1, y + w, i])
+                editor.placeBlock(position_right, Block(window_type))
+
+                # Add windows to the reflected left wall
+                position_ref_left = starting_pos + np.array([-height + i + 1, y + w, -i])
+                editor.placeBlock(position_ref_left, Block(window_type))
+
+                # Add windows to the reflected right wall
+                position_ref_right = starting_pos + np.array([height - i - 1, y + w, -i])
+                editor.placeBlock(position_ref_right, Block(window_type))
+
+# In the archerTowerpy() function, call add_windows() after add_torches()
+
+
+
+def archerTowerpy(editor, starting_pos, block_type, size, building_h=20):
+    floor_height = building_h
+
+    # Build the pyramid
+    for y in range(floor_height):
+        for i in range(size):
+            for j in range(-size + i + 1  , size - i):
+                if j == -size + i + 1 or j == size - i - 1:
+                    position = starting_pos + np.array([j, y, i])
+                    editor.placeBlock(position, Block(block_type))
+                # elif (y==0 or y==floor_height//2):
+                #     position = starting_pos + np.array([j, y, i])
+                #     editor.placeBlock(position, Block(block_type))
+                else:
+                    position = starting_pos + np.array([j, y, i])
+                    editor.placeBlock(position, Block("air")) 
+        
+    # Build the reflection of the pyramid
+        for i in range(size):
+            for j in range(-size + i + 1, size - i):
+                if j == -size + i + 1 or j == size - i - 1:
+                    position = starting_pos + np.array([j, y, -i])
+                    editor.placeBlock(position, Block(block_type))  
+                else:
+                    position = starting_pos + np.array([j, y, i])
+                    editor.placeBlock(position, Block("air"))
+    
+    #add a door to the tower
+    
+    # Build the floor
+    build_floor(editor, starting_pos, block_type, size, floor_height=0)
+    build_floor(editor, starting_pos, block_type, size-1, floor_height-4)
+    
+
+    add_torches(editor, starting_pos, "lantern[hanging=false]","spruce_slab[type=top]",size-1, building_h, interval=4)
+    add_windows(editor, starting_pos, "tinted_glass", size, building_h-1, interval=6, window_size=1)
+    build_ladders(editor, starting_pos, "ladder[facing=east]", size, building_h)
+
+
+    editor.placeBlock(starting_pos + np.array([size-1, 1, 0]), Block("air"))
+    editor.placeBlock(starting_pos + np.array([size-1, 2, 0]), Block("air"))
+    editor.placeBlock(starting_pos + np.array([size-2, 1, 0]), Block("spruce_door[facing=west ,half=lower,hinge=left]"))
+
+    starting_pos[1] = starting_pos[1] + floor_height
+    # Build the roof
+    roof_block_type = "spruce_planks"
+    roof_size=size+1
+    for y in range(10):
+        for i in range(roof_size-y):
+            for j in range(-roof_size + i + 1+y, roof_size - i-y):
+                if j == -roof_size + i + 1+y or j == roof_size - i - 1-y:
+                    position = starting_pos + np.array([j, y, i])
+                    editor.placeBlock(position, Block(roof_block_type))
+
+    # Build the reflection of the roof
+        for i in range(roof_size-y):
+            for j in range(-roof_size + i + 1+ y, roof_size - i-y):
+                if j == -roof_size + i + 1+y or j == roof_size - i - 1-y:
+                    position = starting_pos + np.array([j, y, -i])
+                    editor.placeBlock(position, Block(roof_block_type))
+
+    
+    
+    
+
+
+
+starting_pos = buildArea.begin
+wall_block_type = 'stone_bricks'
+roof_block_type = 'stone'
+floor_block_type = 'oak_planks'
+window_block_type = 'glass_pane'
+staircase_block_type = 'oak_stairs'
+# make_archerTower(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type)
+
+roof_starting_pos = buildArea.begin + np.array([0, 0, 0])
+# editor.placeBlock(roof_starting_pos, Block("minecraft:cobblestone"))
+    # Set the height of the pyramid
+height = 4
+    # roof_starting_pos =buildArea.begin+np.array([0,0,0])
+block_type = 'stone_bricks'
+
+# Call the function to create the pyramid and its reflection in Minecraft
+archerTowerpy(editor, roof_starting_pos, block_type, height)
