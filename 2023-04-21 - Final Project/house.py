@@ -131,9 +131,9 @@ def build_tiny_house(center, editor, base_level=0):
     Build a tiny house at the specified center position.
     """
     house_height = random.randint(6,10)
-    house_width = random.randint(6,10)
-    height= 5
-    starting_pos= add(center, (0, height-1, 0))
+    house_width = 6
+    #height= 5
+    starting_pos= add(center, (0, house_height-1, 0))
     #build the floor
     for x in range(-house_width // 2, house_width // 2 + 1):
         for z in range(-house_width // 2, house_width // 2 + 1):
