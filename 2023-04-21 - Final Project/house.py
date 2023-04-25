@@ -130,8 +130,8 @@ def build_tiny_house(center, editor, base_level=0):
     """
     Build a tiny house at the specified center position.
     """
-    house_height = 4
-    house_width = 6
+    house_height = random.randint(6,10)
+    house_width = random.randint(6,10)
     height= 5
     starting_pos= add(center, (0, height-1, 0))
     #build the floor
@@ -150,7 +150,7 @@ def build_tiny_house(center, editor, base_level=0):
                 else:
                     editor.placeBlock(add(center, (x, y, z)), Block("minecraft:air"))
 
-    make_roof(editor, house_width+5, house_width+5, house_height+1, starting_pos,roof_blocks[block_selection], 1, 1)
+    make_roof(editor, house_width+5, house_width+5, house_height+2, starting_pos,roof_blocks[block_selection], 1, 1)
 
     # Build the door
     # editor.placeBlock(add(center, (0, base_level, -house_width // 2)), Block("iron door"))
