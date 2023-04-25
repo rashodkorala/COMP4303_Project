@@ -243,7 +243,7 @@ staircase_block_type = 'oak_stairs'
 make_townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type)
 
 
-def create_pyramid_and_reflection_in_xz_plane(editor, starting_pos, block_type, height, building_h=20):
+""" def create_pyramid_and_reflection_in_xz_plane(editor, starting_pos, block_type, height, building_h=20):
     # Build the pyramid
     for y in range(building_h):
         for i in range(height):
@@ -282,7 +282,7 @@ starting_pos =buildArea.begin+np.array([0,0,0])
 block_type = 'stone_bricks'
 
 # Call the function to create the pyramid and its reflection in Minecraft
-# create_pyramid_and_reflection_in_xz_plane(editor, starting_pos, block_type, height)
+# create_pyramid_and_reflection_in_xz_plane(editor, starting_pos, block_type, height) """
 
 
 
