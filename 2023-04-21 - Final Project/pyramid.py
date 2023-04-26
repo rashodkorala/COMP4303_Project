@@ -226,12 +226,11 @@ def build_inner_pyramid(editor, size, block_type, pyramid_starting_pos, bl_array
     for y in range(size):
         for x in range(-size + y + 1, size - y):
             for z in range(-size + y + 1, size - y):
+                position = pyramid_starting_pos + np.array([x, y, z])
                 rand=random.randint(0,100)
                 if rand<50:
-                    position = pyramid_starting_pos + np.array([x, y, z])
                     editor.placeBlock(position, block_type)
                 else:
-                    position = pyramid_starting_pos + np.array([x, y, z])
                     editor.placeBlock(position, Block("chiseled_red_sandstone"))
                 if (abs(x) == size - y - 1 or abs(z) == size - y - 1 ):
                     editor.placeBlock(position+np.array([0,1,0]), Block("torch"))
