@@ -3,6 +3,7 @@
 Load and use a world slice.
 """
 
+import random
 import sys
 import time
 import numpy as np
@@ -109,9 +110,10 @@ def rotate_direction(original_direction, rotation_angle):
     return directions[new_index]
 
 
-def create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type,rotation_angle):
-    
-    underground_height =5
+def create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type,rotation_angle=0):
+    #add randome angle out of 90,180,270
+    rotation_angle = random.choice([0,90,180,270])
+    underground_height =random.randint(3,5) #5
     length = underground_height + 5 #9
     width = length #9
     
