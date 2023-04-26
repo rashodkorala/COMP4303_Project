@@ -97,10 +97,42 @@ print(f"Heightmap shape: {heightmap.shape}")
 def add(vec1, vec2):
     return tuple(a + b for a, b in zip(vec1, vec2))
 
-roof_blocks = ["minecraft:nether_bricks", "minecraft:deepslate_bricks", "minecraft:stone_bricks", "minecraft:dark_oak_planks"]
-wall_blocks = ["minecraft:mud_bricks", "minecraft:sandstone", "minecraft:infested_chiseled_stone_bricks", "minecraft:chiseled_red_sandstone"]
+desert_roof_blocks = ["minecraft:nether_bricks", "minecraft:deepslate_bricks"]
+plains_jungles_roof_blocks = ["minecraft:stone_bricks", "minecraft:dark_oak_planks"]
+snow_roof_blocks = ["minecraft:blue_ice", "minecraft:black_stained_glass"]
 
-block_selection = random.randint(0,3)
+desert_wall_blocks = ["minecraft:mud_bricks", "minecraft:infested_chiseled_stone_bricks"] 
+plains_jungles_wall_blocks = ["minecraft:sandstone", "minecraft:chiseled_red_sandstone"]
+snow_wall_blocks = ["minecraft:bricks", "minecraft:stripped_oak_log"]
+
+block_selection = random.randint(0,1)
+
+def blocks_for_this_biome(part, biome = None):
+    
+    if biome == "minecraft:desert":
+        if part == "roof":
+            block = Block(desert_roof_blocks[block_selection])
+        if part == "walls":
+            block = Block(desert_wall_blocks[block_selection])
+
+    elif biome == "minecraft:plains" or biome == "minecraft:jungle":
+        if part == "roof":
+            block = Block(plains_jungles_roof_blocks[block_selection])
+        if part == "walls":
+            block = Block(plains_jungles_wall_blocks[block_selection])
+
+    elif biome == "minecraft:snowy_tundra":
+        if part == "roof":
+            block = Block(snow_roof_blocks[block_selection])
+        if part == "walls":
+            block = Block(snow_wall_blocks[block_selection])
+
+    #need to improve else condition
+    else:
+       block = Block(floor_blocks[block_selection])
+
+    return block
+
 
 
 
@@ -125,27 +157,31 @@ def build_tiny_house(center, editor, base_level=0, biome=None):
     #height= 5
     starting_pos= add(center, (0, house_height-1, 0))
 
+    #clear the area
+    
+    
     #build the floor
     for x in range(-house_width // 2, house_width // 2 + 1):
         for z in range(-house_width // 2, house_width // 2 + 1):
 
             #replaces the default floor with preferred block    
-            editor.placeBlock(add(center, (x, base_level-1, z)), Block(floor_blocks[block_selection]))
+
+            editor.placeBlock(add(center, (x, base_level-1, z)), blocks_for_this_biome("walls", "minecraft:snowy_tundra"))
 
     # Build the walls
     for x in range(-house_width // 2, house_width // 2 + 1):
         for y in range(base_level, base_level + house_height):
             for z in range(-house_width // 2, house_width // 2 + 1):
                 if x == -house_width // 2 or x == house_width // 2 or z == -house_width // 2 or z == house_width // 2:
-                    editor.placeBlock(add(center, (x, y, z)), Block(wall_blocks[block_selection]))
+                    editor.placeBlock(add(center, (x, y, z)), blocks_for_this_biome("walls", "minecraft:snowy_tundra"))
                 else:
                     editor.placeBlock(add(center, (x, y, z)), Block("minecraft:air"))
-
+                    
     # Build the roof
     if house_height%2==0:
-        make_roof(editor, house_width//2+1, roof_blocks[block_selection], starting_pos)
+        make_roof(editor, house_width//2+1, blocks_for_this_biome("roof", "minecraft:snowy_tundra"), starting_pos)
     else:
-        make_roof(editor, house_width//2+2, roof_blocks[block_selection], starting_pos)
+        make_roof(editor, house_width//2+2, blocks_for_this_biome("roof", "minecraft:snowy_tundra"), starting_pos)
 
     # Build the door
     # editor.placeBlock(add(center, (0, base_level, -house_width // 2)), Block("iron door"))
@@ -201,9 +237,8 @@ def build_tiny_house(center, editor, base_level=0, biome=None):
         editor.placeBlock(add(center, (-house_width//2+2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
         editor.placeBlock(add(center, (-house_width//2+2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
         editor.placeBlock(add(center, (house_width//2-2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
-        editor.placeBlock(add(center, (house_width//2-2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=truew]"))
+        editor.placeBlock(add(center, (house_width//2-2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
 
 build_tiny_house(buildArea.begin, editor)
 
 
-editor.placeBlock(buildArea.begin, Block("minecraft:spruce_planks"))
