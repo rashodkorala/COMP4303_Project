@@ -150,7 +150,8 @@ def build_tiny_house(center, editor, base_level=0):
                 else:
                     editor.placeBlock(add(center, (x, y, z)), Block("minecraft:air"))
 
-    make_roof(editor, house_width+5, house_width+5, house_height+2, starting_pos,roof_blocks[block_selection], 1, 1)
+    # Build the roof
+    make_roof(editor, house_width+5, house_width+5, house_height+1, starting_pos,roof_blocks[block_selection], 1, 1)
 
     # Build the door
     # editor.placeBlock(add(center, (0, base_level, -house_width // 2)), Block("iron door"))

@@ -12,14 +12,6 @@ from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
 from gdpc.vector_tools import addY
 
 
-#importing structures
-from house import *
-from archer_tower import *
-from townhall import *
-from barracks import *
-#from center_structures import *
-
-
 
 # Create an editor object.
 # The Editor class provides a high-level interface to interact with the Minecraft world.

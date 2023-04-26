@@ -100,42 +100,97 @@ print(f"Heightmap shape: {heightmap.shape}")
 
 print("Placing walls...")
 
+
+#build a wall
+
 for point in buildRect.outline:
     
     height = heightmap[tuple(point - buildRect.offset)]
-
-    #building a wall
-    """
+    
     for y in range(height, height + 7):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
         
-        # Place the second layer of blocks
-        editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
-    """ 
-
-
-def place_buildings(draw, build_area_size, build_area, editor, max_attempts = 100, grid = None, bunker_height= 0):
-    existing_buildings = []
+        # Place the second layer of blwocks
+        editor.placeBlock(addY(point+1, y+2), Block("mossy_stone_bricks"))
+        
+        # Place the third layer of blocks
     
 
 
 
 
+#build the center building
+geometry.placeCylinder(editor,addY(buildRect.center, height), 30 , 10, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+9), 28 , 1, Block("glowstone"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+10), 22 , 5, Block("stone_bricks"))
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+15), 28 , 5, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+19), 26 , 1, Block("glowstone"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+20), 20 , 5, Block("stone_bricks"))
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+25), 26 , 5, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+29), 24 , 1, Block("glowstone"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+30), 18 , 5, Block("stone_bricks"))
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+35), 24 , 5, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+39), 22 , 1, Block("glowstone"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+40), 16 , 5, Block("stone_bricks"))
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+45), 22 , 5, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+49), 20 , 1, Block("glowstone"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+50), 14 , 5, Block("stone_bricks"))
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+55), 16 , 10, Block("dark_oak_planks"), tube=True)
+geometry.placeCylinder(editor,addY(buildRect.center, height+65), 20 , 4, Block("stone_bricks"))
+geometry.placeCylinder(editor,addY(buildRect.center, height+68), 18 , 1, Block("glowstone"), tube=True)
+
+geometry.placeCylinder(editor,addY(buildRect.center, height+69), 16 , 4, Block("stone_bricks"))
+geometry.placeCylinder(editor,addY(buildRect.center, height+73), 14, 4, Block("stone_bricks"))
+geometry.placeCylinder(editor,addY(buildRect.center, height+77), 12 , 4, Block("stone_bricks"))
+geometry.placeCylinder(editor,addY(buildRect.center, height+81), 10 , 4, Block("stone_bricks"))
+geometry.placeCylinder(editor,addY(buildRect.center, height+85), 24 , 4, Block("stone_bricks"))
 
 
 
 
+#Make small houses in the build area
 
-#importing structures
-from house import *
-from archer_tower import *
-from townhall import *
-from barracks import *
-from center_structures import *
+import sys
+
+import numpy as np
+from glm import ivec2, ivec3
+
+from gdpc import __url__, Editor, Block, geometry
+from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
+from gdpc.vector_tools import Y, addY, dropY, line3D, circle, fittingCylinder
 
 
+groundCenter = addY(buildRect.center+20, height)
 
-build_tiny_house(buildArea.begin, editor)
+#chose a random point in the build area
+randomPoint = np.random.randint(0, buildRect.size, 2) + buildRect.offset
 
+#place three blocks on top of each other, centered to eachother. The first block is 3x3 second is 5x5 and third is 2x2. on the ground
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-1, 0, -1), # Corner 1
+    groundCenter + ivec3(1,  2, 1), # Corner 2
+    Block("spruce_log")
+)
+
+
+geometry.placeCuboidHollow(
+    editor,
+    groundCenter + ivec3(-3, 3, -3), # Corner 1
+    groundCenter + ivec3(3,  8, 3), # Corner 2
+    Block("mossy_stone_bricks")
+)
+
+
+#build roads out of the center of the build area
 
