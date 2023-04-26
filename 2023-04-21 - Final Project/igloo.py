@@ -99,12 +99,43 @@ height=10
 
 import numpy as np
 
-def build_igloo(editor, center_pos, block_type, radius):
+import math
+
+def rotate_point(point, axis, angle):
+    angle = math.radians(angle)
+    cos_angle = math.cos(angle)
+    sin_angle = math.sin(angle)
+
+    rotation_matrix = np.zeros((3, 3))
+
+    if axis == 'x':
+        rotation_matrix[0] = [1, 0, 0]
+        rotation_matrix[1] = [0, cos_angle, -sin_angle]
+        rotation_matrix[2] = [0, sin_angle, cos_angle]
+    elif axis == 'y':
+        rotation_matrix[0] = [cos_angle, 0, sin_angle]
+        rotation_matrix[1] = [0, 1, 0]
+        rotation_matrix[2] = [-sin_angle, 0, cos_angle]
+    elif axis == 'z':
+        rotation_matrix[0] = [cos_angle, -sin_angle, 0]
+        rotation_matrix[1] = [sin_angle, cos_angle, 0]
+        rotation_matrix[2] = [0, 0, 1]
+    else:
+        raise ValueError("Invalid rotation axis")
+
+    return np.matmul(rotation_matrix, point)
+
+
+def build_igloo(editor, center_pos, block_type, radius, rotation_axis=None, rotation_angle=0):
     for x in range(-radius, radius + 1):
         for y in range(-radius, radius + 1):
             for z in range(-radius, radius + 1):
-                position = center_pos + np.array([x, y, z])
-                distance_from_center = np.sqrt(x ** 2 + y ** 2 + z ** 2)
+                local_pos = np.array([x, y, z])
+                if rotation_axis:
+                    local_pos = rotate_point(local_pos, rotation_axis, rotation_angle)
+                position = center_pos + local_pos
+                position = position.astype(int)  # Convert the position to integers
+                distance_from_center = np.linalg.norm(local_pos)
 
                 # Create the outer shell of the igloo
                 if radius - 1 <= distance_from_center <= radius:
@@ -118,6 +149,9 @@ def build_igloo(editor, center_pos, block_type, radius):
                 elif distance_from_center <= radius and y == -radius:
                     editor.placeBlock(position, Block(block_type))
 
-# Call the build_igloo() function to create an igloo
-center_pos = buildArea.begin
-build_igloo(editor, center_pos, "snow_block", 5)
+# Call the build_igloo() function to create an igloo rotated around the Y-axis by 45 degrees
+center_pos = buildArea.begin+np.array([0, 0, 0])
+build_igloo(editor, center_pos, "snow_block", 5, rotation_axis='z', rotation_angle=90)
+center_pos = buildArea.begin+np.array([10, 0, 10])
+build_igloo(editor, center_pos, "snow_block", 7, rotation_axis='x', rotation_angle=270)
+

@@ -10,21 +10,21 @@
     - [ ] Flat terrain
   - [ ] One specific feature for at least 4 biomes
 - [ ] Functionality
-  - [ ] Building count and placement randomized, does not create the exact same city twice
-  - [ ] Settlement contains 4 'types' of building
-  - [ ] Buildings randomized in size / shape
-  - [ ] Building interiors accessible and decorated
+  - [x] Building count and placement randomized, does not create the exact same city twice
+  - [x] Settlement contains 4 'types' of building
+  - [x] Buildings randomized in size / shape
+  - [x] Building interiors accessible and decorated
   - [ ] Building interiors randomized
   - [ ] Paths between major builings / attractions
   - [ ] Paths generated via M.S.T. or other algorithm
   - [ ] At least one "moving" feature (minecart, elevator, lift, etc)
-  - [ ] Some CA / Noise / other generative algorithm used in some form
-  - [ ] Defensive structure(s) created
-- [ ] Narrative
-  - [ ] Include the 'story' of your village
-  - [ ] Construction must make sense within that narrative
+  - [x] Some CA / Noise / other generative algorithm used in some form
+  - [x] Defensive structure(s) created
+- [x] Narrative
+  - [x] Include the 'story' of your village
+  - [x] Construction must make sense within that narrative
 - [ ] Aesthetics
-  - [ ] Color of blocks chosen based on biome
-  - [ ] Building types constructed with different materials
-  - [ ] Decorations places where appropriate
+  - [x] Color of blocks chosen based on biome
+  - [x] Building types constructed with different materials
+  - [x] Decorations places where appropriate
   - [ ] At least 1 outdoor feature (farm, etc)
