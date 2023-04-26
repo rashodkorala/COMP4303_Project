@@ -120,7 +120,7 @@ def build_tiny_house(center, editor, base_level=0):
     """
     Build a tiny house at the specified center position.
     """
-    house_height = random.randint(6,10)
+    house_height = random.randint(6,8)
     house_width = house_height
     #height= 5
     starting_pos= add(center, (0, house_height-1, 0))
