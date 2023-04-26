@@ -141,7 +141,6 @@ def build_tiny_house(center, editor, base_level=0):
                     editor.placeBlock(add(center, (x, y, z)), Block("minecraft:air"))
 
     # Build the roof
-    make_roof(editor, house_width+5, house_width+5, house_height+1, starting_pos,roof_blocks[block_selection], 1, 1)
     if house_height%2==0:
         make_roof(editor, house_width//2+1, roof_blocks[block_selection], starting_pos)
     else:
