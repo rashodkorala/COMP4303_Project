@@ -104,25 +104,15 @@ block_selection = random.randint(0,3)
 
 
 
-def make_roof(editor, length, width, height, starting_pos, block_type, line_height, size_reduction):
-    for y in range(0, height * line_height, line_height):
-        for x in range(-length // 2 + y // line_height * size_reduction + 2, length // 2 - y // line_height * size_reduction):
-            for z in range(-width // 2 + y // line_height * size_reduction + 2, width // 2 - y // line_height * size_reduction):
-                for i in range(line_height):
-                    is_edge = (
-                        x == -length // 2 + y // line_height * size_reduction + 2
-                        or x == length // 2 - y // line_height * size_reduction - 1
-                        or z == -width // 2 + y // line_height * size_reduction + 2
-                        or z == width // 2 - y // line_height * size_reduction - 1
-                    )
-
-                    if (is_edge and i == line_height - 1) or (i == line_height - 1 and (x == -length // 2 + y // line_height * size_reduction + 2 or x == length // 2 - y // line_height * size_reduction - 1 or z == -width // 2 + y // line_height * size_reduction + 2 or z == width // 2 - y // line_height * size_reduction - 1)):
-                        position = starting_pos + np.array([x, y + i, z])
-                        editor.placeBlock(position, Block(block_type))
-                    
-                    else:
-                        position = starting_pos + np.array([x, y + i, z])
-                        editor.placeBlock(position, Block("minecraft:air"))
+def make_roof(editor, size, block_type, pyramid_starting_pos):
+    for y in range(size):
+        for x in range(-size + y + 1, size - y):
+            for z in range(-size + y + 1, size - y):
+                position = pyramid_starting_pos + np.array([x, y, z])
+                if (abs(x) == size - y - 1 or abs(z) == size - y - 1 ):
+                    editor.placeBlock(position, Block(block_type))
+                else:
+                    editor.placeBlock(position, Block("minecraft:air"))
 
 
 
@@ -130,8 +120,8 @@ def build_tiny_house(center, editor, base_level=0, biome=None):
     """
     Build a tiny house at the specified center position.
     """
-    house_height = random.randint(6,10)
-    house_width = 6
+    house_height = random.randint(6,8)
+    house_width = house_height
     #height= 5
     starting_pos= add(center, (0, house_height-1, 0))
 
@@ -152,7 +142,10 @@ def build_tiny_house(center, editor, base_level=0, biome=None):
                     editor.placeBlock(add(center, (x, y, z)), Block("minecraft:air"))
 
     # Build the roof
-    make_roof(editor, house_width+5, house_width+5, house_height+1, starting_pos,roof_blocks[block_selection], 1, 1)
+    if house_height%2==0:
+        make_roof(editor, house_width//2+1, roof_blocks[block_selection], starting_pos)
+    else:
+        make_roof(editor, house_width//2+2, roof_blocks[block_selection], starting_pos)
 
     # Build the door
     # editor.placeBlock(add(center, (0, base_level, -house_width // 2)), Block("iron door"))
@@ -161,45 +154,56 @@ def build_tiny_house(center, editor, base_level=0, biome=None):
     editor.placeBlock(add(center, (1, base_level +2, -house_width // 2-1)), Block("minecraft:wall_torch[facing=north]"))
 
     # Build windows
-    for i in range(house_height - 2):
-        editor.placeBlock(add(center, (-house_width // 2, base_level + i, i)), Block("minecraft:glass_pane"))
+    for z in range(-house_width // 2, house_width // 2):
+        rand= random.randint(2,house_width-2)
+        editor.placeBlock(add(center, (-house_width // 2, base_level +rand, z)), Block("minecraft:glass_pane"))
+        # editor.placeBlock(add(center, (house_width // 2, base_level + 1, -z)), Block("minecraft:glass_pane"))
+        editor.placeBlock(add(center, (house_width // 2, base_level + 1,-z)), Block("minecraft:glass_pane"))
+        editor.placeBlock(add(center, (z, base_level + random.randint(3,house_width-2), -house_width // 2)), Block("minecraft:glass_pane"))
+        editor.placeBlock(add(center, (z, base_level + random.randint(3,house_width-2), house_width // 2)), Block("minecraft:glass_pane"))
 
     editor.placeBlock(add(center, (house_width // 2, base_level + 1, 0)), Block("minecraft:glass_pane"))
     editor.placeBlock(add(center, (0, base_level + 1, house_width // 2)), Block("minecraft:glass_pane"))
 
     # Place the bed
-    editor.placeBlock(add(center, (-1, base_level, 1)), Block("minecraft:red_bed[part=foot, facing=south]"))
-
+    editor.placeBlock(add(center, (-house_width//2+2, base_level, house_width//2-2)), Block("minecraft:red_bed[part=foot, facing=south]"))
+    if (house_width > 6):
+        editor.placeBlock(add(center, (-house_width//2+3, base_level, house_width//2-2)), Block("minecraft:red_bed[part=foot, facing=south]"))
     #place table next bed
-    editor.placeBlock(add(center, (-2, base_level, 2)), Block("minecraft:spruce_planks"))
-    editor.placeBlock(add(center, (-2, base_level, 1)), Block("minecraft:spruce_trapdoor[facing=north, half=bottom, open=true]"))
+    editor.placeBlock(add(center, (-house_width//2+1, base_level,house_width // 2-1)), Block("minecraft:spruce_planks"))
+    editor.placeBlock(add(center, (-house_width//2+1, base_level, house_width // 2-2)), Block("minecraft:spruce_trapdoor[facing=north, half=bottom, open=true]"))
 
 
     #place lantern
-    editor.placeBlock(add(center, (-2, base_level + 1, 2)), Block("minecraft:lantern[hanging=false]"))
+    editor.placeBlock(add(center, (-house_width//2+1, base_level + 1, house_width // 2-1)), Block("minecraft:lantern[hanging=false]"))
 
     #place barrel
-    editor.placeBlock(add(center, (2, base_level+2, 2)), Block("minecraft:barrel[facing=north]"))
-    editor.placeBlock(add(center, (1, base_level+2, 2)), Block("minecraft:barrel[facing=north]"))
+    editor.placeBlock(add(center, (house_width//2-1, base_level+2,  house_width // 2-1)), Block("minecraft:barrel[facing=north]"))
+    editor.placeBlock(add(center, (house_width//2-2, base_level+2,  house_width // 2-1)), Block("minecraft:barrel[facing=north]"))
 
-    editor.placeBlock(add(center, (2, base_level+1, 2)), Block("minecraft:spruce_trapdoor[facing=north, half=top, open=false]"))
-    editor.placeBlock(add(center, (1, base_level+1, 2)), Block("minecraft:spruce_trapdoor[facing=north, half=top, open=false]"))
+    editor.placeBlock(add(center, (house_width//2-1, base_level+1,  house_width // 2-1)), Block("minecraft:spruce_trapdoor[facing=north, half=top, open=false]"))
+    editor.placeBlock(add(center, (house_width//2-2, base_level+1,  house_width // 2-1)), Block("minecraft:spruce_trapdoor[facing=north, half=top, open=false]"))
     
     #place cauldron
-    editor.placeBlock(add(center, (2, base_level, 2)), Block("minecraft:water_cauldron[level=3]"))
+    editor.placeBlock(add(center, (house_width//2-1, base_level,  house_width // 2-1)), Block("minecraft:water_cauldron[level=3]"))
     #place flower pot
-    editor.placeBlock(add(center, (-2, base_level+1,-2)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
-    editor.placeBlock(add(center, (-2, base_level+2,-2)), Block("minecraft:potted_oak_sapling"))
+    editor.placeBlock(add(center, (-house_width//2+1, base_level+1,-house_width // 2+1)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
+    editor.placeBlock(add(center, (-house_width//2+1, base_level+2,-house_width // 2+1)), Block("minecraft:potted_oak_sapling"))
 
     #place chest
-    editor.placeBlock(add(center, (-2, base_level+3, 0)), Block("minecraft:chest[facing=east]"))
-    editor.placeBlock(add(center, (-2, base_level+3, -1)), Block("minecraft:chest[facing=east]"))
-    editor.placeBlock(add(center, (-2, base_level+2, 0)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
-    editor.placeBlock(add(center, (-2, base_level+2, -1)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
+    editor.placeBlock(add(center, (-house_width//2+1, base_level+3, -house_width//2+3)), Block("minecraft:chest[facing=east]"))
+    editor.placeBlock(add(center, (-house_width//2+1, base_level+3, -house_width//2+2)), Block("minecraft:chest[facing=east]"))
+    editor.placeBlock(add(center, (-house_width//2+1, base_level+2, -house_width//2+3)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
+    editor.placeBlock(add(center, (-house_width//2+1, base_level+2, -house_width//2+2)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
 
-
+    #add lanterns to corners of the house if it is big enough
+    if (house_width > 7):
+        editor.placeBlock(add(center, (-house_width//2+2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
+        editor.placeBlock(add(center, (-house_width//2+2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
+        editor.placeBlock(add(center, (house_width//2-2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
+        editor.placeBlock(add(center, (house_width//2-2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=truew]"))
 
 build_tiny_house(buildArea.begin, editor)
 
 
-
+editor.placeBlock(buildArea.begin, Block("minecraft:spruce_planks"))

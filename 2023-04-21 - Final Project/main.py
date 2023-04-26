@@ -93,27 +93,58 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 
 print(f"Heightmap shape: {heightmap.shape}")
 
+# #detect the biome 
+# biome=editor.getBiome(buildArea.center)
+# print(f"Biome at {vec}: {biome}")
 
-#randomization of the building positions
+# if "plains" in biome:
+#     #add code for plains
+#     print("Plains biome detected")
+
+# elif "jungle" in biome:
+#     print("Jungle biome detected")
+# elif "snow" in biome:
+#     #add code for snow
+#     print("Snow biome detected")
+# elif "desert" in biome:
+#     print("Desert biome detected")
+# else:
+#     print({biome} + " biome detected")
+#     #add code for desert
 
 
+def is_water_block(block_type):
+    return block_type in ["water", "flowing_water", "stationary_water"]
 
+def clear_area_and_terrain_detector(buildRect, editor, world_slice):
+    bottom = world_slice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
+    top = world_slice.heightmaps["WORLD_SURFACE"]
+    watercount=0
+    grasscount=0
+    leavescount=0
+    print("Clearing area...")
+    for x in range(buildRect._offset[0], buildRect._offset[0] + buildRect.size[0]):
+        for z in range(buildRect._offset[1], buildRect._offset[1] + buildRect.size[1]):
+            start = bottom[(x - buildRect._offset[0], z - buildRect._offset[1])]
+            end = top[(x - buildRect._offset[0], z - buildRect._offset[1])]
+            block = editor.getBlock((x, start - 1, z))
+            while ("log" in block.id or "leaves" in block.id or "mushroom" in block.id) and start > 0:
+                start = start - 1
+                block = editor.getBlock((x, start - 1, z))
+                leavescount=leavescount+1
 
-#detect the biome 
-biome=editor.getBiome(buildArea.center)
-print(f"Biome at {vec}: {biome}")
+            if "water" in block.id:
+                watercount=watercount+1
+            if "dirt" in block.id:
+                editor.placeBlock((x, start - 1, z), Block("grass_block"))
+            for y in range(start, end):
+                editor.placeBlock((x, y, z), Block("air"))
+    return watercount,leavescount,grasscount
+            
+    print("Done!")          
 
-if "plains" in biome:
-    #add code for plains
-    print("Plains biome detected")
+watercount,leavescount,grasscount=clear_area_and_terrain_detector(buildRect, editor, worldSlice)
 
-elif "jungle" in biome:
-    print("Jungle biome detected")
-elif "snow" in biome:
-    #add code for snow
-    print("Snow biome detected")
-elif "desert" in biome:
-    print("Desert biome detected")
-else:
-    print({biome} + " biome detected")
-    #add code for desert
+print(f"Water count: {watercount}")
+print(f"Leaves count: {leavescount}")
+print(f"Grass count: {grasscount}")
