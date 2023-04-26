@@ -97,9 +97,9 @@ print(f"Heightmap shape: {heightmap.shape}")
 def add(vec1, vec2):
     return tuple(a + b for a, b in zip(vec1, vec2))
 
-floor_blocks = ["minecraft:red_nether_bricks", "minecraft:deepslate_bricks", "minecraft:stone_bricks", "minecraft:bricks"]
-wall_blocks = ["minecraft:stone_bricks", "minecraft:sandstone", "minecraft:infested_chiseled_stone_bricks", "minecraft:chiseled_red_sandstone"]
-roof_blocks = ["minecraft:crimson_planks", "minecraft:dark_oak_planks", "minecraft:birch_planks", "minecraft:acacia_planks"]
+roof_blocks = ["minecraft:nether_bricks", "minecraft:deepslate_bricks", "minecraft:stone_bricks", "minecraft:dark_oak_planks"]
+wall_blocks = ["minecraft:mud_bricks", "minecraft:sandstone", "minecraft:infested_chiseled_stone_bricks", "minecraft:chiseled_red_sandstone"]
+
 block_selection = random.randint(0,3)
 
 
@@ -126,7 +126,7 @@ def make_roof(editor, length, width, height, starting_pos, block_type, line_heig
 
 
 
-def build_tiny_house(center, editor, base_level=0):
+def build_tiny_house(center, editor, base_level=0, biome=None):
     """
     Build a tiny house at the specified center position.
     """
@@ -134,6 +134,7 @@ def build_tiny_house(center, editor, base_level=0):
     house_width = 6
     #height= 5
     starting_pos= add(center, (0, house_height-1, 0))
+
     #build the floor
     for x in range(-house_width // 2, house_width // 2 + 1):
         for z in range(-house_width // 2, house_width // 2 + 1):
