@@ -91,9 +91,27 @@ print(f"Available heightmaps: {worldSlice.heightmaps.keys()}")
 heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 
 print(f"Heightmap shape: {heightmap.shape}")
-def create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type):
+
+def rotate_point_around_origin(point, angle_degrees):
+    angle_radians = np.radians(angle_degrees)
+    cos_angle = np.cos(angle_radians)
+    sin_angle = np.sin(angle_radians)
+
+    rotated_x = point[0] * cos_angle - point[2] * sin_angle
+    rotated_z = point[0] * sin_angle + point[2] * cos_angle
+
+    return np.array([rotated_x, point[1], rotated_z])
+
+def rotate_direction(original_direction, rotation_angle):
+    directions = ['north', 'east', 'south', 'west']
+    index = directions.index(original_direction)
+    new_index = (index + int(rotation_angle / 90)) % len(directions)
+    return directions[new_index]
+
+
+def create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type,rotation_angle):
     
-    underground_height =2
+    underground_height =5
     length = underground_height + 5 #9
     width = length #9
     
@@ -101,51 +119,73 @@ def create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor
     
     roof_height = underground_height + 2 #4
     wall_height = underground_height + 1 #6
+
     starting_pos=starting_pos+np.array([0,-underground_height,0]) #-5
    
-
     # Create walls
     for x in range(length):
         for y in range(wall_height, 0, -1):
             for z in range(width):
-                if x == 0 or x == length - 1 or z == 0 or z == width - 1:
-                    position = starting_pos + np.array([x, y, z])
+                position = starting_pos + rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
+                position = position.astype(int)
+                if x == 0 or x == length - 1 or z == 0 or z == width - 1:    
                     editor.placeBlock(position, Block(wall_block_type))
                 else:
-                    position = starting_pos + np.array([x, y, z])
                     editor.placeBlock(position, Block('air'))
      # Create floor
     for x in range(length):
         for z in range(width):
-            position = starting_pos + np.array([x, 0, z])
+            position = starting_pos + rotate_point_around_origin(np.array([x, 0, z]), rotation_angle)
+            position = position.astype(int)
+            # position = starting_pos + np.array([x, 0, z])
             editor.placeBlock(position, Block(floor_block_type))
     # Create roof
     for y in range(roof_height):
         for x in range(y, length - y):
             for z in range(y, width - y):
+                position = starting_pos + rotate_point_around_origin(np.array([x, wall_height + y, z]), rotation_angle)
+                position = position.astype(int)
+                # position = starting_pos + np.array([x, wall_height + y, z])
                 if z == y or z == width - y - 1 or x == y or x == length - y - 1:
-                    position = starting_pos + np.array([x, wall_height + y, z])
                     editor.placeBlock(position, Block(roof_block_type))
                 else:
-                    position = starting_pos + np.array([x, wall_height + y, z])
                     editor.placeBlock(position, Block('air'))
 
-    #add stair case from roof to floor
+    #add stair case from roof to floor (without rotation)
+    # for x in range(1, underground_height):
+    #     position = starting_pos + rotate_point_around_origin(np.array([x,underground_height-x,width//2]), rotation_angle)
+    #     position = position.astype(int)        
+    #     # position=starting_pos+np.array([x,underground_height-x,width//2])
+    #     editor.placeBlock(position, Block('oak_stairs[facing=west,half=bottom,shape=straight]'))
 
+
+# Add stair case from roof to floor (with rotation)
     for x in range(1, underground_height):
-        position=starting_pos+np.array([x,underground_height-x,width//2])
-        editor.placeBlock(position, Block('oak_stairs[facing=west,half=bottom,shape=straight]'))
+        position = starting_pos + rotate_point_around_origin(np.array([x, underground_height - x, width // 2]), rotation_angle)
+        position = position.astype(int)
+        stair_direction = rotate_direction('west', rotation_angle)
+        editor.placeBlock(position, Block(f'oak_stairs[facing={stair_direction},half=bottom,shape=straight]'))
+
+
 
     #add a door
-
-    position=starting_pos+np.array([0,underground_height,width//2])
-    editor.placeBlock(position, Block('oak_door[facing=west,half=lower,hinge=left,open=false,powered=false]'))
-    editor.placeBlock(position+np.array([0,2,0]), Block('spruce_slab[type=bottom]'))
+    position = starting_pos + rotate_point_around_origin(np.array([0,underground_height,width//2]), rotation_angle)
+    position = position.astype(int)
+    # position=starting_pos+np.array([0,underground_height,width//2])
+    stair_direction = rotate_direction('west', rotation_angle)
+    editor.placeBlock(position, Block(f'oak_door[facing={stair_direction},half=lower,hinge=left,open=false,powered=false]'))
+    
+    position=position+rotate_point_around_origin(np.array([0,2,0]), rotation_angle)
+    position = position.astype(int)
+    # editor.placeBlock(position+np.array([0,2,0]), Block('spruce_slab[type=bottom]'))
+    editor.placeBlock(position, Block('spruce_slab[type=bottom]'))
 
     #place lanterns in the corners
     for x in range(0, length, length-1):
         for z in range(0, width, width-1):
-            position=starting_pos+np.array([x,wall_height,z])
+            position = starting_pos + rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
+            position = position.astype(int)
+            # position=starting_pos+np.array([x,wall_height,z])
             editor.placeBlock(position, Block('lantern[hanging=false]'))
     
     lantern_positions = [
@@ -156,26 +196,40 @@ def create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor
 ]
 
     for position in lantern_positions:
-        editor.placeBlock(starting_pos + position, Block('lantern[hanging=true]'))
+        position = starting_pos + rotate_point_around_origin(position, rotation_angle)
+        position = position.astype(int)
+        editor.placeBlock(position, Block('lantern[hanging=true]'))
 
     
     #put chest in left
-    position=starting_pos+np.array([1,1,1])
-    editor.placeBlock(position, Block('chest[facing=east,type=single,waterlogged=false]'))
+    position=starting_pos+rotate_point_around_origin(np.array([1,1,1]), rotation_angle)
+    position = position.astype(int)
+    chest_direction = rotate_direction('east', rotation_angle)
+    editor.placeBlock(position, Block(f'chest[facing={chest_direction},type=single,waterlogged=false]'))
 
     #palce barrel in right
-    position=starting_pos+np.array([1,1,width-2])
-    editor.placeBlock(position, Block('barrel[facing=east,open=true]'))
-    editor.placeBlock(position+np.array([0,0,-1]), Block('water_cauldron[level=3]'))
+    # position=starting_pos+np.array([1,1,width-2])
+    position=starting_pos+rotate_point_around_origin(np.array([1,1,width-2]), rotation_angle)
+    position = position.astype(int)
+    barrel_direction = rotate_direction('east', rotation_angle)
+    editor.placeBlock(position, Block(f'barrel[facing={barrel_direction},open=true]'))
+    position=position+rotate_point_around_origin(np.array([0,0,-1]), rotation_angle)
+    position = position.astype(int)
+    editor.placeBlock(position, Block('water_cauldron[level=3]'))
 
     #place a pottte plant
-    position=starting_pos+np.array([1,2,width-2])
+    # position=starting_pos+np.array([1,2,width-2])
+    position=starting_pos+rotate_point_around_origin(np.array([1,2,width-2]), rotation_angle)
+    position = position.astype(int)
     editor.placeBlock(position, Block('potted_cactus'))
 
     #place a bed
     for z in range(2, width-2):
-        position=starting_pos+np.array([length-3,1,z])
-        editor.placeBlock(position, Block('red_bed[facing=east,part=foot]'))
+        # position=starting_pos+np.array([length-3,1,z])
+        position=starting_pos+rotate_point_around_origin(np.array([length-3,1,z]), rotation_angle)
+        position = position.astype(int)
+        bed_direction = rotate_direction('east', rotation_angle)
+        editor.placeBlock(position, Block(f'red_bed[facing={bed_direction},part=foot]'))
 
 
 
@@ -185,10 +239,12 @@ def create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor
 
 
 # Set the starting position and block types
-starting_pos = buildArea.begin+np.array([0,0, 0])
+starting_pos = buildArea.begin+np.array([25,0,25])
 wall_block_type = 'oak_planks'
 roof_block_type = 'spruce_planks'
 floor_block_type = 'oak_planks'
 
 # Call the function to create the wooden barrack in Minecraft
-create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type)
+rotation_angle = 90
+
+create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, rotation_angle)
