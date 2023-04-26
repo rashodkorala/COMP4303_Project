@@ -114,7 +114,7 @@ def desert_center():
 
     #placing the beacon
     print("Placing beacon...")
-    sgeometry.placeCylinder(editor,addY(buildRect.center, height), 55 , 20, Block("air"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height), 55 , 20, Block("air"))
     geometry.placeCylinder(editor,addY(buildRect.center, height), 41 , 1, Block("stone_bricks"))
     geometry.placeCylinder(editor,addY(buildRect.center, height+1), 41 , 4, Block("glass"), tube=True, hollow=True)
 
