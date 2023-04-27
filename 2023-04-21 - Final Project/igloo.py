@@ -120,6 +120,7 @@ def rotate_direction(original_direction, rotation_angle):
 
 
 def build_igloo(editor, center_pos, block_type, radius,rotation_angle=0):
+    radius=6
     for x in range(-radius, radius + 1):
         for y in range(-1, radius + 1):
             for z in range(-radius, radius + 1):
@@ -138,10 +139,22 @@ def build_igloo(editor, center_pos, block_type, radius,rotation_angle=0):
                     editor.placeBlock(position, Block("air"))
 
                 # Create a floor using the same block type as the igloo
-                elif distance_from_center <= radius and y == -radius:
-                    editor.placeBlock(position, Block(block_type))
                 if y== -1 :
                     editor.placeBlock(position, Block(block_type))
+                    if (x<3 and x>-3) and (z<3 and z>-3):
+                        editor.placeBlock(position, Block("oak_planks"))
+    
+    #add carpet to the igloo
+    carpet_type = random.choice(["white_carpet", "gray_carpet", "brown_carpet", "black_carpet"])
+    for x in range(-radius, radius + 1):
+        for z in range(-radius, radius + 1):
+            if (x<3 and x>-3) and (z<3 and z>-3) and (x%2==0 or z%2!=0) and (x%2!=0 or z%2==0):
+                local_pos = np.array([x, 0, z])
+                local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+                position = center_pos + local_pos
+                position = position.astype(int)
+                editor.placeBlock(position, Block(F'{carpet_type}'))
+
 
     # for x in range(radius, 1, -1):
     #     position = center_pos + rotate_point_around_origin(np.array([radius-x,0,0]), rotation_angle)
@@ -167,7 +180,11 @@ def build_igloo(editor, center_pos, block_type, radius,rotation_angle=0):
     bed_direction = rotate_direction('west', rotation_angle)
     bedtype=random.choice(["red_bed","white_bed","black_bed","blue_bed","brown_bed","cyan_bed","gray_bed","green_bed","light_blue_bed","light_gray_bed","lime_bed","magenta_bed","orange_bed","pink_bed","purple_bed","yellow_bed"])
     editor.placeBlock(position, Block(f'{bedtype}[facing={bed_direction},part=foot]'))
-
+    if (radius>5):
+        position = position + np.array([0, 0, 1])
+        editor.placeBlock(position, Block(f'{bedtype}[facing={bed_direction},part=foot]'))
+        position = position + np.array([0, 0, -2])
+        editor.placeBlock(position, Block(f'{bedtype}[facing={bed_direction},part=foot]'))
 
     local_pos = np.array([-radius + 3, 0,radius- 2])
     local_pos = rotate_point_around_origin(local_pos, rotation_angle)
@@ -238,6 +255,14 @@ def build_igloo(editor, center_pos, block_type, radius,rotation_angle=0):
     position = position+np.array([-1,0,0])
     editor.placeBlock(position, Block(f'spruce_trapdoor[facing={barrel_dir},half=top,open=false]'))
 
+
+    #ad campfire at radius ,radius
+    local_pos = np.array([radius, 0,radius])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    campfire_dir = rotate_direction('south', rotation_angle)
+    editor.placeBlock(position, Block(f'campfire[facing={campfire_dir},lit=true]'))
 # Call the build_igloo() function to create an igloo rotated around the Y-axis by 45 degrees
 center_pos = buildArea.begin+np.array([0, 0, 0])
 build_igloo(editor, center_pos, "snow_block", 5, rotation_angle=0)
