@@ -102,7 +102,7 @@ def build_treehouse(editor, starting_pos, tree_height, platform_height, platform
     for x in range(-platform_radius, platform_radius + 1):
         for z in range(-platform_radius, platform_radius + 1):
             if x * x + z * z <= platform_radius * platform_radius:
-                editor.placeBlock(starting_pos + np.array([x, platform_height, z]), Block("oak_log"))
+                editor.placeBlock(starting_pos + np.array([x, platform_height, z]), Block("jungle_log"))
 
     # Build walls
     for y in range(house_height):
@@ -112,8 +112,14 @@ def build_treehouse(editor, starting_pos, tree_height, platform_height, platform
                     editor.placeBlock(starting_pos + np.array([x, platform_height + 1 + y, z]), block_type)
                 else:
                     editor.placeBlock(starting_pos + np.array([x, platform_height + 1 + y, z]), Block("air"))
+    
+    #add the tree
+    trunk_size = 1
     for y in range(tree_height):
-        editor.placeBlock(starting_pos + np.array([0, y, 0]), Block("oak_log"))
+        for x in range(-trunk_size // 2, trunk_size // 2 + 1):
+            for z in range(-trunk_size // 2, trunk_size // 2 + 1):
+                editor.placeBlock(starting_pos + np.array([x, y, z]), Block("oak_log"))
+
     # Add windows
     for y in range(1, house_height - 1):
         for x in range(-platform_radius, platform_radius, 2):
@@ -124,7 +130,7 @@ def build_treehouse(editor, starting_pos, tree_height, platform_height, platform
     # Add a roof
     for x in range(-platform_radius - 1, platform_radius + 2):
         for z in range(-platform_radius - 1, platform_radius + 2):
-            editor.placeBlock(starting_pos + np.array([x, platform_height + house_height, z]), Block("oak_slab"))
+            editor.placeBlock(starting_pos + np.array([x, platform_height + house_height, z]), Block("jungle_log"))
 
     # Add a ladder
     for y in range(1, platform_height+3):
@@ -132,7 +138,7 @@ def build_treehouse(editor, starting_pos, tree_height, platform_height, platform
         editor.placeBlock(starting_pos + np.array([0, y, -1]), Block("ladder"))
 
     # Add a door
-    editor.placeBlock(starting_pos + np.array([1, platform_height + 1, -platform_radius]), Block("oak_fence_gate"))
+    editor.placeBlock(starting_pos + np.array([1, platform_height + 1, -platform_radius]), Block("jungle_fence"))
 
     # Add random spruce leaves around the house and on top
     leaf_density = 0.5  # Adjust this value to control the density of leaves (0.0 to 1.0)
@@ -142,6 +148,5 @@ def build_treehouse(editor, starting_pos, tree_height, platform_height, platform
             for z in range(-platform_radius - 1, platform_radius + 2):
                 if ((x in (-platform_radius - 1, platform_radius + 1) or z in (-platform_radius - 1, platform_radius + 1)) or (
                     y == house_height + 1)) and random.random() < leaf_density:
-                    editor.placeBlock(starting_pos + np.array([x, platform_height + y, z]), Block("spruce_leaves"))
-
-build_treehouse(editor, buildArea.begin, 15, 10, 3, 4, Block("oak_log"))
+                    editor.placeBlock(starting_pos + np.array([x, platform_height + y, z]), Block("jungle_leaves"))
+build_treehouse(editor, buildArea.begin, 15, 10, 5, 5, Block("oak_log"))
