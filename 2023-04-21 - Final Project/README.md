@@ -14,7 +14,7 @@
   - [x] Settlement contains 4 'types' of building
   - [x] Buildings randomized in size / shape
   - [x] Building interiors accessible and decorated
-  - [ ] Building interiors randomized
+  - [x] Building interiors randomized
   - [ ] Paths between major builings / attractions
   - [ ] Paths generated via M.S.T. or other algorithm
   - [ ] At least one "moving" feature (minecart, elevator, lift, etc)
