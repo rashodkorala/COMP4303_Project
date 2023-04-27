@@ -126,7 +126,6 @@ def place_buildings(draw, build_area_size, build_area, editor, max_attempts = 10
 
 
 
-
 #importing structures
 from house import *
 from archer_tower import *

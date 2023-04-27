@@ -238,7 +238,14 @@ def build_tiny_house(center, editor, base_level=0, biome=None):
         editor.placeBlock(add(center, (-house_width//2+2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
         editor.placeBlock(add(center, (house_width//2-2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
         editor.placeBlock(add(center, (house_width//2-2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
+    return house_width, house_height
 
-build_tiny_house(buildArea.begin, editor)
+print(buildArea.size.x, buildArea.size.z)
+print(buildArea.begin.x, buildArea.begin.z)
 
 
+
+for i in range(3):
+    x = random.randint(0, buildArea.size.x)
+    z = random.randint(0,  buildArea.size.z)
+    build_tiny_house(buildArea.begin + [x, 0, z], editor)
