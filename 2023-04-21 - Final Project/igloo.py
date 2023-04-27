@@ -4,6 +4,7 @@
 Load and use a world slice.
 """
 
+import random
 import sys
 
 import numpy as np
@@ -101,38 +102,29 @@ import numpy as np
 
 import math
 
-def rotate_point(point, axis, angle):
-    angle = math.radians(angle)
-    cos_angle = math.cos(angle)
-    sin_angle = math.sin(angle)
+def rotate_point_around_origin(point, angle_degrees):
+    angle_radians = np.radians(angle_degrees)
+    cos_angle = np.cos(angle_radians)
+    sin_angle = np.sin(angle_radians)
 
-    rotation_matrix = np.zeros((3, 3))
+    rotated_x = point[0] * cos_angle - point[2] * sin_angle
+    rotated_z = point[0] * sin_angle + point[2] * cos_angle
 
-    if axis == 'x':
-        rotation_matrix[0] = [1, 0, 0]
-        rotation_matrix[1] = [0, cos_angle, -sin_angle]
-        rotation_matrix[2] = [0, sin_angle, cos_angle]
-    elif axis == 'y':
-        rotation_matrix[0] = [cos_angle, 0, sin_angle]
-        rotation_matrix[1] = [0, 1, 0]
-        rotation_matrix[2] = [-sin_angle, 0, cos_angle]
-    elif axis == 'z':
-        rotation_matrix[0] = [cos_angle, -sin_angle, 0]
-        rotation_matrix[1] = [sin_angle, cos_angle, 0]
-        rotation_matrix[2] = [0, 0, 1]
-    else:
-        raise ValueError("Invalid rotation axis")
+    return np.array([rotated_x, point[1], rotated_z])
 
-    return np.matmul(rotation_matrix, point)
+def rotate_direction(original_direction, rotation_angle):
+    directions = ['north', 'east', 'south', 'west']
+    index = directions.index(original_direction)
+    new_index = (index + int(rotation_angle / 90)) % len(directions)
+    return directions[new_index]
 
 
-def build_igloo(editor, center_pos, block_type, radius, rotation_axis=None, rotation_angle=0):
+def build_igloo(editor, center_pos, block_type, radius,rotation_angle=0):
     for x in range(-radius, radius + 1):
-        for y in range(-radius, radius + 1):
+        for y in range(-1, radius + 1):
             for z in range(-radius, radius + 1):
                 local_pos = np.array([x, y, z])
-                if rotation_axis:
-                    local_pos = rotate_point(local_pos, rotation_axis, rotation_angle)
+                local_pos = rotate_point_around_origin(local_pos, rotation_angle)
                 position = center_pos + local_pos
                 position = position.astype(int)  # Convert the position to integers
                 distance_from_center = np.linalg.norm(local_pos)
@@ -148,10 +140,106 @@ def build_igloo(editor, center_pos, block_type, radius, rotation_axis=None, rota
                 # Create a floor using the same block type as the igloo
                 elif distance_from_center <= radius and y == -radius:
                     editor.placeBlock(position, Block(block_type))
+                if y== -1 :
+                    editor.placeBlock(position, Block(block_type))
+
+    # for x in range(radius, 1, -1):
+    #     position = center_pos + rotate_point_around_origin(np.array([radius-x,0,0]), rotation_angle)
+    #     position = position.astype(int)
+    #     stair_direction = rotate_direction('east', rotation_angle)
+    #     editor.placeBlock(position, Block(f'oak_stairs[facing={stair_direction},half=bottom,shape=straight]'))
+
+
+
+
+    local_pos= np.array([radius-1, 0, 0])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    door_direction = rotate_direction('west', rotation_angle)
+    editor.placeBlock(position, Block(f'oak_door[facing={door_direction},hinge=left]'))
+    editor.placeBlock(position+np.array([1,0,0]), Block('air'))
+
+    local_pos = np.array([-radius +3, 0, 0])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    bed_direction = rotate_direction('west', rotation_angle)
+    bedtype=random.choice(["red_bed","white_bed","black_bed","blue_bed","brown_bed","cyan_bed","gray_bed","green_bed","light_blue_bed","light_gray_bed","lime_bed","magenta_bed","orange_bed","pink_bed","purple_bed","yellow_bed"])
+    editor.placeBlock(position, Block(f'{bedtype}[facing={bed_direction},part=foot]'))
+
+
+    local_pos = np.array([-radius + 3, 0,radius- 2])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    editor.placeBlock(position, Block(f'spruce_planks'))
+    editor.placeBlock(position+np.array([0,1,0]), Block(f'lantern[hanging=false]'))
+
+    local_pos = np.array([radius -3, 0, -radius + 2])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    editor.placeBlock(position, Block(f'spruce_planks'))
+    editor.placeBlock(position+np.array([0,1,0]), Block(f'lantern[hanging=false]'))
+
+    local_pos = np.array([-radius + 3, 0,-radius+2])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    editor.placeBlock(position, Block(f'spruce_planks'))
+    editor.placeBlock(position+np.array([0,1,0]), Block(f'lantern[hanging=false]'))
+
+    local_pos = np.array([radius-3, 0,radius-2])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    editor.placeBlock(position, Block(f'spruce_planks'))
+    editor.placeBlock(position+np.array([0,1,0]), Block(f'lantern[hanging=false]'))
+    
+
+    local_pos = np.array([-radius + 4, 0,-radius+2])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    chest_direction = rotate_direction('south', rotation_angle)
+    editor.placeBlock(position, Block(f'chest[facing={chest_direction}]'))
+    
+
+    local_pos = np.array([radius-4, 0,radius-2])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    trapdoor_direction = rotate_direction('south', rotation_angle)
+    editor.placeBlock(position, Block(f'spruce_trapdoor[facing={trapdoor_direction},half=top,open=false]'))
+    pot_type="potted_"+random.choice(["dandelion", "poppy", "blue_orchid", "allium", "azure_bluet", "red_tulip", "orange_tulip", "white_tulip", "pink_tulip", "oxeye_daisy", "cornflower", "lily_of_the_valley"])
+    editor.placeBlock(position+np.array([0,1,0]), Block(f'minecraft:{pot_type}'))
+
+    #place a cauldron
+    local_pos = np.array([radius-5, 0,radius-2])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    editor.placeBlock(position, Block(f'water_cauldron[level=3]'))
+    position = position+np.array([-1,0,0])
+    editor.placeBlock(position, Block(f'polished_andesite_slab[type=top]'))
+
+    #place some barrels
+    local_pos = np.array([-radius + 5, 1,-radius+2])
+    local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    position = center_pos + local_pos
+    position = position.astype(int)  # Convert the position to integers
+    barrel_dir = rotate_direction('south', rotation_angle)
+    editor.placeBlock(position, Block(f'barrel[facing={barrel_dir}]'))
+    position = position+np.array([1,0,0])
+    editor.placeBlock(position, Block(f'barrel[facing={barrel_dir}]'))
+    position = position+np.array([0,-1,0])
+    editor.placeBlock(position, Block(f'spruce_trapdoor[facing={barrel_dir},half=top,open=false]'))
+    position = position+np.array([-1,0,0])
+    editor.placeBlock(position, Block(f'spruce_trapdoor[facing={barrel_dir},half=top,open=false]'))
 
 # Call the build_igloo() function to create an igloo rotated around the Y-axis by 45 degrees
 center_pos = buildArea.begin+np.array([0, 0, 0])
-build_igloo(editor, center_pos, "snow_block", 5, rotation_axis='z', rotation_angle=90)
-center_pos = buildArea.begin+np.array([10, 0, 10])
-build_igloo(editor, center_pos, "snow_block", 7, rotation_axis='x', rotation_angle=270)
+build_igloo(editor, center_pos, "snow_block", 5, rotation_angle=0)
+
 
