@@ -104,24 +104,40 @@ snow_roof_blocks = ["minecraft:blue_ice", "minecraft:black_stained_glass"]
 desert_wall_blocks = ["minecraft:mud_bricks", "minecraft:infested_chiseled_stone_bricks"] 
 plains_jungles_wall_blocks = ["minecraft:sandstone", "minecraft:chiseled_red_sandstone"]
 snow_wall_blocks = ["minecraft:bricks", "minecraft:stripped_oak_log"]
-
+floor_blocks= ["minecraft:polished_andesite", "minecraft:polished_diorite", "minecraft:polished_granite"]
 block_selection = random.randint(0,1)
+
+def rotate_point_around_origin(point, angle_degrees):
+    angle_radians = np.radians(angle_degrees)
+    cos_angle = np.cos(angle_radians)
+    sin_angle = np.sin(angle_radians)
+
+    rotated_x = point[0] * cos_angle - point[2] * sin_angle
+    rotated_z = point[0] * sin_angle + point[2] * cos_angle
+
+    return np.array([rotated_x, point[1], rotated_z])
+
+def rotate_direction(original_direction, rotation_angle):
+    directions = ['north', 'east', 'south', 'west']
+    index = directions.index(original_direction)
+    new_index = (index + int(rotation_angle / 90)) % len(directions)
+    return directions[new_index]
 
 def blocks_for_this_biome(part, biome = None):
     
-    if biome == "minecraft:desert":
+    if "desert" in biome:
         if part == "roof":
             block = Block(desert_roof_blocks[block_selection])
         if part == "walls":
             block = Block(desert_wall_blocks[block_selection])
 
-    elif biome == "minecraft:plains" or biome == "minecraft:jungle":
+    elif "plains" in biome or "jungle" in biome:
         if part == "roof":
             block = Block(plains_jungles_roof_blocks[block_selection])
         if part == "walls":
             block = Block(plains_jungles_wall_blocks[block_selection])
 
-    elif biome == "minecraft:snowy_tundra":
+    elif "snow" in biome or "snowy" in biome:
         if part == "roof":
             block = Block(snow_roof_blocks[block_selection])
         if part == "walls":
@@ -132,9 +148,6 @@ def blocks_for_this_biome(part, biome = None):
        block = Block(floor_blocks[block_selection])
 
     return block
-
-
-
 
 def make_roof(editor, size, block_type, pyramid_starting_pos):
     for y in range(size):
@@ -148,14 +161,15 @@ def make_roof(editor, size, block_type, pyramid_starting_pos):
 
 
 
-def build_tiny_house(center, editor, base_level=0, biome=None):
+def build_tiny_house(center, editor, base_level=0, biome=None,rotation_angle=0):
     """
     Build a tiny house at the specified center position.
     """
     house_height = random.randint(6,8)
     house_width = house_height
     #height= 5
-    starting_pos= add(center, (0, house_height-1, 0))
+    # roof_starting_pos= add(center, (0, house_height-1, 0))
+    roof_starting_pos=int(center+rotate_point_around_origin(np.array([0, house_height-1, 0]), rotation_angle))
 
     #clear the area
     
@@ -166,7 +180,7 @@ def build_tiny_house(center, editor, base_level=0, biome=None):
 
             #replaces the default floor with preferred block    
 
-            editor.placeBlock(add(center, (x, base_level-1, z)), blocks_for_this_biome("walls", "minecraft:snowy_tundra"))
+            editor.placeBlock(add(center, (x, base_level-1, z)), blocks_for_this_biome("walls", biome))
 
     # Build the walls
     for x in range(-house_width // 2, house_width // 2 + 1):
@@ -179,9 +193,9 @@ def build_tiny_house(center, editor, base_level=0, biome=None):
                     
     # Build the roof
     if house_height%2==0:
-        make_roof(editor, house_width//2+1, blocks_for_this_biome("roof", "minecraft:snowy_tundra"), starting_pos)
+        make_roof(editor, house_width//2+1, blocks_for_this_biome("roof", "minecraft:snowy_tundra"), roof_starting_pos)
     else:
-        make_roof(editor, house_width//2+2, blocks_for_this_biome("roof", "minecraft:snowy_tundra"), starting_pos)
+        make_roof(editor, house_width//2+2, blocks_for_this_biome("roof", "minecraft:snowy_tundra"), roof_starting_pos)
 
     # Build the door
     # editor.placeBlock(add(center, (0, base_level, -house_width // 2)), Block("iron door"))
