@@ -3,6 +3,7 @@
 Load and use a world slice.
 """
 
+import random
 import sys
 import time
 import numpy as np
@@ -225,16 +226,32 @@ create_archer_tower(editor, starting_pos, wall_block_type, floor_block_type, lad
                         position = starting_pos + np.array([x, y + i, z])
                         editor.placeBlock(position, Block("minecraft:air")) """
 
-    
+def rotate_point_around_origin(point, angle_degrees):
+    angle_radians = np.radians(angle_degrees)
+    cos_angle = np.cos(angle_radians)
+    sin_angle = np.sin(angle_radians)
+
+    rotated_x = point[0] * cos_angle - point[2] * sin_angle
+    rotated_z = point[0] * sin_angle + point[2] * cos_angle
+
+    return np.array([rotated_x, point[1], rotated_z])
+
+def rotate_direction(original_direction, rotation_angle):
+    directions = ['north', 'east', 'south', 'west']
+    index = directions.index(original_direction)
+    new_index = (index + int(rotation_angle / 90)) % len(directions)
+    return directions[new_index]
+
 def build_floor(editor, starting_pos, block_type, floor_width, floor_height):
     for i in range(-floor_width, floor_width + 1):
         for j in range(-floor_width, floor_width + 1):
             position = starting_pos + np.array([i, floor_height, j])
             editor.placeBlock(position, Block(block_type))
 
-def build_ladders(editor, starting_pos, ladder_type, size, building_h):
+def build_ladders(editor, starting_pos, ladder_type, size, building_h, rotation_angle):
     for y in range(1,building_h):
-        position = starting_pos + np.array([-size+2, y, 0])
+        position = starting_pos +rotate_point_around_origin(np.array([-size+2, y, 0]),rotation_angle)
+        position=position.astype(int)
         editor.placeBlock(position, Block("air"))
         editor.placeBlock(position, Block(ladder_type))
 
@@ -293,6 +310,7 @@ def add_windows(editor, starting_pos, window_type, height, building_h, interval,
 
 
 def archerTowerpy(editor, starting_pos, block_type, size, building_h=20):
+    rotation_angle=random.choice([0,90,180,270])
     floor_height = building_h
 
     # Build the pyramid
@@ -301,7 +319,8 @@ def archerTowerpy(editor, starting_pos, block_type, size, building_h=20):
             for j in range(-size + i + 1  , size - i):
                 if j == -size + i + 1 or j == size - i - 1:
                     position = starting_pos + np.array([j, y, i])
-                    editor.placeBlock(position, Block(block_type))
+                    # editor.placeBlock(position, Block(block_type))
+                    editor.placeBlock(position, Block(random.choice(["mossy_stone_bricks", "stone_bricks", "cracked_stone_bricks"])))
                 # elif (y==0 or y==floor_height//2):
                 #     position = starting_pos + np.array([j, y, i])
                 #     editor.placeBlock(position, Block(block_type))
@@ -314,7 +333,8 @@ def archerTowerpy(editor, starting_pos, block_type, size, building_h=20):
             for j in range(-size + i + 1, size - i):
                 if j == -size + i + 1 or j == size - i - 1:
                     position = starting_pos + np.array([j, y, -i])
-                    editor.placeBlock(position, Block(block_type))  
+                    # editor.placeBlock(position, Block(block_type)) 
+                    editor.placeBlock(position, Block(random.choice(["mossy_stone_bricks", "stone_bricks", "cracked_stone_bricks"])))
                 else:
                     position = starting_pos + np.array([j, y, i])
                     editor.placeBlock(position, Block("air"))
@@ -328,12 +348,22 @@ def archerTowerpy(editor, starting_pos, block_type, size, building_h=20):
 
     add_torches(editor, starting_pos, "lantern[hanging=false]","spruce_slab[type=top]",size-1, building_h, interval=4)
     add_windows(editor, starting_pos, "tinted_glass", size, building_h-1, interval=6, window_size=1)
-    build_ladders(editor, starting_pos, "ladder[facing=east]", size, building_h)
+    ladder_dir=rotate_direction("east", rotation_angle)
+    build_ladders(editor, starting_pos, f'ladder[facing={ladder_dir}]', size, building_h,rotation_angle=rotation_angle)
 
+    position = starting_pos +rotate_point_around_origin(np.array([size-1, 1, 0]), rotation_angle)
+    position=position.astype(int)
+    editor.placeBlock(position, Block("air"))
 
-    editor.placeBlock(starting_pos + np.array([size-1, 1, 0]), Block("air"))
-    editor.placeBlock(starting_pos + np.array([size-1, 2, 0]), Block("air"))
-    editor.placeBlock(starting_pos + np.array([size-2, 1, 0]), Block("spruce_door[facing=west ,half=lower,hinge=left]"))
+    position = starting_pos +rotate_point_around_origin(np.array([size-1, 2, 0]), rotation_angle)
+    position=position.astype(int)
+    editor.placeBlock(position, Block("air"))
+    # editor.placeBlock(starting_pos + np.array([size-1, 2, 0]), Block("air"))
+
+    position = starting_pos +rotate_point_around_origin(np.array([size-2, 1, 0]), rotation_angle)
+    position=position.astype(int)
+    door_dir=rotate_direction("west", rotation_angle)
+    editor.placeBlock(position, Block(f'spruce_door[facing={door_dir} ,half=lower,hinge=left]'))
 
     starting_pos[1] = starting_pos[1] + floor_height
     # Build the roof
@@ -352,12 +382,6 @@ def archerTowerpy(editor, starting_pos, block_type, size, building_h=20):
                 if j == -roof_size + i + 1+y or j == roof_size - i - 1-y:
                     position = starting_pos + np.array([j, y, -i])
                     editor.placeBlock(position, Block(roof_block_type))
-
-    
-    
-    
-
-
 
 starting_pos = buildArea.begin
 wall_block_type = 'stone_bricks'
