@@ -6,8 +6,8 @@
   - [ ] At least 2 structures adapted to terrain features
     - [ ] Near or on steep cliff
     - [ ] Near or on water or ice
-    - [ ] In or around trees
-    - [ ] Flat terrain
+    - [x] In or around trees
+    - [x] Flat terrain
   - [ ] One specific feature for at least 4 biomes
 - [ ] Functionality
   - [x] Building count and placement randomized, does not create the exact same city twice
