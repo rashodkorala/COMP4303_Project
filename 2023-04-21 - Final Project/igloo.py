@@ -119,7 +119,7 @@ def rotate_direction(original_direction, rotation_angle):
     return directions[new_index]
 
 
-def build_igloo(editor, center_pos, block_type, radius,rotation_angle=0):
+def igloo(editor, center_pos, block_type, radius,rotation_angle=0):
     radius=6
     for x in range(-radius, radius + 1):
         for y in range(-1, radius + 1):
@@ -265,6 +265,6 @@ def build_igloo(editor, center_pos, block_type, radius,rotation_angle=0):
     editor.placeBlock(position, Block(f'campfire[facing={campfire_dir},lit=true]'))
 # Call the build_igloo() function to create an igloo rotated around the Y-axis by 45 degrees
 center_pos = buildArea.begin+np.array([0, 0, 0])
-build_igloo(editor, center_pos, "snow_block", 5, rotation_angle=0)
+igloo(editor, center_pos, "snow_block", 5, rotation_angle=0)
 
 

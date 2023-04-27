@@ -175,7 +175,7 @@ def jungle_center():
         geometry.placeCylinder(editor,addY(buildRect.center, height), m , 1, Block("bamboo"), tube=True)
 
 
-jungle_center()
+#jungle_center()
 
 
 

@@ -309,7 +309,7 @@ def add_windows(editor, starting_pos, window_type, height, building_h, interval,
 
 
 
-def archerTowerpy(editor, starting_pos, block_type, size, building_h=20):
+def archer_tower(editor, starting_pos, block_type, size, building_h=20):
     rotation_angle=random.choice([0,90,180,270])
     floor_height = building_h
 
@@ -399,4 +399,4 @@ height = 4
 block_type = 'stone_bricks'
 
 # Call the function to create the pyramid and its reflection in Minecraft
-archerTowerpy(editor, roof_starting_pos, block_type, height)
+# archer_tower(editor, roof_starting_pos, block_type, height)

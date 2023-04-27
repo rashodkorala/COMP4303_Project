@@ -113,7 +113,7 @@ def make_roof(editor, length, width, height, starting_pos, block_type, line_heig
 
 
 
-def make_townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type):
+def townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type):
     # Define dimensions and parameters
     length = 20
     width = 10
@@ -240,7 +240,7 @@ roof_block_type = 'stone'
 floor_block_type = 'oak_planks'
 window_block_type = 'glass_pane'
 staircase_block_type = 'oak_stairs'
-make_townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type)
+# townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type)
 
 
 """ def create_pyramid_and_reflection_in_xz_plane(editor, starting_pos, block_type, height, building_h=20):

@@ -105,20 +105,14 @@ for point in buildRect.outline:
     height = heightmap[tuple(point - buildRect.offset)]
 
     #building a wall
-    """
-    for y in range(height, height + 7):
+    
+    for y in range(height, height + 1):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
         
         # Place the second layer of blocks
-        editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
-    """ 
-
-
-def place_buildings(draw, build_area_size, build_area, editor, max_attempts = 100, grid = None, bunker_height= 0):
-    existing_buildings = []
-    
-
+        #editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
+     
 
 
 
@@ -127,14 +121,64 @@ def place_buildings(draw, build_area_size, build_area, editor, max_attempts = 10
 
 
 #importing structures
-from house import *
+from barracks import *
 from archer_tower import *
 from townhall import *
-from barracks import *
+from bunker import *
 from center_structures import *
+import random
+
+
+# Call the function to create the townhall
+starting_pos = buildArea.begin
+wall_block_type = 'stone_bricks'
+roof_block_type = 'stone'
+floor_block_type = 'oak_planks'
+window_block_type = 'glass_pane'
+staircase_block_type = 'oak_stairs'
+
+
+# Set the starting position and block types
+starting_pos = buildArea.begin+np.array([25,0,25])
+bunker_wall = 'oak_planks'
+bunker_roof = 'spruce_planks'
+bunker_floor = 'oak_planks'
+
+# Call the function to create the wooden barrack in Minecraft
+rotation_angle = 90
+
+# bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, rotation_angle)
+
+# townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type)
+
+
+height = 4 
+block_type = 'stone_bricks'
 
 
 
-build_tiny_house(buildArea.begin, editor)
+buildings_list = [barracks(editor, starting_pos), 
+                    archer_tower(editor, starting_pos, block_type, height), 
+                    townhall(editor, starting_pos, wall_block_type, roof_block_type, 
+                            floor_block_type, window_block_type, staircase_block_type), 
+                    bunker(editor, starting_pos, bunker_wall, bunker_roof, 
+                            bunker_floor, rotation_angle)]
 
+
+
+for building, kwargs in buildings_list:
+
+
+    x = random.randint(0, buildArea.size.x)
+    z = random.randint(0,  buildArea.size.z)
+
+    starting_pos = buildArea.begin + [x, 0, z]
+
+    building(editor, starting_pos, **kwargs)
+    
+    
+
+
+
+    
 
