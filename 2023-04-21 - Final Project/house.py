@@ -94,8 +94,8 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 
 print(f"Heightmap shape: {heightmap.shape}")
 
-def add(vec1, vec2):
-    return tuple(a + b for a, b in zip(vec1, vec2))
+# def add(vec1, vec2):
+#     return tuple(a + b for a, b in zip(vec1, vec2))
 
 desert_roof_blocks = ["minecraft:nether_bricks", "minecraft:deepslate_bricks"]
 plains_jungles_roof_blocks = ["minecraft:stone_bricks", "minecraft:dark_oak_planks"]
@@ -124,7 +124,7 @@ def rotate_direction(original_direction, rotation_angle):
     return directions[new_index]
 
 def blocks_for_this_biome(part, biome = None):
-    
+    block = None
     if "desert" in biome:
         if "roof" in part:
             block = Block(desert_roof_blocks[block_selection])
@@ -149,110 +149,230 @@ def blocks_for_this_biome(part, biome = None):
 
     return block
 
-def make_roof(editor, size, block_type, pyramid_starting_pos):
+def make_roof(editor, size, block_type, starting_pos, rotation_angle):
+ 
     for y in range(size):
         for x in range(-size + y + 1, size - y):
             for z in range(-size + y + 1, size - y):
-                position = pyramid_starting_pos + np.array([x, y, z])
-                if (abs(x) == size - y - 1 or abs(z) == size - y - 1 ):
+                position=starting_pos+rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
+                # position = pyramid_starting_pos + np.array([x, y, z])
+                position = position.astype(int)
+                if abs(x) == size - y - 1 or abs(z) == size - y - 1 : 
                     editor.placeBlock(position, Block(block_type))
                 else:
                     editor.placeBlock(position, Block("minecraft:air"))
 
+# def make_roof(editor, size, block_type, starting_pos, rotation_angle):
+#     for y in range(size):
+#         for x in range(-size, size ):
+#             for z in range(-size , size ):
+#                 position = starting_pos + rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
+#                 position = position.astype(int)
+
+#                 if abs(x) == size-y-1 or abs(z)==size-y-1:
+#                     editor.placeBlock(position, Block(block_type))
+#                 else:
+#                     editor.placeBlock(position, Block("minecraft:air"))
 
 
-def build_tiny_house(center, editor, base_level=0, biome=None,rotation_angle=0):
+
+
+
+def build_tiny_house(center, editor, base_level=0,biome=None,rotation_angle=180):
     """
     Build a tiny house at the specified center position.
     """
-    house_height = random.randint(6,8)
+    #choose randome even number between 6 and 8
+    house_height = 8 #random.randint(6,8)
     house_width = house_height
-    #height= 5
-    # roof_starting_pos= add(center, (0, house_height-1, 0))
-    roof_starting_pos=int(center+rotate_point_around_origin(np.array([0, house_height-1, 0]), rotation_angle))
+    # roof_starting_pos=center+rotate_point_around_origin(np.array([0, house_height-1, 0]), rotation_angle)
+    # roof_starting_pos=roof_starting_pos.astype(int)
 
-    #clear the area
-    
+    wall_block=blocks_for_this_biome("walls", biome)
+    roof_block=blocks_for_this_biome("roof", biome)
+    floor_block=blocks_for_this_biome("floor", biome)
     
     #build the floor
     for x in range(-house_width // 2, house_width // 2 + 1):
         for z in range(-house_width // 2, house_width // 2 + 1):
-
             #replaces the default floor with preferred block    
-
-            editor.placeBlock(add(center, (x, base_level-1, z)), blocks_for_this_biome("walls", biome))
+            position=center+rotate_point_around_origin(np.array([x, base_level-1, z]), rotation_angle)
+            position=position.astype(int)
+            editor.placeBlock(position, Block("spruce_planks"))
+            #add the x,z coordinates to the grid
+            
 
     # Build the walls
     for x in range(-house_width // 2, house_width // 2 + 1):
         for y in range(base_level, base_level + house_height):
             for z in range(-house_width // 2, house_width // 2 + 1):
+                position=center+rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
+                position=position.astype(int)
                 if x == -house_width // 2 or x == house_width // 2 or z == -house_width // 2 or z == house_width // 2:
-                    editor.placeBlock(add(center, (x, y, z)), blocks_for_this_biome("walls", "minecraft:snowy_tundra"))
+                    editor.placeBlock(position, wall_block)
                 else:
-                    editor.placeBlock(add(center, (x, y, z)), Block("minecraft:air"))
+                    editor.placeBlock(position, Block("minecraft:air"))
                     
     # Build the roof
     if house_height%2==0:
-        make_roof(editor, house_width//2+1, blocks_for_this_biome("roof", "minecraft:snowy_tundra"), roof_starting_pos)
+        make_roof(editor, house_width//2+1,roof_block, center+np.array([0,house_height-1,0]),rotation_angle)
     else:
-        make_roof(editor, house_width//2+2, blocks_for_this_biome("roof", "minecraft:snowy_tundra"), roof_starting_pos)
+        make_roof(editor,1,roof_block , center+np.array([0,house_height-1,0]),rotation_angle)
 
     # Build the door
-    # editor.placeBlock(add(center, (0, base_level, -house_width // 2)), Block("iron door"))
-    editor.placeBlock(add(center, (0, base_level, -house_width // 2)), Block("spruce_door"))
-    editor.placeBlock(add(center, (-1, base_level +2, -house_width // 2-1)), Block("minecraft:wall_torch[facing=north]"))
-    editor.placeBlock(add(center, (1, base_level +2, -house_width // 2-1)), Block("minecraft:wall_torch[facing=north]"))
+    position=center+rotate_point_around_origin(np.array([0, base_level, -house_width // 2]), rotation_angle)
+    position=position.astype(int)
+    door_dir=rotate_direction("south", rotation_angle)
+    editor.placeBlock(position, Block(f'spruce_door[facing={door_dir}]'))
+    
+    position=center+rotate_point_around_origin(np.array([-1, base_level+2, -house_width // 2-1]), rotation_angle)
+    position=position.astype(int)
+    wall_torch_dir=rotate_direction("north", rotation_angle)
+    editor.placeBlock(position, Block(f'wall_torch[facing={wall_torch_dir}]'))
+
+    position=center+rotate_point_around_origin(np.array([1, base_level+2, -house_width // 2-1]), rotation_angle)
+    position=position.astype(int)
+    editor.placeBlock(position, Block(f'wall_torch[facing={wall_torch_dir}]'))
 
     # Build windows
     for z in range(-house_width // 2, house_width // 2):
         rand= random.randint(2,house_width-2)
-        editor.placeBlock(add(center, (-house_width // 2, base_level +rand, z)), Block("minecraft:glass_pane"))
-        # editor.placeBlock(add(center, (house_width // 2, base_level + 1, -z)), Block("minecraft:glass_pane"))
-        editor.placeBlock(add(center, (house_width // 2, base_level + 1,-z)), Block("minecraft:glass_pane"))
-        editor.placeBlock(add(center, (z, base_level + random.randint(3,house_width-2), -house_width // 2)), Block("minecraft:glass_pane"))
-        editor.placeBlock(add(center, (z, base_level + random.randint(3,house_width-2), house_width // 2)), Block("minecraft:glass_pane"))
+        position=center+rotate_point_around_origin(np.array([-house_width // 2, base_level +rand, z]), rotation_angle)
+        position=position.astype(int)
+        editor.placeBlock(position, Block("minecraft:glass_pane"))
+        # editor.placeBlock(add(center, (-house_width // 2, base_level +rand, z)), Block("minecraft:glass_pane"))
+        position=center+rotate_point_around_origin(np.array([house_width // 2, base_level +1, -z]), rotation_angle)
+        position=position.astype(int)
+        editor.placeBlock(position, Block("minecraft:glass_pane"))
+        # editor.placeBlock(add(center, (house_width // 2, base_level + 1,-z)), Block("minecraft:glass_pane"))
+        
+        position=center+rotate_point_around_origin(np.array([z, base_level + random.randint(3,house_width-2), -house_width // 2]), rotation_angle)
+        position=position.astype(int)
+        editor.placeBlock(position, Block("minecraft:glass_pane"))
+        # editor.placeBlock(add(center, (z, base_level + random.randint(3,house_width-2), -house_width // 2)), Block("minecraft:glass_pane"))
+        
+        position=center+rotate_point_around_origin(np.array([z, base_level + random.randint(3,house_width-2), house_width // 2]), rotation_angle)
+        position=position.astype(int)
+        editor.placeBlock(position, Block("minecraft:glass_pane"))
+        # editor.placeBlock(add(center, (z, base_level + random.randint(3,house_width-2), house_width // 2)), Block("minecraft:glass_pane"))
 
-    editor.placeBlock(add(center, (house_width // 2, base_level + 1, 0)), Block("minecraft:glass_pane"))
-    editor.placeBlock(add(center, (0, base_level + 1, house_width // 2)), Block("minecraft:glass_pane"))
+    position=center+rotate_point_around_origin(np.array([-house_width // 2, base_level +1, 0]), rotation_angle)
+    position=position.astype(int)
+    editor.placeBlock(position, Block("minecraft:glass_pane"))
+    position=center+rotate_point_around_origin(np.array([0, base_level +1, house_width // 2]), rotation_angle)
+    position=position.astype(int)
+    editor.placeBlock(position, Block("minecraft:glass_pane"))
+
+    # editor.placeBlock(add(center, (house_width // 2, base_level + 1, 0)), Block("minecraft:glass_pane"))
+    # editor.placeBlock(add(center, (0, base_level + 1, house_width // 2)), Block("minecraft:glass_pane"))
 
     # Place the bed
-    editor.placeBlock(add(center, (-house_width//2+2, base_level, house_width//2-2)), Block("minecraft:red_bed[part=foot, facing=south]"))
+    position=center+rotate_point_around_origin(np.array([-house_width // 2+2, base_level, house_width // 2-2]), rotation_angle)
+    position=position.astype(int)
+    bedtype=random.choice(["red_bed","white_bed","black_bed","blue_bed","brown_bed","cyan_bed","gray_bed","green_bed","light_blue_bed","light_gray_bed","lime_bed","magenta_bed","orange_bed","pink_bed","purple_bed","yellow_bed"])
+    bed_dir=rotate_direction("south", rotation_angle)
+    editor.placeBlock(position, Block(f'{bedtype}[facing={bed_dir}]'))
+    # editor.placeBlock(add(center, (-house_width//2+2, base_level, house_width//2-2)), Block("minecraft:red_bed[part=foot, facing=south]"))
     if (house_width > 6):
-        editor.placeBlock(add(center, (-house_width//2+3, base_level, house_width//2-2)), Block("minecraft:red_bed[part=foot, facing=south]"))
+        position=center+rotate_point_around_origin(np.array([-house_width // 2+3, base_level, house_width // 2-2]), rotation_angle)
+        position=position.astype(int)
+        editor.placeBlock(position, Block(f'{bedtype}[facing={bed_dir}]'))
+        # editor.placeBlock(add(center, (-house_width//2+3, base_level, house_width//2-2)), Block("minecraft:red_bed[part=foot, facing=south]"))
     #place table next bed
-    editor.placeBlock(add(center, (-house_width//2+1, base_level,house_width // 2-1)), Block("minecraft:spruce_planks"))
-    editor.placeBlock(add(center, (-house_width//2+1, base_level, house_width // 2-2)), Block("minecraft:spruce_trapdoor[facing=north, half=bottom, open=true]"))
+
+    position=center+rotate_point_around_origin(np.array([-house_width // 2+1, base_level, house_width // 2-1]), rotation_angle)
+    position=position.astype(int)
+    editor.placeBlock(position, Block("minecraft:spruce_planks"))
+    position=center+rotate_point_around_origin(np.array([-house_width // 2+1, base_level, house_width // 2-2]), rotation_angle)
+    position=position.astype(int)
+    trapdoor_dir=rotate_direction("north", rotation_angle)
+    editor.placeBlock(position, Block(f'minecraft:spruce_trapdoor[facing={trapdoor_dir}, half=bottom, open=true]'))
+    # editor.placeBlock(add(center, (-house_width//2+1, base_level,house_width // 2-1)), Block("minecraft:spruce_planks"))
+    # editor.placeBlock(add(center, (-house_width//2+1, base_level, house_width // 2-2)), Block("minecraft:spruce_trapdoor[facing=north, half=bottom, open=true]"))
 
 
     #place lantern
-    editor.placeBlock(add(center, (-house_width//2+1, base_level + 1, house_width // 2-1)), Block("minecraft:lantern[hanging=false]"))
+    position=center+rotate_point_around_origin(np.array([-house_width // 2+1, base_level + 1, house_width // 2-1]), rotation_angle)
+    position=position.astype(int)
+    editor.placeBlock(position, Block("minecraft:lantern[hanging=false]"))
+
+    # editor.placeBlock(add(center, (-house_width//2+1, base_level + 1, house_width // 2-1)), Block("minecraft:lantern[hanging=false]"))
 
     #place barrel
-    editor.placeBlock(add(center, (house_width//2-1, base_level+2,  house_width // 2-1)), Block("minecraft:barrel[facing=north]"))
-    editor.placeBlock(add(center, (house_width//2-2, base_level+2,  house_width // 2-1)), Block("minecraft:barrel[facing=north]"))
+    position=center+rotate_point_around_origin(np.array([house_width // 2-1, base_level + 2, house_width // 2-1]), rotation_angle)
+    position=position.astype(int)
+    barrel_dir=rotate_direction("north", rotation_angle)
+    editor.placeBlock(position, Block(f'minecraft:barrel[facing={barrel_dir}]'))
+    editor.placeBlock(position+np.array([0,-1,0]), Block(f'minecraft:spruce_trapdoor[facing={barrel_dir}, half=top, open=false]'))
+    # editor.placeBlock(add(center, (house_width//2-1, base_level+2,  house_width // 2-1)), Block("minecraft:barrel[facing=north]"))
+    position=center+rotate_point_around_origin(np.array([house_width // 2-2, base_level + 2, house_width // 2-1]), rotation_angle)
+    position=position.astype(int)
+    editor.placeBlock(position, Block(f'minecraft:barrel[facing={barrel_dir}]'))
+    editor.placeBlock(position+np.array([0,-1,0]), Block(f'minecraft:spruce_trapdoor[facing={barrel_dir}, half=top, open=false]'))
+    # editor.placeBlock(add(center, (house_width//2-2, base_level+2,  house_width // 2-1)), Block("minecraft:barrel[facing=north]"))
 
-    editor.placeBlock(add(center, (house_width//2-1, base_level+1,  house_width // 2-1)), Block("minecraft:spruce_trapdoor[facing=north, half=top, open=false]"))
-    editor.placeBlock(add(center, (house_width//2-2, base_level+1,  house_width // 2-1)), Block("minecraft:spruce_trapdoor[facing=north, half=top, open=false]"))
+
+    #place trapdoor under barrel
+    
+    # editor.placeBlock(position, Block("minecraft:spruce_trapdoor[facing=north, half=top, open=false]"))
+    # editor.placeBlock(add(center, (house_width//2-2, base_level+1,  house_width // 2-1)), Block("minecraft:spruce_trapdoor[facing=north, half=top, open=false]"))
     
     #place cauldron
-    editor.placeBlock(add(center, (house_width//2-1, base_level,  house_width // 2-1)), Block("minecraft:water_cauldron[level=3]"))
+    position=center+rotate_point_around_origin(np.array([house_width // 2-1, base_level, house_width // 2-1]), rotation_angle)
+    position=position.astype(int)
+    editor.placeBlock(position, Block("minecraft:water_cauldron[level=3]"))
+    # editor.placeBlock(add(center, (house_width//2-1, base_level,  house_width // 2-1)), Block("minecraft:water_cauldron[level=3]"))
     #place flower pot
-    editor.placeBlock(add(center, (-house_width//2+1, base_level+1,-house_width // 2+1)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
-    editor.placeBlock(add(center, (-house_width//2+1, base_level+2,-house_width // 2+1)), Block("minecraft:potted_oak_sapling"))
+    position=center+rotate_point_around_origin(np.array([-house_width // 2+1, base_level+1,-house_width // 2+1]), rotation_angle)
+    position=position.astype(int)
+    trapdoor_dir=rotate_direction("east", rotation_angle)
+    editor.placeBlock(position, Block(f'minecraft:spruce_trapdoor[facing={trapdoor_dir}, half=top, open=false]'))
+    position=position+np.array([0,+1,0])
+    pot_type="potted_"+random.choice(["dandelion", "poppy", "blue_orchid", "allium", "azure_bluet", "red_tulip", "orange_tulip", "white_tulip", "pink_tulip", "oxeye_daisy", "cornflower", "lily_of_the_valley"])
+    editor.placeBlock(position, Block(f'minecraft:{pot_type}'))
+    # editor.placeBlock(add(center, (-house_width//2+1, base_level+1,-house_width // 2+1)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
+    # editor.placeBlock(add(center, (-house_width//2+1, base_level+2,-house_width // 2+1)), Block("minecraft:potted_oak_sapling"))
 
     #place chest
-    editor.placeBlock(add(center, (-house_width//2+1, base_level+3, -house_width//2+3)), Block("minecraft:chest[facing=east]"))
-    editor.placeBlock(add(center, (-house_width//2+1, base_level+3, -house_width//2+2)), Block("minecraft:chest[facing=east]"))
-    editor.placeBlock(add(center, (-house_width//2+1, base_level+2, -house_width//2+3)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
-    editor.placeBlock(add(center, (-house_width//2+1, base_level+2, -house_width//2+2)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
+    position=center+rotate_point_around_origin(np.array([-house_width // 2+1, base_level+3,-house_width // 2+3]), rotation_angle)
+    position=position.astype(int)
+    chest_dir=rotate_direction("east", rotation_angle)
+    editor.placeBlock(position, Block(f'minecraft:chest[facing={chest_dir}]'))
+    position=position+np.array([0,0,1])
+    editor.placeBlock(position, Block(f'minecraft:chest[facing={chest_dir}]'))
+    position=position+np.array([0,-1,0])
+    editor.placeBlock(position, Block(f'minecraft:spruce_trapdoor[facing={chest_dir}, half=top, open=false]'))
+    position=position+np.array([0,0,-1])
+    editor.placeBlock(position, Block(f'minecraft:spruce_trapdoor[facing={chest_dir}, half=top, open=false]'))
+    # editor.placeBlock(add(center, (-house_width//2+1, base_level+3, -house_width//2+3)), Block("minecraft:chest[facing=east]"))
+    # editor.placeBlock(add(center, (-house_width//2+1, base_level+3, -house_width//2+2)), Block("minecraft:chest[facing=east]"))
+    # editor.placeBlock(add(center, (-house_width//2+1, base_level+2, -house_width//2+3)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
+    # editor.placeBlock(add(center, (-house_width//2+1, base_level+2, -house_width//2+2)), Block("minecraft:spruce_trapdoor[facing=east, half=top, open=false]"))
 
     #add lanterns to corners of the house if it is big enough
     if (house_width > 7):
-        editor.placeBlock(add(center, (-house_width//2+2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
-        editor.placeBlock(add(center, (-house_width//2+2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
-        editor.placeBlock(add(center, (house_width//2-2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
-        editor.placeBlock(add(center, (house_width//2-2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
+        position=center+rotate_point_around_origin(np.array([-house_width // 2+2, house_width, -house_width // 2+3]), rotation_angle)
+        position=position.astype(int)
+        editor.placeBlock(position, Block("minecraft:lantern[hanging=true]"))
 
-build_tiny_house(buildArea.begin, editor)
+        position=center+rotate_point_around_origin(np.array([-house_width // 2+2, house_width, house_width // 2-3]), rotation_angle)
+        position=position.astype(int)
+        editor.placeBlock(position, Block("minecraft:lantern[hanging=true]"))
+
+        position=center+rotate_point_around_origin(np.array([house_width // 2-2, house_width, -house_width // 2+3]), rotation_angle)
+        position=position.astype(int)
+        editor.placeBlock(position, Block("minecraft:lantern[hanging=true]"))
+
+        position=center+rotate_point_around_origin(np.array([house_width // 2-2, house_width, house_width // 2-3]), rotation_angle)
+        position=position.astype(int)
+        editor.placeBlock(position, Block("minecraft:lantern[hanging=true]"))
+        # editor.placeBlock(add(center, (-house_width//2+2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
+        # editor.placeBlock(add(center, (-house_width//2+2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
+        # editor.placeBlock(add(center, (house_width//2-2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
+        # editor.placeBlock(add(center, (house_width//2-2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
+
+biome=editor.getBiome(buildArea.begin)
+print(biome)
+build_tiny_house(buildArea.begin, editor,biome=biome)
 
 
