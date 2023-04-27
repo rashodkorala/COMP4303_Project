@@ -126,21 +126,21 @@ def rotate_direction(original_direction, rotation_angle):
 def blocks_for_this_biome(part, biome = None):
     
     if "desert" in biome:
-        if part == "roof":
+        if "roof" in part:
             block = Block(desert_roof_blocks[block_selection])
-        if part == "walls":
+        if "walls" in part:
             block = Block(desert_wall_blocks[block_selection])
 
     elif "plains" in biome or "jungle" in biome:
-        if part == "roof":
+        if "roof" in part:
             block = Block(plains_jungles_roof_blocks[block_selection])
-        if part == "walls":
+        if "walls" in part:
             block = Block(plains_jungles_wall_blocks[block_selection])
 
     elif "snow" in biome or "snowy" in biome:
-        if part == "roof":
+        if "roof" in part:
             block = Block(snow_roof_blocks[block_selection])
-        if part == "walls":
+        if "walls" in part:
             block = Block(snow_wall_blocks[block_selection])
 
     #need to improve else condition
