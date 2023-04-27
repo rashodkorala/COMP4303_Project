@@ -134,6 +134,14 @@ def create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor
                     editor.placeBlock(position, Block(wall_block_type))
                 else:
                     editor.placeBlock(position, Block('air'))
+
+    for x in range(length):
+        for y in range(wall_height, 0, -1):
+            for z in range(width):
+                position = starting_pos + rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
+                position = position.astype(int)
+                if not (x == 0 or x == length - 1 or z == 0 or z == width - 1): 
+                    editor.placeBlock(position, Block('air'))
      # Create floor
     for x in range(length):
         for z in range(width):
@@ -241,7 +249,7 @@ def create_barrack(editor, starting_pos, wall_block_type, roof_block_type, floor
 
 
 # Set the starting position and block types
-starting_pos = buildArea.begin+np.array([25,0,25])
+starting_pos = buildArea.begin+np.array([0,0,0])
 wall_block_type = 'oak_planks'
 roof_block_type = 'spruce_planks'
 floor_block_type = 'oak_planks'
