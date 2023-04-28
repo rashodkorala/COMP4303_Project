@@ -187,7 +187,7 @@ house_structure_width = get_barracks_dimensions()
 archer_tower_size = get_archer_tower_dimensions()
 
 # Set the number of structures to place
-num_barracks_structures = 6
+num_barracks_structures = 2
 num_archer_tower_structures = 2
 buffer_distance = 5
 
@@ -220,7 +220,7 @@ for _ in range(num_barracks_structures):
 
 
 for _ in range(num_archer_tower_structures):
-    random_center = generate_random_position(house_structure_width)
+    random_center = generate_random_position(archer_tower_size)
     local_pos= getlocal(random_center)
     print(local_pos)
     # barracks(editor,random_center,biome,grid,house_structure_width)
