@@ -147,8 +147,9 @@ def jungle_center():
         
         height = heightmap[tuple(point - buildRect.offset)]
 
-    geometry.placeCylinder(editor,addY(buildRect.center, height-1), 55 , 1, Block("grass_block"))
     geometry.placeCylinder(editor,addY(buildRect.center, height), 55 , 20, Block("air"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height-1), 55 , 1, Block("grass_block"))
+
 
     #placing the beaconss
     print("Placing beacon...")
@@ -175,7 +176,7 @@ def jungle_center():
         geometry.placeCylinder(editor,addY(buildRect.center, height), m , 1, Block("bamboo"), tube=True)
 
 
-#jungle_center()
+jungle_center()
 
 
 

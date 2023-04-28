@@ -308,15 +308,20 @@ def add_windows(editor, starting_pos, window_type, height, building_h, interval,
 # In the archerTowerpy() function, call add_windows() after add_torches()
 
 def get_archer_tower_dimensions():
-    building_h = random.choice([10, 20])
+    building_height = random.randint(10, 20)
     size = random.choice([4, 6])
-    return building_h
+    building_width = size
+    building_length = size
+    return building_height, size, building_width, building_length
 
 
-def archer_tower(editor, starting_pos, block_type, size):
+def archer_tower(editor, starting_pos, block_type):
     rotation_angle=random.choice([0,90,180,270])
-    building_h = get_archer_tower_dimensions()
+    building_h = get_archer_tower_dimensions()[0]
+    size = get_archer_tower_dimensions()[1]
+
     floor_height = building_h
+
 
     # Build the pyramid
     for y in range(floor_height):
@@ -404,4 +409,4 @@ roof_starting_pos = buildArea.begin + np.array([0, 0, 0])
 block_type = 'stone_bricks'
 
 # Call the function to create the pyramid and its reflection in Minecraft
-#archer_tower(editor, roof_starting_pos, block_type, size = 4)
+#archer_tower(editor, roof_starting_pos, block_type)

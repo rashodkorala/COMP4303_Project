@@ -106,7 +106,7 @@ for point in buildRect.outline:
 
     #building a wall
     
-    for y in range(height, height + 1):
+    for y in range(height, height + 4):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
         
@@ -196,10 +196,14 @@ def place_or_get_buildings(draw, buildings_list, build_area_size, build_area, ed
            
             building_width = get_barracks_dimensions()
             building_length = building_width
-            
-        # if building == archer_tower:
-        #      building_h = get_archer_tower_dimensions()
-        #      building_width, building_height, building_length =  building(editor, build_area.begin, block_type)
+
+        if building == archer_tower:
+            building_height = get_archer_tower_dimensions()[0]
+            size = get_archer_tower_dimensions()[1]
+            building_width = get_archer_tower_dimensions()[2]
+            building_length = get_archer_tower_dimensions()[3]
+            block_type = 'stone_bricks'
+            #building_width, building_height, building_length =  building(editor, build_area.begin, block_type)
         # if building == townhall:
         #      building_width, building_height, building_length =  building(editor, build_area.begin, wall_block_type, roof_block_type, 
         #                         floor_block_type, window_block_type, staircase_block_type) 
@@ -223,6 +227,10 @@ def place_or_get_buildings(draw, buildings_list, build_area_size, build_area, ed
                     if draw:
                         # Call the building function with the starting position to create the building
                         starting_pos = buildArea.begin + [x, 0, z]
+                        # for point in buildRect.outline:
+        
+                        #     height = heightmap[tuple(point - buildRect.offset)]
+                        # geometry.placeCylinder(editor,addY(starting_pos, height), 20 , , Block("air"), tube=False, hollow=False)
                         building(editor, starting_pos)
                     break
 
