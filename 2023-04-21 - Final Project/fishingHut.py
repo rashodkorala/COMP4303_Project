@@ -95,43 +95,89 @@ print(f"Available heightmaps: {worldSlice.heightmaps.keys()}")
 heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 
 print(f"Heightmap shape: {heightmap.shape}")
+""" def build_fishing_hut(editor, starting_pos, hut_size):
+    # Build the base and walls
+    for x in range(-hut_size, hut_size + 1):
+        for z in range(-hut_size, hut_size + 1):
+            for y in range(4):
+                if y == 0:
+                    editor.placeBlock(starting_pos + np.array([x, y, z]), Block("oak_planks"))
+                elif x in (-hut_size, hut_size) or z in (-hut_size, hut_size):
+                    editor.placeBlock(starting_pos + np.array([x, y, z]), Block("oak_log"))
+                else:
+                    editor.placeBlock(starting_pos + np.array([x, y, z]), Block("air"))
+
+    # Add a roof (not shown in this example)
+    for y in range(4, 4 + hut_size + 1):
+        for x in range(-hut_size - 1, hut_size + 2):
+            for z in range(-hut_size - 1, hut_size + 2):
+                if z == -hut_size - 1 or z == hut_size + 1:
+                    distance_from_edge = abs(y - 4)
+                    if abs(x) <= hut_size - distance_from_edge:
+                        editor.placeBlock(starting_pos + np.array([x, y, z]), Block("oak_stairs", {"facing": "north" if z < 0 else "south"}))
 
 
-def build_farm(editor, starting_pos, farm_size, crop_type):
-    # Clear the area
+    # Place a door
+    editor.placeBlock(starting_pos + np.array([-hut_size, 1, 0]), Block("oak_door", {"facing": "west", "half": "lower"}))
+
+    # Add windows (not shown in this example)
     ...
-    
-    # Create farmland and plant crops one block above the ground
-    for x in range(-farm_size, farm_size + 1):
-        for z in range(-farm_size, farm_size + 1):
-            # Check if the position is in the middle line of the farm
-            if x == 0:
-                # Place water
-                editor.placeBlock(starting_pos+np.array([x, -1, z]), Block("dirt"))
-                editor.placeBlock(starting_pos + np.array([x, 0, z]), Block("water"))
+
+    # Build a dock or pier
+    for x in range(-hut_size - 1, hut_size + 2):
+        for z in range(2 * hut_size + 1, 2 * hut_size + 4):
+            if z == 2 * hut_size + 1:
+                editor.placeBlock(starting_pos + np.array([x, 0, z]), Block("oak_log"))
             else:
-                # Place farmland
-                editor.placeBlock(starting_pos + np.array([x, 0, z]), Block("farmland"))
+                editor.placeBlock(starting_pos + np.array([x, 0, z]), Block("oak_planks"))
 
-                # Plant crops
-                crop_type=random.choice(["wheat", "carrots", "potatoes"])
-                editor.placeBlock(starting_pos + np.array([x, 1, z]), Block(crop_type, {"age": "2"}))
+    # Add interior elements
+    editor.placeBlock(starting_pos + np.array([0, 1, 0]), Block("crafting_table"))
+    editor.placeBlock(starting_pos + np.array([1, 1, 0]), Block("chest"))
+    editor.placeBlock(starting_pos + np.array([-1, 1, 0]), Block("furnace"))
 
-    # Add a fence around the farm
-    for x in range(-farm_size - 1, farm_size + 2):
-        for z in range(-farm_size - 1, farm_size + 2):
-            if x in (-farm_size - 1, farm_size + 1) or z in (-farm_size - 1, farm_size + 1):
-                editor.placeBlock(starting_pos + np.array([x, 1, z]), Block("oak_fence"))
-
-    # Add a gate to the fence
+    # Add decorative elements (not shown in this example)
     ...
 
-    # Surround the farm with oak logs at ground level
-    for x in range(-farm_size - 1, farm_size + 2):
-        for z in range(-farm_size - 1, farm_size + 2):
-            if x in (-farm_size - 1, farm_size + 1) or z in (-farm_size - 1, farm_size + 1):
-                editor.placeBlock(starting_pos + np.array([x,0, z]), Block("oak_log"))
-    editor.placeBlock(starting_pos + np.array([0, 0, 0]), Block("water"))
-# Build a farm with a specific crop type, a fence around it, a gate, and oak logs surrounding the farm
-starting_pos=buildArea.begin
-build_farm(editor, starting_pos, farm_size=5, crop_type="wheat")
+# Build a fishing hut with a specified size
+starting_pos = buildArea.begin+np.array([0, 0, 0])
+build_fishing_hut(editor, starting_pos, hut_size=3) """
+
+
+worldSlice.heightmaps["OCEAN_FLOOR"] = heightmap
+
+buildArea.begin = buildArea.begin + np.array([0, 0, 0])
+print(heightmap[0, 0])
+
+
+# editor.placeBlock(buildArea.begin + np.array(w[0, 0, 0]), Block("oak_planks"))
+
+def is_near_water(editor, starting_pos, check_radius,heightmap):
+    water_count = 0
+    total_blocks = 0
+
+    for x in range(-check_radius, check_radius + 1):
+        for y in range(-check_radius, check_radius + 1):
+            for z in range(-check_radius, check_radius + 1):
+                total_blocks += 1
+                block = editor.getBlock(starting_pos + np.array([x, y, z]))
+                if block.name == "water":
+                    water_count += 1
+
+    # Calculate the percentage of water blocks in the surrounding area
+    water_percentage = water_count / total_blocks
+
+    # Consider the building near or on water if more than a certain percentage of blocks are water
+    if water_percentage > 0.2:
+        return True
+    else:
+        return False
+
+
+# Check if the building is near or on water
+near_water = is_near_water(editor, starting_pos, check_radius=10)
+
+if near_water:
+    print("The building is near or on water.")
+else:
+    print("The building is not near or on water.")
