@@ -168,15 +168,24 @@ def get_barracks_dimensions():
    
     return house_width
 
-def barracks(editor, center, base_level=0,biome=None):
+def barracks(editor, center,biome=None,grid=None,width=None,grid_start_pos=0):
     """
     Build a tiny house at the specified center position.
     """
     #choose randome even number between 6 and 8
-    house_width = get_barracks_dimensions()
+    if grid is None:
+        print("grid is none ")
+        return
+    
+    if width is None:
+        print("width is none ")
+        return
+
+    house_width = width
     house_height = house_width
     biome = "plains"
     rotation_angle=random.choice([0, 90, 180, 270])
+    base_level=0
     # roof_starting_pos=center+rotate_point_around_origin(np.array([0, house_height-1, 0]), rotation_angle)
     # roof_starting_pos=roof_starting_pos.astype(int)
 
@@ -187,7 +196,10 @@ def barracks(editor, center, base_level=0,biome=None):
     #build the floor
     for x in range(-house_width // 2, house_width // 2 + 1):
         for z in range(-house_width // 2, house_width // 2 + 1):
-            #replaces the default floor with preferred block    
+            #replaces the default floor with preferred block
+            local_pos=grid_start_pos+rotate_point_around_origin(np.array([x, base_level-1, z]), rotation_angle)
+            local_pos=local_pos.astype(int)
+            grid.set_grid(local_pos[0],local_pos[2],1)
             position=center + rotate_point_around_origin(np.array([x, base_level-1, z]), rotation_angle)
             position=position.astype(int)
             editor.placeBlock(position, Block("spruce_planks"))
@@ -212,6 +224,9 @@ def barracks(editor, center, base_level=0,biome=None):
         make_roof(editor,1,roof_block , center+np.array([0,house_height-1,0]),rotation_angle)
 
     # Build the door
+    local_pos=grid_start_pos+rotate_point_around_origin(np.array([0, base_level, -house_width // 2]), rotation_angle)
+    local_pos=local_pos.astype(int)
+    grid.set_grid(local_pos[0],local_pos[2],3) #setting the door position to 3 in the grid mark it as a goal
     position=center+rotate_point_around_origin(np.array([0, base_level, -house_width // 2]), rotation_angle)
     position=position.astype(int)
     door_dir=rotate_direction("south", rotation_angle)

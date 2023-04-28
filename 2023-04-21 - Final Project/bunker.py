@@ -110,10 +110,12 @@ def rotate_direction(original_direction, rotation_angle):
     return directions[new_index]
 
 
-def bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type,rotation_angle=0):
+def bunker(editor, starting_pos,biome,grid,underground_height=5,grid_local=0):
     #add randome angle out of 90,180,270
-    rotation_angle = random.choice([0,90,180,270])
-    underground_height =random.randint(3,5) #5
+    wall_block_type = 'oak_planks'
+    roof_block_type = 'spruce_planks'
+    floor_block_type = 'oak_planks'
+    rotation_angle = 0#random.choice([0,90,180,270])
     length = underground_height + 5 #9
     width = length #9
     
@@ -137,6 +139,9 @@ def bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_t
      # Create floor
     for x in range(length):
         for z in range(width):
+            local_pos=grid_local+rotate_point_around_origin(np.array([x,0,z]), rotation_angle)
+            local_pos = local_pos.astype(int)
+            grid.set_grid(local_pos[0],local_pos[2],1)
             position = starting_pos + rotate_point_around_origin(np.array([x, 0, z]), rotation_angle)
             position = position.astype(int)
             # position = starting_pos + np.array([x, 0, z])
@@ -242,9 +247,7 @@ def bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_t
 
 # Set the starting position and block types
 starting_pos = buildArea.begin+np.array([25,0,25])
-wall_block_type = 'oak_planks'
-roof_block_type = 'spruce_planks'
-floor_block_type = 'oak_planks'
+
 
 # Call the function to create the wooden barrack in Minecraft
 rotation_angle = 90

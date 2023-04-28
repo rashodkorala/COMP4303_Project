@@ -29,3 +29,5 @@
 2023-04-21 - Final Project/biomes/grass/grass_biome.py
 *.mp4
 *.pyc
+.DS_Store
+.DS_Store
