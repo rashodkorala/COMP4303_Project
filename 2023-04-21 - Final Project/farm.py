@@ -65,6 +65,38 @@ worldSlice = editor.loadWorldSlice(buildRect)
 print("World slice loaded!")
 
 
+
+
+# Most of worldSlice's functions have a "local" and a "global" variant. The local variant expects
+# coordinates relatve to the rect with which it was constructed, while the global variant expects
+# absolute coorndates.
+
+
+vec = addY(buildRect.center, 0)
+print(f"Block at {vec}: {worldSlice.getBlock(vec - buildArea.offset)}")
+print(f"Block at {vec}: {worldSlice.getBlockGlobal(vec)}")
+
+
+# Heightmaps are an easy way to get the uppermost block at any coordinate. They are very useful for
+# writing terrain-adaptive generator algorithms.
+# World slices provide access to the heightmaps that Minecraft stores in its chunk format, so you
+# get their computation for free.
+#
+# By default, world slices load the following four heightmaps:
+# - "WORLD_SURFACE":             The top non-air blocks.
+# - "MOTION_BLOCKING":           The top blocks with a hitbox or fluid.
+# - "MOTION_BLOCKING_NO_LEAVES": Like MOTION_BLOCKING, but ignoring leaves.
+# - "OCEAN_FLOOR":               The top non-air solid blocks.
+#
+# Heightmaps are loaded into 2D numpy arrays of Y coordinates.
+
+print(f"Available heightmaps: {worldSlice.heightmaps.keys()}")
+
+heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
+
+print(f"Heightmap shape: {heightmap.shape}")
+
+
 def build_farm(editor, starting_pos, farm_size, crop_type):
     # Clear the area
     ...
