@@ -119,7 +119,7 @@ def rotate_direction(original_direction, rotation_angle):
     return directions[new_index]
 
 
-def igloo(editor, center_pos, block_type, radius,rotation_angle=0):
+def igloo(editor, center_pos, block_type, radius,grid,grid_local,rotation_angle=0):
     radius=6
     for x in range(-radius, radius + 1):
         for y in range(-1, radius + 1):
@@ -140,6 +140,9 @@ def igloo(editor, center_pos, block_type, radius,rotation_angle=0):
 
                 # Create a floor using the same block type as the igloo
                 if y== -1 :
+                    grid_pos=grid_local+local_pos
+                    grid_pos=grid_pos.astype(int)
+                    grid.set_grid(grid_pos[0],grid_pos[2],1)
                     editor.placeBlock(position, Block(block_type))
                     if (x<3 and x>-3) and (z<3 and z>-3):
                         editor.placeBlock(position, Block("oak_planks"))
@@ -167,6 +170,9 @@ def igloo(editor, center_pos, block_type, radius,rotation_angle=0):
 
     local_pos= np.array([radius-1, 0, 0])
     local_pos = rotate_point_around_origin(local_pos, rotation_angle)
+    grid_pos=grid_local+local_pos
+    grid_pos=grid_pos.astype(int)
+    grid.set_grid(grid_pos[0],grid_pos[2],3) #set the grid to 3 to indicate that there is a door
     position = center_pos + local_pos
     position = position.astype(int)  # Convert the position to integers
     door_direction = rotate_direction('west', rotation_angle)
