@@ -167,6 +167,7 @@ block_array1=["chiseled_red_sandstone","chiseled_sandstone"]
 def create_initial_floor(width, height, block_array):
     return [[random.choice(block_array) for _ in range(width)] for _ in range(height)]
 
+#add Celluar Automata to the floor
 def count_neighbors(x, y, floor, block_type):
     neighbors = 0
     for dx in range(-1, 2):
@@ -205,7 +206,7 @@ def update_floor(floor, block_array, birth_limit, death_limit):
 
     return new_floor
 
-
+#rule 90
 def update_floor_rule_90(floor, block_array):
     new_floor = [[None for _ in range(len(floor[0]))] for _ in range(len(floor))]
 
@@ -221,7 +222,7 @@ def update_floor_rule_90(floor, block_array):
 
     return new_floor
 
-
+#inner pyramid
 def build_inner_pyramid(editor, size, block_type, pyramid_starting_pos, bl_array=block_array):
     for y in range(size):
         for x in range(-size + y + 1, size - y):
@@ -234,8 +235,10 @@ def build_inner_pyramid(editor, size, block_type, pyramid_starting_pos, bl_array
                     editor.placeBlock(position, Block("chiseled_red_sandstone"))
                 if (abs(x) == size - y - 1 or abs(z) == size - y - 1 ):
                     editor.placeBlock(position+np.array([0,1,0]), Block("torch"))
-                
-def build_inverted_pyramid(editor, size, block_type, pyramid_starting_pos, bl_array=block_array):
+
+#outer pyramid       
+def build_inverted_pyramid(editor, size,pyramid_starting_pos,grid,grid_local):
+    bl_array=block_array
     birth_limit = 2
     death_limit = 1
     door_size = 3
@@ -253,6 +256,8 @@ def build_inverted_pyramid(editor, size, block_type, pyramid_starting_pos, bl_ar
                 if (abs(x) == size - y - 1 or abs(z) == size - y - 1 ):
                     editor.placeBlock(position, CA_block_type_wall)
                 elif y == 0:
+                    local_pos=grid_local+np.array([x, y, z])
+                    grid.set_grid(local_pos[0],local_pos[2],1)
                     editor.placeBlock(position, CA_block_type)
                 else:
                     editor.placeBlock(position, Block("air"))
@@ -271,6 +276,9 @@ def build_inverted_pyramid(editor, size, block_type, pyramid_starting_pos, bl_ar
     for y in range(1,door_size+1):
         for x in range(door_size):
             for z in range(-1,door_size-1):
+                if x==1:
+                    local_pos=grid_local+np.array([size-2-x, y, z])
+                    grid.set_grid(local_pos[0],local_pos[2],3)
                 editor.placeBlock(starting_pos + np.array([size-2-x, y, z]), Block("air"))
     
 pyramid_size = 14#random.randint(10, 14)
