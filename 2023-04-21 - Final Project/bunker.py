@@ -233,7 +233,7 @@ def bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_t
         bed_direction = rotate_direction('east', rotation_angle)
         editor.placeBlock(position, Block(f'red_bed[facing={bed_direction},part=foot]'))
 
-
+    return length
 
     
 

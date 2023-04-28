@@ -357,6 +357,7 @@ def barracks(editor, center, base_level=0,biome=None):
         # editor.placeBlock(add(center, (-house_width//2+2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
         # editor.placeBlock(add(center, (house_width//2-2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
         # editor.placeBlock(add(center, (house_width//2-2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
+    return house_width
 
 """ biome=editor.getBiome(buildArea.begin)
 print(biome)

@@ -157,24 +157,34 @@ block_type = 'stone_bricks'
 
 
 
-buildings_list = [barracks(editor, starting_pos), 
-                    archer_tower(editor, starting_pos, block_type, height), 
-                    townhall(editor, starting_pos, wall_block_type, roof_block_type, 
-                            floor_block_type, window_block_type, staircase_block_type), 
-                    bunker(editor, starting_pos, bunker_wall, bunker_roof, 
-                            bunker_floor, rotation_angle)]
 
 
+buildings_list = [barracks, 
+                    archer_tower, 
+                    townhall, 
+                    bunker]
 
-for building, kwargs in buildings_list:
+
+for building in buildings_list:
 
     x = random.randint(0, buildArea.size.x)
     z = random.randint(0,  buildArea.size.z)
-
+    print(x,z)
     starting_pos = buildArea.begin + [x, 0, z]
-    building(editor, starting_pos, **kwargs)
 
-    
+    if building == barracks:
+        building(editor, starting_pos)
+    if building == archer_tower:
+        building(editor, starting_pos, block_type, height)
+    if building == townhall:
+        building(editor, starting_pos, wall_block_type, roof_block_type, 
+                            floor_block_type, window_block_type, staircase_block_type)
+    if building == bunker:
+        building(editor, starting_pos, bunker_wall, bunker_roof, 
+                            bunker_floor, rotation_angle)
+
+
+
     
     
 
