@@ -138,5 +138,5 @@ def build_farm(editor, starting_pos, farm_size, crop_type,grid,grid_local):
                 editor.placeBlock(starting_pos + np.array([x,0, z]), Block("oak_log"))
     editor.placeBlock(starting_pos + np.array([0, 0, 0]), Block("water"))
 # Build a farm with a specific crop type, a fence around it, a gate, and oak logs surrounding the farm
-starting_pos=buildArea.begin
-build_farm(editor, starting_pos, farm_size=5, crop_type="wheat")
+# starting_pos=buildArea.begin
+# build_farm(editor, starting_pos, farm_size=5, crop_type="wheat")
