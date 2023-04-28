@@ -224,13 +224,13 @@ for _ in range(num_archer_tower_structures):
     local_pos= getlocal(random_center)
     print(local_pos)
     # barracks(editor,random_center,biome,grid,house_structure_width)
-    is_overlap=will_overlap(grid,local_pos,house_structure_width,house_structure_width)
+    is_overlap=will_overlap(grid,local_pos,archer_tower_size,archer_tower_size)
     print(is_overlap)
 
     while is_overlap:
-        random_center = generate_random_position(house_structure_width)
+        random_center = generate_random_position(archer_tower_size)
         local_pos= getlocal(random_center)
-        is_overlap=will_overlap(grid,local_pos,house_structure_width,house_structure_width)
+        is_overlap=will_overlap(grid,local_pos,archer_tower_size,archer_tower_size)
         print(is_overlap)
         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
             is_overlap=True
