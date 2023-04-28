@@ -120,7 +120,6 @@ def rotate_direction(original_direction, rotation_angle):
 
 
 def igloo(editor, center_pos, block_type, radius,grid,grid_local,rotation_angle=0):
-    radius=6
     for x in range(-radius, radius + 1):
         for y in range(-1, radius + 1):
             for z in range(-radius, radius + 1):
