@@ -227,11 +227,13 @@ def barracks(editor, center,biome=None,grid=None,width=None,grid_start_pos=0):
     local_pos=grid_start_pos+rotate_point_around_origin(np.array([0, base_level, -house_width // 2]), rotation_angle)
     local_pos=local_pos.astype(int)
     grid.set_grid(local_pos[0],local_pos[2],3) #setting the door position to 3 in the grid mark it as a goal
+
     position=center+rotate_point_around_origin(np.array([0, base_level, -house_width // 2]), rotation_angle)
     position=position.astype(int)
     door_dir=rotate_direction("south", rotation_angle)
     editor.placeBlock(position, Block(f'spruce_door[facing={door_dir}]'))
     
+    #add torches
     position=center+rotate_point_around_origin(np.array([-1, base_level+2, -house_width // 2-1]), rotation_angle)
     position=position.astype(int)
     wall_torch_dir=rotate_direction("north", rotation_angle)

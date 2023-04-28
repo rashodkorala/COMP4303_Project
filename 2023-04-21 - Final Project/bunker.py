@@ -178,7 +178,7 @@ def bunker(editor, starting_pos,biome,grid,underground_height=5,grid_local=0):
     #add a door
     local_pos=grid_local+rotate_point_around_origin(np.array([0,underground_height,width//2]), rotation_angle)
     local_pos = local_pos.astype(int)
-    grid.set_grid(local_pos[0],local_pos[2],1)
+    grid.set_grid(local_pos[0],local_pos[2],3) #set goal to 3
     position = starting_pos + rotate_point_around_origin(np.array([0,underground_height,width//2]), rotation_angle)
     position = position.astype(int)
     # position=starting_pos+np.array([0,underground_height,width//2])
