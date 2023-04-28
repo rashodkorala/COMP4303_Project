@@ -242,9 +242,11 @@ def rotate_direction(original_direction, rotation_angle):
     new_index = (index + int(rotation_angle / 90)) % len(directions)
     return directions[new_index]
 
-def build_floor(editor, starting_pos, block_type, floor_width, floor_height):
+def build_floor(editor, starting_pos, block_type, floor_width,local_pos, floor_height,grid):
     for i in range(-floor_width, floor_width + 1):
         for j in range(-floor_width, floor_width + 1):
+            grid_pos=local_pos+np.array([i,0,j])
+            grid.set_grid(grid_pos[0],grid_pos[2],1)
             position = starting_pos + np.array([i, floor_height, j])
             editor.placeBlock(position, Block(block_type))
 
@@ -315,7 +317,7 @@ def get_archer_tower_dimensions():
     return building_height, size, building_width, building_length
 
 
-def archer_tower(editor, starting_pos,biome,size,grid):
+def archer_tower(editor, starting_pos,biome,size,grid,local_pos):
     block_type = 'stone_bricks'
     rotation_angle=random.choice([0,90,180,270])
     building_h = get_archer_tower_dimensions()[0]
@@ -353,8 +355,8 @@ def archer_tower(editor, starting_pos,biome,size,grid):
     #add a door to the tower
     
     # Build the floor
-    build_floor(editor, starting_pos, block_type, size, floor_height=0)
-    build_floor(editor, starting_pos, block_type, size-1, floor_height-4)
+    build_floor(editor, starting_pos, block_type, size, local_pos,floor_height=0,gird=grid)
+    build_floor(editor, starting_pos, block_type, size-1, local_pos,floor_height-4,grid=grid)
     
 
     add_torches(editor, starting_pos, "lantern[hanging=false]","spruce_slab[type=top]",size-1, building_h, interval=4)
