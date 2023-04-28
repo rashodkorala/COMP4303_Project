@@ -176,16 +176,94 @@ def jungle_center():
         geometry.placeCylinder(editor,addY(buildRect.center, height), m , 1, Block("bamboo"), tube=True)
 
 
-jungle_center()
-
-
-
-""" def plain_center():
-def snow_center(): """
 
 
 
 
+def plains_center():
 
+    for point in buildRect.outline:
+        
+        height = heightmap[tuple(point - buildRect.offset)]
+    
+    #build the center building
+    geometry.placeCylinder(editor,addY(buildRect.center, height), 30-4 , 10, Block("dark_oak_planks"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+9), 28-4 , 1, Block("glowstone"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+10), 22-4 , 5, Block("stone_bricks"))
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+15), 28 -4 , 5, Block("dark_oak_planks"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+19), 26 -4 , 1, Block("glowstone"), tube=True)
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+20), 20 -4, 5, Block("stone_bricks"))
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+25), 26-4 , 5, Block("dark_oak_planks"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+29), 24-4 , 1, Block("glowstone"), tube=True)
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+30), 18-4 , 5, Block("stone_bricks"))
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+35), 24-4 , 5, Block("dark_oak_planks"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+39), 22-4 , 1, Block("glowstone"), tube=True)
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+40), 16-4 , 5, Block("stone_bricks"))
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+45), 22-4 , 5, Block("dark_oak_planks"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+49), 20-4 , 1, Block("glowstone"), tube=True)
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+50), 14-4 , 5, Block("stone_bricks"))
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+55), 16-4 , 10, Block("dark_oak_planks"), tube=True)
+    geometry.placeCylinder(editor,addY(buildRect.center, height+65), 20-4 , 4, Block("stone_bricks"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height+68), 18-4 , 1, Block("glowstone"), tube=True)
+
+    geometry.placeCylinder(editor,addY(buildRect.center, height+69), 16-4 , 4, Block("stone_bricks"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height+73), 14-4, 4, Block("stone_bricks"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height+77), 12-4 , 4, Block("stone_bricks"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height+81), 10-4 , 4, Block("stone_bricks"))
+    geometry.placeCylinder(editor,addY(buildRect.center, height+85), 24-4 , 4, Block("stone_bricks"))
+
+
+
+
+
+def snow_center():
+    for point in buildRect.outline:
+        height = heightmap[tuple(point - buildRect.offset)]
+
+    #build the center building
+    geometry.placeCylinder(editor, addY(buildRect.center, height), 30 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+2), 28 , 1, Block("snow_block"), tube=True)
+
+    geometry.placeCylinder(editor, addY(buildRect.center, height+3), 22 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+5), 20 , 1, Block("snow_block"), tube=True)
+
+    geometry.placeCylinder(editor, addY(buildRect.center, height+6), 18 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+8), 16 , 1, Block("snow_block"), tube=True)
+
+    geometry.placeCylinder(editor, addY(buildRect.center, height+9), 14 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+11), 12 , 1, Block("snow_block"), tube=True)
+
+    geometry.placeCylinder(editor, addY(buildRect.center, height+12), 10 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+14), 8 , 1, Block("snow_block"), tube=True)
+
+    geometry.placeCylinder(editor, addY(buildRect.center, height+15), 6 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+17), 4 , 1, Block("snow_block"), tube=True)
+
+    geometry.placeCylinder(editor, addY(buildRect.center, height+18), 2 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+20), 1 , 1, Block("snow_block"), tube=True)
+
+    geometry.placeCylinder(editor, addY(buildRect.center, height+21), 2 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+23), 4 , 1, Block("snow_block"), tube=True)
+
+    geometry.placeCylinder(editor, addY(buildRect.center, height+24), 6 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+26), 8 , 1, Block("snow_block"), tube=True)
+
+    geometry.placeCylinder(editor, addY(buildRect.center, height+27), 10 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+29), 12 , 1, Block("snow_block"), tube=True)
+
+    geometry.placeCylinder(editor, addY(buildRect.center, height+30), 14 , 2, Block("blue_ice"), tube=True)
+    geometry.placeCylinder(editor, addY(buildRect.center, height+32), 15 , 1, Block("snow_block"), tube=True)
+
+
+snow_center()
 
 
