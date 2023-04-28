@@ -168,13 +168,13 @@ buildings_list = [barracks(editor, starting_pos),
 
 for building, kwargs in buildings_list:
 
-
     x = random.randint(0, buildArea.size.x)
     z = random.randint(0,  buildArea.size.z)
 
     starting_pos = buildArea.begin + [x, 0, z]
-
     building(editor, starting_pos, **kwargs)
+
+    
     
     
 
