@@ -162,42 +162,8 @@ def make_roof(editor, size, block_type, starting_pos, rotation_angle):
                 else:
                     editor.placeBlock(position, Block('air'))
 
-    for x in range(length):
-        for y in range(wall_height, 0, -1):
-            for z in range(width):
-                position = starting_pos + rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
-                position = position.astype(int)
-                if not (x == 0 or x == length - 1 or z == 0 or z == width - 1): 
-                    editor.placeBlock(position, Block('air'))
-     # Create floor
-    for x in range(length):
-        for z in range(width):
-            position = starting_pos + rotate_point_around_origin(np.array([x, 0, z]), rotation_angle)
-            position = position.astype(int)
-            # position = starting_pos + np.array([x, 0, z])
-            editor.placeBlock(position, Block(floor_block_type))
-    # Create roof
-    for y in range(roof_height):
-        for x in range(y, length - y):
-            for z in range(y, width - y):
-                position = starting_pos + rotate_point_around_origin(np.array([x, wall_height + y, z]), rotation_angle)
-                position = position.astype(int)
-                # position = starting_pos + np.array([x, wall_height + y, z])
-                if z == y or z == width - y - 1 or x == y or x == length - y - 1:
-                    editor.placeBlock(position, Block(roof_block_type))
-                else:
-                    editor.placeBlock(position, Block('air'))
 
-#                 if abs(x) == size-y-1 or abs(z)==size-y-1:
-#                     editor.placeBlock(position, Block(block_type))
-#                 else:
-#                     editor.placeBlock(position, Block("minecraft:air"))
-
-
-
-
-
-def barracks(editor, center, base_level=0,biome=None,rotation_angle=180):
+def barracks(editor, center, base_level=0,biome=None):
     """
     Build a tiny house at the specified center position.
     """
@@ -205,6 +171,7 @@ def barracks(editor, center, base_level=0,biome=None,rotation_angle=180):
     house_height = 8 #random.randint(6,8)
     house_width = house_height
     biome = "plains"
+    rotation_angle=random.choice([0, 90, 180, 270])
     # roof_starting_pos=center+rotate_point_around_origin(np.array([0, house_height-1, 0]), rotation_angle)
     # roof_starting_pos=roof_starting_pos.astype(int)
 

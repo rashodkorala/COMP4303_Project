@@ -94,14 +94,33 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 print(f"Heightmap shape: {heightmap.shape}")
 
 
-def build_treehouse(editor, starting_pos, tree_height, platform_height, platform_radius, house_height, block_type):
-    # Generate the tree
-    
+def rotate_point_around_origin(point, angle_degrees):
+    angle_radians = np.radians(angle_degrees)
+    cos_angle = np.cos(angle_radians)
+    sin_angle = np.sin(angle_radians)
 
+    rotated_x = point[0] * cos_angle - point[2] * sin_angle
+    rotated_z = point[0] * sin_angle + point[2] * cos_angle
+
+    return np.array([rotated_x, point[1], rotated_z])
+
+def rotate_direction(original_direction, rotation_angle):
+    directions = ['north', 'east', 'south', 'west']
+    index = directions.index(original_direction)
+    new_index = (index + int(rotation_angle / 90)) % len(directions)
+    return directions[new_index]
+
+def build_treehouse(editor, starting_pos):
+    block_type = Block("jungle_planks")
+    # Generate the tree
+    tree_height = 15
+    platform_height = 10
+    platform_radius= 6
+    house_height= 5
+    rotation_angle = 0
     # Create the platform
     for x in range(-platform_radius, platform_radius + 1):
         for z in range(-platform_radius, platform_radius + 1):
-            if x * x + z * z <= platform_radius * platform_radius:
                 editor.placeBlock(starting_pos + np.array([x, platform_height, z]), Block("jungle_log"))
 
     # Build walls
@@ -125,7 +144,9 @@ def build_treehouse(editor, starting_pos, tree_height, platform_height, platform
         for x in range(-platform_radius, platform_radius, 2):
             for z in range(-platform_radius, platform_radius, 2):
                 if x in (-platform_radius, platform_radius - 1) or z in (-platform_radius, platform_radius - 1) and (x!=platform_radius or z!=-platform_radius):
-                    editor.placeBlock(starting_pos + np.array([x, platform_height + y, z]), Block("glass"))
+                    position=starting_pos+rotate_point_around_origin(np.array([x, platform_height + y, z]), rotation_angle)
+                    position=position.astype(int)
+                    editor.placeBlock(position, Block("glass"))
 
     # Add a roof
     for x in range(-platform_radius - 1, platform_radius + 2):
@@ -136,10 +157,6 @@ def build_treehouse(editor, starting_pos, tree_height, platform_height, platform
     for y in range(1, platform_height+3):
         # editor.placeBlock(starting_pos + np.array([0, y, 0]), Block("air"))
         editor.placeBlock(starting_pos + np.array([0, y, -1]), Block("ladder"))
-
-    # Add a door
-    editor.placeBlock(starting_pos + np.array([1, platform_height + 1, -platform_radius]), Block("jungle_fence"))
-
     # Add random spruce leaves around the house and on top
     leaf_density = 0.5  # Adjust this value to control the density of leaves (0.0 to 1.0)
 
@@ -148,5 +165,52 @@ def build_treehouse(editor, starting_pos, tree_height, platform_height, platform
             for z in range(-platform_radius - 1, platform_radius + 2):
                 if ((x in (-platform_radius - 1, platform_radius + 1) or z in (-platform_radius - 1, platform_radius + 1)) or (
                     y == house_height + 1)) and random.random() < leaf_density:
-                    editor.placeBlock(starting_pos + np.array([x, platform_height + y, z]), Block("jungle_leaves"))
-build_treehouse(editor, buildArea.begin, 15, 10, 5, 5, Block("oak_log"))
+                    editor.placeBlock(starting_pos + np.array([x, platform_height + y, z]), Block("jungle_leaves")) 
+    # Add lanterns inside corners
+    lantern_positions = [
+        (int(platform_radius - 1*0.8), house_height+platform_height-1, int(platform_radius - 1*0.8)),
+        (int(-platform_radius + 1*0.8), house_height+platform_height-1, int(platform_radius - 1*0.8)),
+        (int(platform_radius - 1*0.8), house_height+platform_height-1, int(-platform_radius + 1*0.8)),
+        (int(-platform_radius + 1*0.8), house_height+platform_height-1, int(-platform_radius + 1*0.8))
+    ]
+
+    for lantern_position in lantern_positions:
+        x, y, z = lantern_position
+        editor.placeBlock(starting_pos + np.array([x, y, z]), Block("lantern[hanging=true]"))
+
+    #add a bed 
+    bed_positions = [
+        (1, platform_height + 1, -platform_radius + 2),
+        (2, platform_height + 1, -platform_radius + 2)
+    ]
+    bed_type=random.choice(["red_bed", "gray_bed", "green_bed", "black_bed","white_bed"])
+    for bed_position in bed_positions:
+        x, y, z = bed_position
+        position=starting_pos+rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
+       
+        bed_dir=rotate_direction("north", rotation_angle)
+        position=position.astype(int)
+        editor.placeBlock(position, Block(f'{bed_type}[facing={bed_dir},part=foot]') )
+
+    # Add a cauldron
+    cauldron_position = np.array([-platform_radius + 2, platform_height + 1, platform_radius - 1])
+    position=starting_pos+rotate_point_around_origin(cauldron_position, rotation_angle)
+    position=position.astype(int)
+    editor.placeBlock(position, Block("water_cauldron[level=3]"))
+
+    # Add a chest
+    chest_position = np.array([-platform_radius + 1, platform_height + 1, -platform_radius + 2])
+    position=starting_pos+rotate_point_around_origin(chest_position, rotation_angle)
+    position=position.astype(int)
+    chest_dir=rotate_direction("east", rotation_angle)
+    editor.placeBlock(position, Block(f'chest[facing={chest_dir}]'))
+
+    # Add a barrel
+    barrel_position = np.array([platform_radius - 2, platform_height+house_height-1 , platform_radius - 1])
+    position=starting_pos+rotate_point_around_origin(barrel_position, rotation_angle)
+    position=position.astype(int)
+    barr_dir=rotate_direction("north", rotation_angle)
+    editor.placeBlock(position, Block(f'barrel[facing={barr_dir}]'))
+
+
+build_treehouse(editor, buildArea.begin)
