@@ -196,6 +196,7 @@ def place_or_get_buildings(draw, buildings_list, build_area_size, build_area, ed
            
             building_width = get_barracks_dimensions()
             building_length = building_width
+            
         # if building == archer_tower:
         #      building_h = get_archer_tower_dimensions()
         #      building_width, building_height, building_length =  building(editor, build_area.begin, block_type)
@@ -244,8 +245,8 @@ def is_overlapping(new_building, existing_buildings, gap=5):
 
 # Generate random building position within the build area
 def random_building_position(building_width, building_depth, build_area_size):
-    x = random.randint(0, build_area_size.x - building_width)
-    z = random.randint(0, build_area_size.z - building_depth)
+    x = random.randint(0, build_area_size.x - building_width-4)
+    z = random.randint(0, build_area_size.z - building_depth-4)
     return x, z
 
 
