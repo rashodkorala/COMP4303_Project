@@ -193,19 +193,22 @@ def place_or_get_buildings(draw, buildings_list, build_area_size, build_area, ed
     
     for building in buildings_list:
         if building == barracks:
-             building_width, building_height, building_length =  building(editor, build_area.begin)
-        if building == archer_tower:
-             building_width, building_height, building_length =  building(editor, build_area.begin, block_type, height)
-        if building == townhall:
-             building_width, building_height, building_length =  building(editor, build_area.begin, wall_block_type, roof_block_type, 
-                                floor_block_type, window_block_type, staircase_block_type) 
-        if building == bunker:
-             building_width, building_height, building_length =  building(editor, build_area.begin, bunker_wall, bunker_roof, 
-                                bunker_floor, rotation_angle)
+           
+            building_width = get_barracks_dimensions()
+            building_length = building_width
+        # if building == archer_tower:
+        #      building_h = get_archer_tower_dimensions()
+        #      building_width, building_height, building_length =  building(editor, build_area.begin, block_type)
+        # if building == townhall:
+        #      building_width, building_height, building_length =  building(editor, build_area.begin, wall_block_type, roof_block_type, 
+        #                         floor_block_type, window_block_type, staircase_block_type) 
+        # if building == bunker:
+        #      building_width, building_height, building_length =  building(editor, build_area.begin, bunker_wall, bunker_roof, 
+        #                         bunker_floor, rotation_angle) 
         
 
         # Generate random number of building placements
-        building_number = random.randint(2, 3)
+        building_number = random.choice([2,3])
 
         # Try to find a non-overlapping position for the building
         for i in range(building_number):
@@ -234,15 +237,15 @@ def is_overlapping(new_building, existing_buildings, gap=5):
     for building in existing_buildings:
         if not (new_building["x"] + new_building["width"] + gap <= building["x"] or
                 new_building["x"] >= building["x"] + building["width"] + gap or
-                new_building["z"] + new_building["depth"] + gap <= building["z"] or
-                new_building["z"] >= building["z"] + building["depth"] + gap):
+                new_building["z"] + new_building["length"] + gap <= building["z"] or
+                new_building["z"] >= building["z"] + building["length"] + gap):
             return True
     return False
 
 # Generate random building position within the build area
 def random_building_position(building_width, building_depth, build_area_size):
-    x = random.randint(0, build_area_size.x - 4 - building_width)
-    z = random.randint(0, build_area_size.z - 4 - building_depth)
+    x = random.randint(0, build_area_size.x - building_width)
+    z = random.randint(0, build_area_size.z - building_depth)
     return x, z
 
 
