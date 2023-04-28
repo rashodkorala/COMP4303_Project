@@ -201,22 +201,22 @@ def generate_random_position(structure_width):
 # Place the structures at random locations
 biome = "plains"  # Replace this with the biome detected by your algorithm
 
-for _ in range(num_barracks_structures):
-    random_center = generate_random_position(house_structure_width)
-    local_pos= getlocal(random_center)
-    print(local_pos)
-    # barracks(editor,random_center,biome,grid,house_structure_width)
-    is_overlap=will_overlap(grid,local_pos,house_structure_width,house_structure_width)
-    print(is_overlap)
+# for _ in range(num_barracks_structures):
+#     random_center = generate_random_position(house_structure_width)
+#     local_pos= getlocal(random_center)
+#     print(local_pos)
+#     # barracks(editor,random_center,biome,grid,house_structure_width)
+#     is_overlap=will_overlap(grid,local_pos,house_structure_width,house_structure_width)
+#     print(is_overlap)
 
-    while is_overlap:
-        random_center = generate_random_position(house_structure_width)
-        local_pos= getlocal(random_center)
-        is_overlap=will_overlap(grid,local_pos,house_structure_width,house_structure_width)
-        print(is_overlap)
-        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
-            is_overlap=True
-    barracks(editor,random_center,biome,grid,house_structure_width,local_pos)
+#     while is_overlap:
+#         random_center = generate_random_position(house_structure_width)
+#         local_pos= getlocal(random_center)
+#         is_overlap=will_overlap(grid,local_pos,house_structure_width,house_structure_width)
+#         print(is_overlap)
+#         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
+#             is_overlap=True
+#     barracks(editor,random_center,biome,grid,house_structure_width,local_pos)
 
 
 for _ in range(num_archer_tower_structures):
@@ -234,7 +234,7 @@ for _ in range(num_archer_tower_structures):
         print(is_overlap)
         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
             is_overlap=True
-    archer_tower(editor,random_center,biome,grid,archer_tower_size,local_pos)
+    archer_tower(editor,random_center,biome,archer_tower_size,grid,local_pos)
 
 
 

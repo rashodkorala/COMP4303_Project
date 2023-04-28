@@ -355,7 +355,7 @@ def archer_tower(editor, starting_pos,biome,size,grid,local_pos):
     #add a door to the tower
     
     # Build the floor
-    build_floor(editor, starting_pos, block_type, size, local_pos,floor_height=0,gird=grid)
+    build_floor(editor, starting_pos, block_type, size, local_pos,floor_height=0,grid=grid)
     build_floor(editor, starting_pos, block_type, size-1, local_pos,floor_height-4,grid=grid)
     
 
