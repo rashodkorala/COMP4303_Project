@@ -162,14 +162,18 @@ def make_roof(editor, size, block_type, starting_pos, rotation_angle):
                 else:
                     editor.placeBlock(position, Block('air'))
 
+def get_barracks_dimensions():
+    #choose randome even number between 6 and 8
+    house_width, house_height = 6
+   
+    return house_height, house_width
 
 def barracks(editor, center, base_level=0,biome=None):
     """
     Build a tiny house at the specified center position.
     """
     #choose randome even number between 6 and 8
-    house_height = 8 #random.randint(6,8)
-    house_width = house_height
+    house_height, house_width = get_barracks_dimensions()
     biome = "plains"
     rotation_angle=random.choice([0, 90, 180, 270])
     # roof_starting_pos=center+rotate_point_around_origin(np.array([0, house_height-1, 0]), rotation_angle)
@@ -357,7 +361,7 @@ def barracks(editor, center, base_level=0,biome=None):
         # editor.placeBlock(add(center, (-house_width//2+2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
         # editor.placeBlock(add(center, (house_width//2-2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
         # editor.placeBlock(add(center, (house_width//2-2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
-    return house_width
+    
 
 """ biome=editor.getBiome(buildArea.begin)
 print(biome)
