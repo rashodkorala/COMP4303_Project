@@ -133,8 +133,6 @@ def clear_area_and_terrain_detector(buildRect, editor, world_slice):
                 block = editor.getBlock((x, start - 1, z))
                 leavescount=leavescount+1
 
-            if "water" in block.id:
-                watercount=watercount+1
             if "dirt" in block.id:
                 editor.placeBlock((x, start - 1, z), Block("grass_block"))
             for y in range(start, end):
@@ -143,8 +141,11 @@ def clear_area_and_terrain_detector(buildRect, editor, world_slice):
             
     print("Done!")          
 
-watercount,leavescount,grasscount=clear_area_and_terrain_detector(buildRect, editor, worldSlice)
+# watercount,leavescount,grasscount=clear_area_and_terrain_detector(buildRect, editor, worldSlice)
 
-print(f"Water count: {watercount}")
-print(f"Leaves count: {leavescount}")
-print(f"Grass count: {grasscount}")
+# print(f"Water count: {watercount}")
+# print(f"Leaves count: {leavescount}")
+# print(f"Grass count: {grasscount}")
+
+
+print(buildRect._offset)

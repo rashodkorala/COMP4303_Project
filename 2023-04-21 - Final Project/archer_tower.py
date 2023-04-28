@@ -315,7 +315,8 @@ def get_archer_tower_dimensions():
     return building_height, size, building_width, building_length
 
 
-def archer_tower(editor, starting_pos, block_type):
+def archer_tower(editor, starting_pos,biome,size,grid):
+    block_type = 'stone_bricks'
     rotation_angle=random.choice([0,90,180,270])
     building_h = get_archer_tower_dimensions()[0]
     size = get_archer_tower_dimensions()[1]
@@ -375,7 +376,7 @@ def archer_tower(editor, starting_pos, block_type):
     door_dir=rotate_direction("west", rotation_angle)
     editor.placeBlock(position, Block(f'spruce_door[facing={door_dir} ,half=lower,hinge=left]'))
 
-    starting_pos[1] = starting_pos[1] + floor_height
+    roof_pos=starting_pos + np.array([0, floor_height, 0])
     # Build the roof
     roof_block_type = "spruce_planks"
     roof_size=size+1
@@ -383,14 +384,14 @@ def archer_tower(editor, starting_pos, block_type):
         for i in range(roof_size-y):
             for j in range(-roof_size + i + 1+y, roof_size - i-y):
                 if j == -roof_size + i + 1+y or j == roof_size - i - 1-y:
-                    position = starting_pos + np.array([j, y, i])
+                    position = roof_pos + np.array([j, y, i])
                     editor.placeBlock(position, Block(roof_block_type))
 
     # Build the reflection of the roof
         for i in range(roof_size-y):
             for j in range(-roof_size + i + 1+ y, roof_size - i-y):
                 if j == -roof_size + i + 1+y or j == roof_size - i - 1-y:
-                    position = starting_pos + np.array([j, y, -i])
+                    position = roof_pos + np.array([j, y, -i])
                     editor.placeBlock(position, Block(roof_block_type))
 
 starting_pos = buildArea.begin
@@ -406,7 +407,7 @@ roof_starting_pos = buildArea.begin + np.array([0, 0, 0])
     # Set the height of the pyramid
 # height = 4
     # roof_starting_pos =buildArea.begin+np.array([0,0,0])
-block_type = 'stone_bricks'
+
 
 # Call the function to create the pyramid and its reflection in Minecraft
 #archer_tower(editor, roof_starting_pos, block_type)
