@@ -97,7 +97,7 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 print(f"Heightmap shape: {heightmap.shape}")
 
 
-def build_farm(editor, starting_pos, farm_size, crop_type):
+def build_farm(editor, starting_pos, farm_size, crop_type,grid,grid_local):
     # Clear the area
     ...
     
@@ -105,6 +105,8 @@ def build_farm(editor, starting_pos, farm_size, crop_type):
     for x in range(-farm_size, farm_size + 1):
         for z in range(-farm_size, farm_size + 1):
             # Check if the position is in the middle line of the farm
+            local_pos = grid_local+np.array([x, 0, z])
+            grid.set_grid(local_pos[0],local_pos[2],1)
             if x == 0:
                 # Place water
                 editor.placeBlock(starting_pos+np.array([x, -1, z]), Block("dirt"))
@@ -124,7 +126,10 @@ def build_farm(editor, starting_pos, farm_size, crop_type):
                 editor.placeBlock(starting_pos + np.array([x, 1, z]), Block("oak_fence"))
 
     # Add a gate to the fence
-    ...
+    gate_position = (-farm_size - 1, 0, 0)
+    local_pos=grid_local+np.array(gate_position)
+    grid.set_grid(local_pos[0],local_pos[2],3)
+    editor.placeBlock(starting_pos + np.array(gate_position), Block("oak_fence_gate", {"facing": "east", "in_wall": "false"}))
 
     # Surround the farm with oak logs at ground level
     for x in range(-farm_size - 1, farm_size + 2):
