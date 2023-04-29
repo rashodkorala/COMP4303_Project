@@ -404,15 +404,6 @@ def barracks(editor, center,biome=None,grid=None,width=None,grid_start_pos=0):
         # editor.placeBlock(add(center, (house_width//2-2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
     
 
-    local_pos=grid_start_pos+rotate_point_around_origin(np.array([0, base_level, -house_width // 2]), rotation_angle)
-    local_pos=local_pos.astype(int)
-    grid.set_grid(local_pos[0],local_pos[2],3)
-
-    position=center+rotate_point_around_origin(np.array([0, base_level-1, -house_width // 2-1]), rotation_angle)
-    position=position.astype(int)
-    door_dir=rotate_direction("south", rotation_angle)
-    editor.placeBlock(position, Block("spruce_stair"))
-
 """ biome=editor.getBiome(buildArea.begin)
 print(biome)
 barracks(buildArea.begin, editor,biome=biome)
@@ -425,9 +416,9 @@ for i in range(3):
     barracks(buildArea.begin + [x, 0, z], editor) """
 
 
-grid=Grid(buildArea.size.x,buildArea.size.z)
-center=buildArea.begin
-biome="plain_biome"
-width=6
-grid_start=[0,0,0]
-barracks(editor,center,biome,grid,width,grid_start)
+# grid=Grid(buildArea.size.x,buildArea.size.z)
+# center=buildArea.begin
+# biome="plain_biome"
+# width=6
+# grid_start=[0,0,0]
+# barracks(editor,center,biome,grid,width,grid_start)
