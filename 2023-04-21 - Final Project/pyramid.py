@@ -287,7 +287,7 @@ def build_inverted_pyramid(editor, size,pyramid_starting_pos,grid,grid_local):
 
 
 
-def main(size,starting_position,grid,grid_local):
+def main(editor,size,starting_position,grid,grid_local):
     pyramid_size = size
     print(pyramid_size)
     starting_pos = starting_position
@@ -300,10 +300,9 @@ def main(size,starting_position,grid,grid_local):
     print(rand1,rand2)
 
     random_block_array=[block_array[rand1],block_array[rand2]]
-    build_inverted_pyramid(editor,pyramid_size, pyramid_block_type, starting_pos,grid,grid_local)
+    build_inverted_pyramid(editor,pyramid_size, starting_pos,grid,grid_local)
     pyramid_size = pyramid_size - pyramid_size//2 - pyramid_size//4
     pyramid_block_type = Block("chiseled_sandstone")
 
     build_inner_pyramid(editor, pyramid_size, pyramid_block_type, starting_pos+np.array([0,pyramid_size//2-1,0]))
   
-
