@@ -113,7 +113,7 @@ def make_roof(editor, length, width, height, starting_pos, block_type, line_heig
 
 
 
-def townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type):
+def townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type,grid):
     # Define dimensions and parameters
     length = 20
     width = 10
@@ -137,6 +137,7 @@ def townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block
     for x in range(1, length - 1):
         for y in range(0, 2 * wall_height-2 , wall_height):
             for z in range(1, width - 1):
+                grid.set_grid(x,z,1)
                 position = starting_pos + np.array([x, y, z])
                 editor.placeBlock(position, Block(floor_block_type))
 

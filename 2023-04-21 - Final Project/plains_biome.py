@@ -246,7 +246,7 @@ for _ in range(num_townhall_structures):
         print(is_overlap)
         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2:
             break
-    townhall(editor,random_center,wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type) 
+    townhall(editor,random_center,wall_block_type, roof_block_type, floor_block_type, window_block_type,grid) 
     
 
 for _ in range(num_barracks_structures):
@@ -350,7 +350,7 @@ from Grid import a_star_search
 #         previus_goal=goal
 #     else:
 #         print("No path found")
-
+time.sleep(5)
 grid.print_grid()
 
 # build_paths_from_grid(editor, grid,Block("spruce_planks"),[STARTX,1,STARTZ],heigtmap=heightmap)
