@@ -93,46 +93,6 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 
 print(f"Heightmap shape: {heightmap.shape}")
 
-
-desert_roof_blocks = random.choice(["minecraft:nether_bricks", "minecraft:deepslate_bricks"])
-plains_jungles_roof_blocks = random.choice(["minecraft:stone_bricks", "minecraft:dark_oak_planks"])
-snow_roof_blocks = random.choice(["minecraft:oak_log", "minecraft:black_stained_glass"])
-
-desert_wall_blocks = random.choice(["minecraft:sandstone", "minecraft:chiseled_red_sandstone"])
-plains_jungles_wall_blocks =  random.choice(["minecraft:mud_bricks", "minecraft:infested_chiseled_stone_bricks"])
-snow_wall_blocks = random.choice(["minecraft:bricks", "minecraft:stripped_oak_log"])
-floor_blocks= random.choice(["minecraft:polished_andesite", "minecraft:oak_planks"])
-block_selection = random.randint(0,1)
-
-def blocks_for_this_biome(part, biome):
-    block = None
-    if biome == "desert_biome":
-        if "roof" in part:
-            block = Block(desert_roof_blocks)
-        if "walls" in part:
-            block = Block(desert_wall_blocks)
-        if "floor" in part:
-            block = Block(floor_blocks)
-
-    elif biome == "plain_biome" or biome == "jungle_biome":
-        if "roof" in part:
-            block = Block(plains_jungles_roof_blocks)
-        if "walls" in part:
-            block = Block(plains_jungles_wall_blocks)
-
-    elif biome == "snow_biome":
-        if "roof" in part:
-            block = Block(snow_roof_blocks)
-        if "walls" in part:
-            block = Block(snow_wall_blocks)
-
-    #need to improve else condition
-    elif biome is None:
-       block = Block(floor_blocks)
-
-    return block
-
-
 def rotate_point_around_origin(point, angle_degrees):
     angle_radians = np.radians(angle_degrees)
     cos_angle = np.cos(angle_radians)
@@ -154,68 +114,22 @@ def get_bunker_dimensions(underground_height):
     
     return width
 
-buffer_distance = 5
-def generate_random_position(structure_width):
-    random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
-    random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
-    #check if the position is within the build area
-    while (random_x < buildRect._offset[0] or random_x > buildRect._offset[0] + buildRect.size[0] - structure_width or
-            random_z < buildRect._offset[1] or random_z > buildRect._offset[1] + buildRect.size[1] - structure_width):
-        random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
-        random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
-    
-    height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]  
-    return np.array([random_x, height, random_z])
-def get_rotation_angle(underground_height, width,rotation_angle,starting_pos):
-    position = starting_pos + rotate_point_around_origin(np.array([0,underground_height,width//2+1]), rotation_angle)
-    position = position.astype(int)
-    # position=starting_pos+np.array([0,underground_height,width//2])
-    #if the front of block is not air, rotate 90 degrees
-    while (editor.getBlock(position) != 'air') :
-        rotation_angle=rotation_angle+90
-        position = starting_pos + rotate_point_around_origin(np.array([0,underground_height,width//2+1]), rotation_angle)
-        position = position.astype(int)
 
-        if rotation_angle > 270:
-            newpos=generate_random_position(width)
-            starting_pos=newpos
-            local_pos = starting_pos - buildRect.offset
-            
-
-    return rotation_angle
 def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
     #add randome angle out of 90,180,270
-
-    if biome is None:
-        biome = 'plains'
-    else:
-        wall_block_type = blocks_for_this_biome("walls", biome)
-        roof_block_type = blocks_for_this_biome("roofs", biome)
-        floor_block_type = blocks_for_this_biome("floors", biome)
-
-
-
-    rotation_angle = random.choice([0,90,180,270])
+    wall_block_type = 'oak_planks'
+    roof_block_type = 'spruce_planks'
+    floor_block_type = 'oak_planks'
+    rotation_angle = 0#random.choice([0,90,180,270])
     width=underground_height+5
     length = width 
     
-    # rotation_angle = get_rotation_angle(underground_height, width,0,starting_pos)
-
-    # if rotation_angle == -1:
-    rotation_angle = random.choice([0,90,180,270])
+   
     
     roof_height = underground_height + 2 #4
     wall_height = underground_height + 1 #6
-    clearing_pos=starting_pos+np.array([0,-1,0]) #-5
-    starting_pos=starting_pos+np.array([0,-underground_height,0]) #-5
-    
 
-    for x in range(length+1):
-        for y in range(10):
-            for z in range(width+1):
-                position = clearing_pos + rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
-                position = position.astype(int)
-                editor.placeBlock(position, Block('air'))
+    starting_pos=starting_pos+np.array([0,-underground_height,0]) #-5
    
     # Create walls
     for x in range(length):
@@ -338,6 +252,18 @@ def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
 
     
 
+
+# Set the starting position and block types
+starting_pos = buildArea.begin+np.array([25,0,25])
+
+
+# Call the function to create the wooden barrack in Minecraft
+rotation_angle = 90
+
+# bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, rotation_angle)
+
+    
+
 # from Grid import Grid
 
 # grid = Grid(buildArea.size.x, buildArea.size.z)
@@ -347,7 +273,7 @@ def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
 # wall_block_type='oak_planks'
 # roof_block_type='oak_slab[type=top]'
 # floor_block_type='oak_planks'
-# biome=editor.getBiome(starting_pos)
+# biome="plains_biome"
 
 # underground_height=5
 # grid_local=[0,0,0]
