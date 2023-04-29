@@ -228,8 +228,8 @@ def will_overlap(grid, position, structure_width, structure_length,center=True):
 
 # Function to generate a random position for the structure
 def generate_random_position(structure_width):
-    random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
-    random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
+    random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width)
+    random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width)
     height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]
     return (random_x, height, random_z)
 
@@ -258,7 +258,7 @@ for _ in range(num_treehouse_structures):
         print(is_overlap)
         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2:
             break
-    build_treehouse(editor, local_pos, treehouse_structure_height, treehouse_structure_width, grid, local_pos)
+    build_treehouse(editor, random_center, treehouse_structure_height, treehouse_structure_width, grid, local_pos)
 
 for _ in range(num_bunker_structures):
     random_center = generate_random_position(bunker_underground_height)
