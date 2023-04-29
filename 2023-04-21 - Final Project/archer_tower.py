@@ -250,6 +250,17 @@ def build_floor(editor, starting_pos, block_type, floor_width,local_pos, floor_h
             position = starting_pos + np.array([i, floor_height, j])
             editor.placeBlock(position, Block(block_type))
 
+def build_stage_floor(editor, starting_pos, block_type, floor_width,local_pos, floor_height,grid):
+    min=heightmap.min()
+    for y in range(min,0,-1):
+        for i in range(-floor_width, floor_width + 1):
+            for j in range(-floor_width, floor_width + 1):
+                is_corner = (i == -floor_width or i == floor_width) and (j == -floor_width or j == floor_width)
+            
+            if is_corner:
+                position = starting_pos + np.array([i, floor_height-y, j])
+                editor.placeBlock(position, Block(block_type))
+
 def build_ladders(editor, starting_pos, ladder_type, size, building_h, rotation_angle):
     for y in range(1,building_h):
         position = starting_pos +rotate_point_around_origin(np.array([-size+2, y, 0]),rotation_angle)
@@ -310,7 +321,7 @@ def add_windows(editor, starting_pos, window_type, height, building_h, interval,
 # In the archerTowerpy() function, call add_windows() after add_torches()
 
 def get_archer_tower_dimensions():
-    building_height = random.randint(10, 20)
+    building_height = 20
     size = random.choice([4, 6])
     
     return (building_height, size)
@@ -324,7 +335,7 @@ def archer_tower(editor, starting_pos,biome,size,grid,local_pos):
 
     floor_height = building_h
 
-
+    build_stage_floor(editor, starting_pos, block_type, size, local_pos,floor_height=0,grid=grid)
     # Build the pyramid
     if biome == "plains" or biome == "forest":
         roof_block_type = random.choice([])
@@ -431,3 +442,10 @@ roof_starting_pos = buildArea.begin + np.array([0, 0, 0])
 
 # Call the function to create the pyramid and its reflection in Minecraft
 #archer_tower(editor, roof_starting_pos, block_type)
+
+
+from Grid import Grid
+
+# grid=Grid(100,100)
+# grid_local=[0,0,0]
+# archer_tower(editor,buildArea.begin,"plain_biome",8,grid,grid_local)
