@@ -338,28 +338,28 @@ def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
 
     
 
-from Grid import Grid
+# from Grid import Grid
 
-grid = Grid(buildArea.size.x, buildArea.size.z)
-grid.print_grid()
+# grid = Grid(buildArea.size.x, buildArea.size.z)
+# grid.print_grid()
 
-starting_pos=buildArea.begin
-wall_block_type='oak_planks'
-roof_block_type='oak_slab[type=top]'
-floor_block_type='oak_planks'
-biome=editor.getBiome(starting_pos)
+# starting_pos=buildArea.begin
+# wall_block_type='oak_planks'
+# roof_block_type='oak_slab[type=top]'
+# floor_block_type='oak_planks'
+# biome=editor.getBiome(starting_pos)
 
-underground_height=5
-grid_local=[0,0,0]
-bunker(editor,starting_pos,biome,underground_height,grid,grid_local)
-
-
-
-# Set the starting position and block types
-# starting_pos = buildArea.begin+np.array([25,0,25])
+# underground_height=5
+# grid_local=[0,0,0]
+# bunker(editor,starting_pos,biome,underground_height,grid,grid_local)
 
 
-# Call the function to create the wooden barrack in Minecraft
-# rotation_angle = 90
 
-# bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, rotation_angle)
+# # Set the starting position and block types
+# # starting_pos = buildArea.begin+np.array([25,0,25])
+
+
+# # Call the function to create the wooden barrack in Minecraft
+# # rotation_angle = 90
+
+# # bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, rotation_angle)

@@ -134,7 +134,7 @@ import random
 from barracks import *
 from archer_tower import *
 from bunker import *
-from townhall import *
+from tree_house import *
 from farm import *
 
 
@@ -165,6 +165,12 @@ def get_townhall_dimensions():
     
     return width
 
+def get_treehouse_dimensions():
+    width = random.randint(4, 8)
+    height = random.randint(5, 8)
+    
+    return height, width
+
 
 
 
@@ -173,14 +179,16 @@ house_structure_width = get_barracks_dimensions()
 archer_tower_size = get_archer_tower_dimensions()
 bunker_underground_height = get_bunker_dimensions()
 farm_structure_width = get_farm_dimensions()
-townhall_structure_width = get_townhall_dimensions()
+treehouse_structure_width = get_treehouse_dimensions()[1]
+treehouse_structure_height = get_treehouse_dimensions()[0]
+
 
 # Set the number of structures to place
-num_barracks_structures = random.randint(1,3)
-num_archer_tower_structures = random.randint(1,3)
-num_bunker_structures = random.randint(1,2)
+num_barracks_structures = random.randint(2,3)
+num_archer_tower_structures = random.randint(2,3)
+num_bunker_structures = random.randint(2,2)
 num_farm_structures = random.choice([1,2])
-num_townhall_structures = 1
+num_treehouse_structures = 1
 buffer_distance = 10
 
 
@@ -235,22 +243,22 @@ floor_block_type = 'oak_planks'
 window_block_type = 'glass_pane'
 staircase_block_type = 'oak_stairs'
 
-for _ in range(num_townhall_structures):
-    random_center = generate_random_position(townhall_structure_width)
+for _ in range(num_treehouse_structures):
+    random_center = generate_random_position(treehouse_structure_width)
     local_pos= getlocal(random_center)
     print(local_pos)
-    # townhall(editor,random_center,biome,grid,townhall_structure_width)
-    is_overlap=will_overlap(grid,local_pos,townhall_structure_width,townhall_structure_width)
+    # barracks(editor,random_center,biome,grid,house_structure_width)
+    is_overlap=will_overlap(grid,local_pos,treehouse_structure_width,treehouse_structure_width)
     print(is_overlap)
-
+    
     while is_overlap:
-        random_center = generate_random_position(townhall_structure_width)
+        random_center = generate_random_position(treehouse_structure_width)
         local_pos= getlocal(random_center)
-        is_overlap=will_overlap(grid,local_pos,townhall_structure_width,townhall_structure_width)
+        is_overlap=will_overlap(grid,local_pos,treehouse_structure_width,treehouse_structure_width)
         print(is_overlap)
         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2:
             break
-    townhall(editor,random_center,wall_block_type, roof_block_type, floor_block_type, window_block_type,grid,local_pos) 
+    build_treehouse(editor, local_pos, treehouse_structure_height, treehouse_structure_width, grid, local_pos)
 
 for _ in range(num_bunker_structures):
     random_center = generate_random_position(bunker_underground_height)

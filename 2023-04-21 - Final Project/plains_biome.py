@@ -176,9 +176,9 @@ def main():
     townhall_structure_width = get_townhall_dimensions()
 
     # Set the number of structures to place
-    num_barracks_structures = random.randint(1,3)
-    num_archer_tower_structures = random.randint(1,3)
-    num_bunker_structures = random.randint(1,2)
+    num_barracks_structures = random.randint(2,3)
+    num_archer_tower_structures = random.randint(2,3)
+    num_bunker_structures = random.randint(2,2)
     num_farm_structures = random.choice([1,2])
     num_townhall_structures = 1
     buffer_distance = 10

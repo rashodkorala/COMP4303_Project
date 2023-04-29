@@ -213,4 +213,4 @@ def build_treehouse(editor, starting_pos,tree_height,platform_radius,grid,grid_s
     editor.placeBlock(position, Block(f'barrel[facing={barr_dir}]'))
 
 
-build_treehouse(editor, buildArea.begin)
+# build_treehouse(editor, buildArea.begin)
