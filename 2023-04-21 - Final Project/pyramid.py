@@ -164,6 +164,12 @@ import numpy as np
 
 block_array = ["orange_terracotta","lime_terracotta","red_terracotta","cut_sandstone"]
 block_array1=["chiseled_red_sandstone","chiseled_sandstone"]
+
+   
+
+
+
+
 def create_initial_floor(width, height, block_array):
     return [[random.choice(block_array) for _ in range(width)] for _ in range(height)]
 
@@ -245,7 +251,7 @@ def build_inverted_pyramid(editor, size,pyramid_starting_pos,grid,grid_local):
     # floor= create_initial_floor(size, size,bl_array)
     floor= create_initial_floor(size, size,bl_array)
     wall=create_initial_floor(size, size,block_array1)
-    for y in range(size):
+    for y in range(size, -1, -1):
         floor = update_floor_rule_90(floor, bl_array)
         wall=update_floor(wall, block_array1, birth_limit, death_limit)
         for x in range(-size + y + 1, size - y):
@@ -299,7 +305,7 @@ def main(editor,size,starting_position,grid,grid_local):
             break
     print(rand1,rand2)
 
-    random_block_array=[block_array[rand1],block_array[rand2]]
+    # random_block_array=[block_array[rand1],block_array[rand2]]
     build_inverted_pyramid(editor,pyramid_size, starting_pos,grid,grid_local)
     pyramid_size = pyramid_size - pyramid_size//2 - pyramid_size//4
     pyramid_block_type = Block("chiseled_sandstone")
