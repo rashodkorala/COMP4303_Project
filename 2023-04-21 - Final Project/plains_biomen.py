@@ -143,8 +143,8 @@ def get_archer_tower_dimensions():
     
     return size
 
-def get_bunker_dimensions(underground_height):
-    width = underground_height + random.choice[(3,5)]
+def get_bunker_dimensions():
+    width = random.randint(3, 5)
     
     return width
 
