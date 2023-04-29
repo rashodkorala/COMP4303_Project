@@ -313,7 +313,7 @@ def get_archer_tower_dimensions():
     building_height = random.randint(10, 20)
     size = random.choice([4, 6])
     
-    return size
+    return (building_height, size)
 
 
 def archer_tower(editor, starting_pos,biome,size,grid,local_pos):
