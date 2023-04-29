@@ -95,170 +95,233 @@ print(f"Heightmap shape: {heightmap.shape}")
 
 
 
-# Place walls of stone bricks on the perimeter of the build area, following the curvature of the
-# terrain.
-
-print("Placing walls...")
-
 for point in buildRect.outline:
     
     height = heightmap[tuple(point - buildRect.offset)]
 
     #building a wall
     
-    for y in range(height, height + 4):
+    for y in range(height, height + 5):
         # Place the first layer of blocks
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
         
         # Place the second layer of blocks
         #editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
-     
 
 
+from Grid import Grid
 
 
+# Create a grid object.
+grid = Grid(buildArea.size.x, buildArea.size.z)
+grid.print_grid()
+bottom = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
+top = worldSlice.heightmaps["WORLD_SURFACE"]
+STARTX= buildRect._offset[0]
+STARTZ= buildRect._offset[0]+ buildRect.size[0]
+ENDX=buildRect._offset[1]
+ENDZ= buildRect._offset[1] + buildRect.size[1]
 
 
-
-#importing structures
+print(STARTX,STARTZ,ENDX,ENDZ)
+import random
 from barracks import *
 from archer_tower import *
-from townhall import *
 from bunker import *
-from center_structures import *
-import random
+from townhall import *
 
 
-# Call the function to create the townhall
-starting_pos = buildArea.begin
-wall_block_type = 'stone_bricks'
-roof_block_type = 'stone'
-floor_block_type = 'oak_planks'
-window_block_type = 'glass_pane'
-staircase_block_type = 'oak_stairs'
-
-
-# Set the starting position and block types
-starting_pos = buildArea.begin+np.array([25,0,25])
-bunker_wall = 'oak_planks'
-bunker_roof = 'spruce_planks'
-bunker_floor = 'oak_planks'
-
-# Call the function to create the wooden barrack in Minecraft
-rotation_angle = 90
-
-# bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, rotation_angle)
-
-# townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type)
-
-
-height = 4 
-block_type = 'stone_bricks'
-
-
-
-
-
-buildings_list = [barracks, 
-                    archer_tower, 
-                    townhall, 
-                    bunker]
-
-""" 
-for building in buildings_list:
-
-    x = random.randint(0, buildArea.size.x)
-    z = random.randint(0,  buildArea.size.z)
-    print(x,z)
-    starting_pos = buildArea.begin + [x, 0, z]
-
-    if building == barracks:
-        building(editor, starting_pos)
-     if building == archer_tower:
-        building(editor, starting_pos, block_type, height)
-    if building == townhall:
-        building(editor, starting_pos, wall_block_type, roof_block_type, 
-                            floor_block_type, window_block_type, staircase_block_type) 
-    if building == bunker:
-        building(editor, starting_pos, bunker_wall, bunker_roof, 
-                            bunker_floor, rotation_angle)
- """
-
-
-
-build_area_size = buildArea.size
-
-def place_or_get_buildings(draw, buildings_list, build_area_size, build_area, editor, max_attempts=100):
-    existing_buildings = []
+# Other code here
+def get_barracks_dimensions():
     
-    for building in buildings_list:
-        if building == barracks:
-           
-            building_width = get_barracks_dimensions()
-            building_length = building_width
+    house_width = random.choice([6,8])
+   
+    return house_width
 
-        if building == archer_tower:
-            building_height = get_archer_tower_dimensions()[0]
-            size = get_archer_tower_dimensions()[1]
-            building_width = get_archer_tower_dimensions()[2]
-            building_length = get_archer_tower_dimensions()[3]
-            block_type = 'stone_bricks'
-            #building_width, building_height, building_length =  building(editor, build_area.begin, block_type)
-        # if building == townhall:
-        #      building_width, building_height, building_length =  building(editor, build_area.begin, wall_block_type, roof_block_type, 
-        #                         floor_block_type, window_block_type, staircase_block_type) 
-        # if building == bunker:
-        #      building_width, building_height, building_length =  building(editor, build_area.begin, bunker_wall, bunker_roof, 
-        #                         bunker_floor, rotation_angle) 
-        
+def get_archer_tower_dimensions():
+    size = random.choice([4, 6])
+    
+    return size
 
-        # Generate random number of building placements
-        building_number = random.choice([2,3])
+def get_bunker_dimensions():
+    width = random.randint(3, 5)
+    
+    return width
 
-        # Try to find a non-overlapping position for the building
-        for i in range(building_number):
-            attempts = 0
-            while attempts < max_attempts:
-                x, z = random_building_position(building_width, building_length, build_area_size)
-                new_building = {"x": x, "z": z, "width": building_width, "length": building_length}
+def get_farm_dimensions():
+    width = random.randint(4, 8)
+    
+    return width
 
-                if not is_overlapping(new_building, existing_buildings):
-                    existing_buildings.append(new_building)
-                    if draw:
-                        # Call the building function with the starting position to create the building
-                        starting_pos = buildArea.begin + [x, 0, z]
-                        # for point in buildRect.outline:
-        
-                        #     height = heightmap[tuple(point - buildRect.offset)]
-                        # geometry.placeCylinder(editor,addY(starting_pos, height), 20 , , Block("air"), tube=False, hollow=False)
-                        building(editor, starting_pos)
-                    break
+def getlocal(point):
+    local_pos=[point[0]-buildRect._offset[0],0,point[2]-buildRect._offset[1]]
+    return local_pos
 
-                attempts += 1
 
-            if attempts == max_attempts:
-                print(f"Failed to place {building} without overlapping after {max_attempts} attempts.")
+# Define the structure's dimensions
+house_structure_width = get_barracks_dimensions()
+archer_tower_size = get_archer_tower_dimensions()
+bunker_underground_height = get_bunker_dimensions()
+farm_structure_width = get_farm_dimensions()
 
-    return existing_buildings
 
-# Check if a building overlaps with any other existing buildings
-def is_overlapping(new_building, existing_buildings, gap=5):
-    for building in existing_buildings:
-        if not (new_building["x"] + new_building["width"] + gap <= building["x"] or
-                new_building["x"] >= building["x"] + building["width"] + gap or
-                new_building["z"] + new_building["length"] + gap <= building["z"] or
-                new_building["z"] >= building["z"] + building["length"] + gap):
-            return True
+# Set the number of structures to place
+num_barracks_structures = random.randint(1,3)
+num_archer_tower_structures = random.randint(1,3)
+num_bunker_structures = random.randint(1,2)
+num_farm_structures = random.choice([1,2])
+buffer_distance = 5
+
+
+def will_overlap(grid, position, structure_width, structure_length,center=True):
+    """
+    Check if a new building's position would overlap with other buildings.
+
+    :param grid: Grid object representing the world
+    :param position: tuple (x, z) of the new building's top-left corner
+    :param structure_width: width of the new building
+    :param structure_length: length of the new building
+    :return: True if the new building would overlap with other buildings, False otherwise
+    """
+    #everything except bunker and townhall
+    if center:
+        x,y,z = position
+        half_width = structure_width // 2
+        half_length = structure_length // 2
+
+        top_left_x = x - half_width
+        top_left_z = z - half_length
+
+        for i in range(top_left_x, top_left_x + structure_width):
+            for j in range(top_left_z, top_left_z + structure_length):
+                if grid.is_oob(i, j) or grid.get_grid(i, j) == 1 or grid.get_grid(i, j) == 4:
+                    return True
+    
+    else:
+        x, z = position
+        for i in range(x, x + structure_width):
+            for j in range(z, z + structure_length):
+                if grid.is_oob(i, j) or grid.get_grid(i, j) == 1 or grid.get_grid(i,j)==4:
+                    return True
+    
     return False
 
-# Generate random building position within the build area
-def random_building_position(building_width, building_depth, build_area_size):
-    x = random.randint(0, build_area_size.x - building_width-4)
-    z = random.randint(0, build_area_size.z - building_depth-4)
-    return x, z
+
+# Function to generate a random position for the structure
+def generate_random_position(structure_width):
+    random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width)
+    random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width)
+    height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]
+    return (random_x, height, random_z)
+
+# Place the structures at random locations
+biome = "plains"  # Replace this with the biome detected by your algorithm
+
+for _ in range(num_barracks_structures):
+    random_center = generate_random_position(house_structure_width)
+    local_pos= getlocal(random_center)
+    print(local_pos)
+    # barracks(editor,random_center,biome,grid,house_structure_width)
+    is_overlap=will_overlap(grid,local_pos,house_structure_width,house_structure_width)
+    print(is_overlap)
+
+    while is_overlap:
+        random_center = generate_random_position(house_structure_width)
+        local_pos= getlocal(random_center)
+        is_overlap=will_overlap(grid,local_pos,house_structure_width,house_structure_width)
+        print(is_overlap)
+        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
+            is_overlap=True
+    barracks(editor,random_center,biome,grid,house_structure_width,local_pos)
+
+
+for _ in range(num_archer_tower_structures):
+    random_center = generate_random_position(archer_tower_size)
+    local_pos= getlocal(random_center)
+    print(local_pos)
+    # barracks(editor,random_center,biome,grid,house_structure_width)
+    is_overlap=will_overlap(grid,local_pos,archer_tower_size,archer_tower_size)
+    print(is_overlap)
+
+    while is_overlap:
+        random_center = generate_random_position(archer_tower_size)
+        local_pos= getlocal(random_center)
+        is_overlap=will_overlap(grid,local_pos,archer_tower_size,archer_tower_size)
+        print(is_overlap)
+        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
+            is_overlap=True
+    archer_tower(editor,random_center,biome,archer_tower_size,grid,local_pos)
+
+for _ in range(num_bunker_structures):
+    random_center = generate_random_position(bunker_underground_height)
+    local_pos= getlocal(random_center)
+    print(local_pos)
+    # barracks(editor,random_center,biome,grid,house_structure_width)
+    is_overlap=will_overlap(grid,local_pos,bunker_underground_height,bunker_underground_height)
+    print(is_overlap)
+
+    while is_overlap:
+        random_center = generate_random_position(bunker_underground_height)
+        local_pos= getlocal(random_center)
+        is_overlap=will_overlap(grid,local_pos,bunker_underground_height,bunker_underground_height)
+        print(is_overlap)
+        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
+            is_overlap=True
+    bunker(editor, random_center, biome, bunker_underground_height, grid, local_pos)
+
+for _ in range(num_farm_structures):
+    random_center =  generate_random_position(farm_structure_width)
+    local_pos= getlocal(random_center)
+    print(local_pos)
+    # barracks(editor,random_center,biome,grid,house_structure_width)
+    is_overlap=will_overlap(grid,local_pos,farm_structure_width,farm_structure_width)
+    print(is_overlap)
+    while is_overlap:
+        random_center =  generate_random_position(farm_structure_width)
+        local_pos= getlocal(random_center)
+        is_overlap=will_overlap(grid,local_pos,farm_structure_width,farm_structure_width)
+        print(is_overlap)
+        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
+            is_overlap=True
+    farm(editor, random_center, farm_structure_width, grid, local_pos)
 
 
 
-draw = True
-place_or_get_buildings(draw, buildings_list, build_area_size, buildArea, editor, max_attempts=100)
 
+
+from Grid import a_star_search
+# for i in range(20):
+#     center=generate_random_position(archer_tower_size)
+#     local_pos= getlocal(center)
+#     is_overlap=will_overlap(grid,local_pos,archer_tower_size,archer_tower_size)
+#     print(is_overlap)
+#     if not is_overlap:
+#         # archer_tower(editor,center,biome,grid,archer_tower_size)
+#         archer_tower(editor,center,biome,)
+#     else:
+#         editor.placeBlock(center, Block("dirt"))
+# grid.print_grid()
+# goals=grid.get_goals()
+# start=goals[0]
+# print("start",start)
+
+
+# previus_goal=start
+
+# #find path from start to end
+# for goal in goals:
+#     path = a_star_search(grid, start, goal)
+#     if path is not None:
+#         for x, z in path:
+#             grid.set_grid(x, z, 2)
+#         previus_goal=goal
+#     else:
+#         print("No path found")
+
+grid.print_grid()
+
+# build_paths_from_grid(editor, grid,Block("spruce_planks"),[STARTX,1,STARTZ],heigtmap=heightmap)
+
+
+
+#brracks 

@@ -97,7 +97,7 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 print(f"Heightmap shape: {heightmap.shape}")
 
 
-def build_farm(editor, starting_pos, farm_size, crop_type,grid,grid_local):
+def farm(editor, starting_pos, farm_size,grid,grid_local):
     # Clear the area
     ...
     
