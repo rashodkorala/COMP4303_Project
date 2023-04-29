@@ -125,10 +125,10 @@ ENDZ= buildRect._offset[1] + buildRect.size[1]
 
 print(STARTX,STARTZ,ENDX,ENDZ)
 import random
-from barracks import barracks
-from archer_tower import archer_tower
-from bunker import bunker
-from townhall import townhall
+from barracks import *
+from archer_tower import *
+from bunker import *
+from townhall import *
 
 
 # Other code here
