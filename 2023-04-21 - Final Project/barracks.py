@@ -367,11 +367,14 @@ def barracks(editor, center,biome=None,grid=None,width=None,grid_start_pos=0):
     position=position.astype(int)
     chest_dir=rotate_direction("east", rotation_angle)
     editor.placeBlock(position, Block(f'minecraft:chest[facing={chest_dir}]'))
-    position=position+np.array([0,0,1])
+    position=center+rotate_point_around_origin(np.array([-house_width//2+1, base_level+3, -house_width//2+2]), rotation_angle)
+    position=position.astype(int)
     editor.placeBlock(position, Block(f'minecraft:chest[facing={chest_dir}]'))
-    position=position+np.array([0,-1,0])
+    position=center+rotate_point_around_origin(np.array([-house_width//2+1, base_level+3, -house_width//2+2]), rotation_angle)
+    position=position.astype(int)
     editor.placeBlock(position, Block(f'minecraft:spruce_trapdoor[facing={chest_dir}, half=top, open=false]'))
-    position=position+np.array([0,0,-1])
+    position=center+rotate_point_around_origin(np.array([-house_width//2+1, base_level+2, -house_width//2+2]), rotation_angle)
+    position=position.astype(int)
     editor.placeBlock(position, Block(f'minecraft:spruce_trapdoor[facing={chest_dir}, half=top, open=false]'))
     # editor.placeBlock(add(center, (-house_width//2+1, base_level+3, -house_width//2+3)), Block("minecraft:chest[facing=east]"))
     # editor.placeBlock(add(center, (-house_width//2+1, base_level+3, -house_width//2+2)), Block("minecraft:chest[facing=east]"))
@@ -400,6 +403,15 @@ def barracks(editor, center,biome=None,grid=None,width=None,grid_start_pos=0):
         # editor.placeBlock(add(center, (house_width//2-2, house_width, -house_width//2+3)), Block("minecraft:lantern[hanging=true]"))
         # editor.placeBlock(add(center, (house_width//2-2, house_width, house_width//2-3)), Block("minecraft:lantern[hanging=true]"))
     
+
+    local_pos=grid_start_pos+rotate_point_around_origin(np.array([0, base_level, -house_width // 2]), rotation_angle)
+    local_pos=local_pos.astype(int)
+    grid.set_grid(local_pos[0],local_pos[2],3)
+
+    position=center+rotate_point_around_origin(np.array([0, base_level-1, -house_width // 2-1]), rotation_angle)
+    position=position.astype(int)
+    door_dir=rotate_direction("south", rotation_angle)
+    editor.placeBlock(position, Block("spruce_stair"))
 
 """ biome=editor.getBiome(buildArea.begin)
 print(biome)
