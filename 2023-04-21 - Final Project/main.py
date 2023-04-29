@@ -12,6 +12,7 @@ from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
 from gdpc.vector_tools import addY
 
 from plains_biome import main as plains_biome
+from desert_biome import main as desert_biome
 
 # Create an editor object.
 # The Editor class provides a high-level interface to interact with the Minecraft world.
@@ -141,12 +142,12 @@ def clear_area_and_terrain_detector(buildRect, editor, world_slice):
             
     print("Done!")          
 
-watercount,leavescount,grasscount=clear_area_and_terrain_detector(buildRect, editor, worldSlice)
+# watercount,leavescount,grasscount=clear_area_and_terrain_detector(buildRect, editor, worldSlice)
 
-print(f"Water count: {watercount}")
-print(f"Leaves count: {leavescount}")
-print(f"Grass count: {grasscount}")
-
+# print(f"Water count: {watercount}")
+# print(f"Leaves count: {leavescount}")
+# print(f"Grass count: {grasscount}")
+# 
 
 print(buildRect._offset)
 
@@ -161,16 +162,18 @@ print(f"Biome at {vec}: {biome}")
 
 if "plains" in biome:
     #run plains code
-    plains_biome()
+    desert_biome()
 
 if "desert" in biome:
     #run desert code
-    desert_biome()
+    print("Desert biome detected")
 
 if "jungle" in biome:
     #run jungle code
-    jungle_biome()
+    print("Jungle biome detected")
+    # jungle_biome()
 
 if "snow" in biome:
     #run snow code
-    snow_biome()
+    print("Snow biome detected")
+    # snow_biome()
