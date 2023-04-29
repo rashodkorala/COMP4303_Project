@@ -182,9 +182,9 @@ townhall_structure_width = get_townhall_dimensions()
 pyr_structure_width = random.randint(10,14)
 
 # Set the number of structures to place
-num_barracks_structures = random.randint(1,3)
-num_archer_tower_structures = random.randint(1,3)
-num_bunker_structures = random.randint(1,2)
+num_barracks_structures = random.randint(2,3)
+num_archer_tower_structures = random.randint(2,3)
+num_bunker_structures = random.randint(2,2)
 num_farm_structures = random.choice([1,2])
 num_pyr_structures = 1
 num_townhall_structures = 1
@@ -340,21 +340,21 @@ for _ in range(num_archer_tower_structures):
 
 
 
-for _ in range(num_farm_structures):
-    random_center =  generate_random_position(farm_structure_width)
-    local_pos= getlocal(random_center)
-    print(local_pos)
-    # barracks(editor,random_center,biome,grid,house_structure_width)
-    is_overlap=will_overlap(grid,local_pos,farm_structure_width,farm_structure_width)
-    print(is_overlap)
-    while is_overlap:
-        random_center =  generate_random_position(farm_structure_width)
-        local_pos= getlocal(random_center)
-        is_overlap=will_overlap(grid,local_pos,farm_structure_width,farm_structure_width)
-        print(is_overlap)
-        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
-            is_overlap=True
-    farm(editor, random_center, farm_structure_width, grid, local_pos)
+# for _ in range(num_farm_structures):
+#     random_center =  generate_random_position(farm_structure_width)
+#     local_pos= getlocal(random_center)
+#     print(local_pos)
+#     # barracks(editor,random_center,biome,grid,house_structure_width)
+#     is_overlap=will_overlap(grid,local_pos,farm_structure_width,farm_structure_width)
+#     print(is_overlap)
+#     while is_overlap:
+#         random_center =  generate_random_position(farm_structure_width)
+#         local_pos= getlocal(random_center)
+#         is_overlap=will_overlap(grid,local_pos,farm_structure_width,farm_structure_width)
+#         print(is_overlap)
+#         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
+#             is_overlap=True
+#     farm(editor, random_center, farm_structure_width, grid, local_pos)
 
 
 
