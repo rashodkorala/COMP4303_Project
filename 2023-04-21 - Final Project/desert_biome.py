@@ -175,7 +175,7 @@ archer_tower_size = get_archer_tower_dimensions()
 bunker_underground_height = get_bunker_dimensions()
 farm_structure_width = get_farm_dimensions()
 townhall_structure_width = get_townhall_dimensions()
-pyr_structure_width = random.randint(14,18)
+pyr_structure_width = random.randint(8,12)
 
 # Set the number of structures to place
 num_barracks_structures = random.randint(1,3)
@@ -225,7 +225,14 @@ def will_overlap(grid, position, structure_width, structure_length,center=True):
 def generate_random_position(structure_width):
     random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
     random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
-    height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]
+    #check if the position is within the build area
+    while (random_x < buildRect._offset[0] or random_x > buildRect._offset[0] + buildRect.size[0] - structure_width or
+            random_z < buildRect._offset[1] or random_z > buildRect._offset[1] + buildRect.size[1] - structure_width):
+        random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
+        random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
+    
+    height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]    
+
     return (random_x, height, random_z)
 
 # Place the structures at random locations
@@ -254,7 +261,25 @@ staircase_block_type = 'oak_stairs'
 #         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2:
 #             break
 #     townhall(editor,random_center,wall_block_type, roof_block_type, floor_block_type, window_block_type,grid,local_pos) 
-
+for _ in range(num_pyr_structures):
+    
+    #center of the buildRect
+    center=buildRect.center
+    height=worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(center[0] - buildRect._offset[0], center[1] - buildRect._offset[1])]
+    random_center=[center[0],height,center[1]]
+    local_pos= getlocal(random_center)
+    print(local_pos)
+    # barracks(editor,random_center,biome,grid,house_structure_width)
+    is_overlap=will_overlap(grid,local_pos,pyr_structure_width,pyr_structure_width)
+    print(is_overlap)
+    while is_overlap:
+        random_center =  generate_random_position(pyr_structure_width)
+        local_pos= getlocal(random_center)
+        is_overlap=will_overlap(grid,local_pos,pyr_structure_width,pyr_structure_width)
+        print(is_overlap)
+        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
+            is_overlap=True
+    pyr_main(editor,pyr_structure_width, random_center, grid, local_pos)
 for _ in range(num_bunker_structures):
     random_center = generate_random_position(bunker_underground_height)
     local_pos= getlocal(random_center)
@@ -325,26 +350,7 @@ for _ in range(num_farm_structures):
             is_overlap=True
     farm(editor, random_center, farm_structure_width, grid, local_pos)
 
-for _ in range(num_pyr_structures):
-    
-    #center of the buildRect
 
-    
-
-
-    local_pos= getlocal(random_center)
-    print(local_pos)
-    # barracks(editor,random_center,biome,grid,house_structure_width)
-    is_overlap=will_overlap(grid,local_pos,pyr_structure_width,pyr_structure_width)
-    print(is_overlap)
-    while is_overlap:
-        random_center =  generate_random_position(pyr_structure_width)
-        local_pos= getlocal(random_center)
-        is_overlap=will_overlap(grid,local_pos,pyr_structure_width,pyr_structure_width)
-        print(is_overlap)
-        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
-            is_overlap=True
-    pyr_main(editor,pyr_structure_width, random_center, grid, local_pos)
 
 
 

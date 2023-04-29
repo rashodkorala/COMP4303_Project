@@ -149,3 +149,5 @@ def clear_area_and_terrain_detector(buildRect, editor, world_slice):
 
 
 print(buildRect._offset)
+
+print(buildRect.center)
