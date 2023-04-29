@@ -110,17 +110,17 @@ def rotate_direction(original_direction, rotation_angle):
     new_index = (index + int(rotation_angle / 90)) % len(directions)
     return directions[new_index]
 
-def build_treehouse(editor, starting_pos):
+def build_treehouse(editor, starting_pos,tree_height,platform_radius,grid,grid_start):
     block_type = Block("jungle_planks")
     # Generate the tree
     tree_height = 15
-    platform_height = 10
-    platform_radius= 6
-    house_height= 5
-    rotation_angle = 0
+    platform_height = tree_height-5
+    house_height= platform_radius
+    rotation_angle = random.choice([0, 90, 180, 270])
     # Create the platform
     for x in range(-platform_radius, platform_radius + 1):
         for z in range(-platform_radius, platform_radius + 1):
+                
                 editor.placeBlock(starting_pos + np.array([x, platform_height, z]), Block("jungle_log"))
 
     # Build walls
