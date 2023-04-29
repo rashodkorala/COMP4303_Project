@@ -194,9 +194,9 @@ archer_tower_size = get_archer_tower_dimensions()
 bunker_unerground_height = get_bunker_dimensions()
 
 # Set the number of structures to place
-num_barracks_structures = random.randint(0,2)
-num_archer_tower_structures = random.randint(0,2)
-num_bunker_structures = random.randint(0,2)
+num_barracks_structures = random.randint(2,4)
+num_archer_tower_structures = random.randint(2,3)
+num_bunker_structures = random.randint(2,4)
 buffer_distance = 5
 
 # Function to generate a random position for the structure
@@ -274,25 +274,25 @@ from Grid import a_star_search
 #         archer_tower(editor,center,biome,)
 #     else:
 #         editor.placeBlock(center, Block("dirt"))
-grid.print_grid()
-goals=grid.get_goals()
-start=goals[0]
-print("start",start)
+# grid.print_grid()
+# goals=grid.get_goals()
+# start=goals[0]
+# print("start",start)
 
 
-previus_goal=start
+# previus_goal=start
 
-#find path from start to end
-for goal in goals:
-    path = a_star_search(grid, start, goal)
-    if path is not None:
-        for x, z in path:
-            grid.set_grid(x, z, 2)
-        previus_goal=goal
-    else:
-        print("No path found")
+# #find path from start to end
+# for goal in goals:
+#     path = a_star_search(grid, start, goal)
+#     if path is not None:
+#         for x, z in path:
+#             grid.set_grid(x, z, 2)
+#         previus_goal=goal
+#     else:
+#         print("No path found")
 
-grid.print_grid()
+# grid.print_grid()
 
 # build_paths_from_grid(editor, grid,Block("spruce_planks"),[STARTX,1,STARTZ],heigtmap=heightmap)
 
