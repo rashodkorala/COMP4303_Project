@@ -110,7 +110,7 @@ def rotate_direction(original_direction, rotation_angle):
     return directions[new_index]
 
 def get_bunker_dimensions(underground_height):
-    width = underground_height + random.choice[(3,5)]
+    width = random.randint(3,5)
     
     return width
 
