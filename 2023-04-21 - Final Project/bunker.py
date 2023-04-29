@@ -120,7 +120,7 @@ def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
     wall_block_type = 'oak_planks'
     roof_block_type = 'spruce_planks'
     floor_block_type = 'oak_planks'
-    rotation_angle = 0#random.choice([0,90,180,270])
+    rotation_angle = random.choice([0,90,180,270])
     width=underground_height+5
     length = width 
     

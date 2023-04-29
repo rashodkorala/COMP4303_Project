@@ -246,8 +246,24 @@ for _ in range(num_townhall_structures):
         print(is_overlap)
         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2:
             break
-    townhall(editor,random_center,wall_block_type, roof_block_type, floor_block_type, window_block_type,grid) 
-    
+    townhall(editor,random_center,wall_block_type, roof_block_type, floor_block_type, window_block_type,grid,local_pos) 
+
+for _ in range(num_bunker_structures):
+    random_center = generate_random_position(bunker_underground_height)
+    local_pos= getlocal(random_center)
+    print(local_pos)
+    # barracks(editor,random_center,biome,grid,house_structure_width)
+    is_overlap=will_overlap(grid,local_pos,bunker_underground_height,bunker_underground_height)
+    print(is_overlap)
+
+    while is_overlap:
+        random_center = generate_random_position(bunker_underground_height)
+        local_pos= getlocal(random_center)
+        is_overlap=will_overlap(grid,local_pos,bunker_underground_height,bunker_underground_height)
+        print(is_overlap)
+        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
+            is_overlap=True
+    bunker(editor, random_center, biome, bunker_underground_height, grid, local_pos)
 
 for _ in range(num_barracks_structures):
     random_center = generate_random_position(house_structure_width)
@@ -284,22 +300,7 @@ for _ in range(num_archer_tower_structures):
             is_overlap=True
     archer_tower(editor,random_center,biome,archer_tower_size,grid,local_pos)
 
-for _ in range(num_bunker_structures):
-    random_center = generate_random_position(bunker_underground_height)
-    local_pos= getlocal(random_center)
-    print(local_pos)
-    # barracks(editor,random_center,biome,grid,house_structure_width)
-    is_overlap=will_overlap(grid,local_pos,bunker_underground_height,bunker_underground_height)
-    print(is_overlap)
 
-    while is_overlap:
-        random_center = generate_random_position(bunker_underground_height)
-        local_pos= getlocal(random_center)
-        is_overlap=will_overlap(grid,local_pos,bunker_underground_height,bunker_underground_height)
-        print(is_overlap)
-        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
-            is_overlap=True
-    bunker(editor, random_center, biome, bunker_underground_height, grid, local_pos)
 
 for _ in range(num_farm_structures):
     random_center =  generate_random_position(farm_structure_width)
@@ -333,23 +334,23 @@ from Grid import a_star_search
 #         archer_tower(editor,center,biome,)
 #     else:
 #         editor.placeBlock(center, Block("dirt"))
-# grid.print_grid()
-# goals=grid.get_goals()
-# start=goals[0]
-# print("start",start)
+grid.print_grid()
+goals=grid.get_goals()
+start=goals[0]
+print("start",start)
 
 
-# previus_goal=start
+previus_goal=start
 
-# #find path from start to end
-# for goal in goals:
-#     path = a_star_search(grid, start, goal)
-#     if path is not None:
-#         for x, z in path:
-#             grid.set_grid(x, z, 2)
-#         previus_goal=goal
-#     else:
-#         print("No path found")
+#find path from start to end
+for goal in goals:
+    path = a_star_search(grid, start, goal)
+    if path is not None:
+        for x, z in path:
+            grid.set_grid(x, z, 2)
+        previus_goal=goal
+    else:
+        print("No path found")
 time.sleep(5)
 grid.print_grid()
 
