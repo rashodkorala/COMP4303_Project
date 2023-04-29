@@ -191,7 +191,7 @@ def will_overlap(grid, position, structure_width, structure_length,center=True):
 # Define the structure's dimensions
 house_structure_width = get_barracks_dimensions()
 archer_tower_size = get_archer_tower_dimensions()
-bunker_structure_width = get_bunker_dimensions()
+bunker_unerground_height = get_bunker_dimensions()
 
 # Set the number of structures to place
 num_barracks_structures = random.randint(0,2)
@@ -245,25 +245,25 @@ for _ in range(num_archer_tower_structures):
     archer_tower(editor,random_center,biome,archer_tower_size,grid,local_pos)
 
 for _ in range(num_bunker_structures):
-    random_center = generate_random_position(archer_tower_size)
+    random_center = generate_random_position(bunker_unerground_height)
     local_pos= getlocal(random_center)
     print(local_pos)
     # barracks(editor,random_center,biome,grid,house_structure_width)
-    is_overlap=will_overlap(grid,local_pos,bunker_structure_width,bunker_structure_width)
+    is_overlap=will_overlap(grid,local_pos,bunker_unerground_height,bunker_unerground_height)
     print(is_overlap)
 
     while is_overlap:
-        random_center = generate_random_position(bunker_structure_width)
+        random_center = generate_random_position(bunker_unerground_height)
         local_pos= getlocal(random_center)
-        is_overlap=will_overlap(grid,local_pos,bunker_structure_width,bunker_structure_width)
+        is_overlap=will_overlap(grid,local_pos,bunker_unerground_height,bunker_unerground_height)
         print(is_overlap)
         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
             is_overlap=True
-    bunker(editor, random_center, biome, bunker_structure_width, grid, local_pos)
+    bunker(editor, random_center, biome, bunker_unerground_height, grid, local_pos)
 
 
 
-from Grid import a_star_search, build_paths_from_grid
+from Grid import a_star_search
 # for i in range(20):
 #     center=generate_random_position(archer_tower_size)
 #     local_pos= getlocal(center)
