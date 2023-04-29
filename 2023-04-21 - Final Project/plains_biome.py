@@ -93,8 +93,16 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 
 print(f"Heightmap shape: {heightmap.shape}")
 
+from Grid import Grid
 
 
+# Create a grid object.
+grid = Grid(buildArea.size.x, buildArea.size.z)
+grid.print_grid()
+
+def getlocal(point):
+    local_pos=[point[0]-buildRect._offset[0],0,point[2]-buildRect._offset[1]]
+    return local_pos
 for point in buildRect.outline:
     
     height = heightmap[tuple(point - buildRect.offset)]
@@ -103,18 +111,16 @@ for point in buildRect.outline:
     
     for y in range(height, height + 5):
         # Place the first layer of blocks
+        point_with_offset = addY(point, y)
+        local_pos=getlocal(point_with_offset)
+        grid.set_grid(local_pos[0],local_pos[2],1)
         editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
         
         # Place the second layer of blocks
         #editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
 
 
-from Grid import Grid
 
-
-# Create a grid object.
-grid = Grid(buildArea.size.x, buildArea.size.z)
-grid.print_grid()
 bottom = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 top = worldSlice.heightmaps["WORLD_SURFACE"]
 STARTX= buildRect._offset[0]
@@ -159,9 +165,7 @@ def get_townhall_dimensions():
     
     return width
 
-def getlocal(point):
-    local_pos=[point[0]-buildRect._offset[0],0,point[2]-buildRect._offset[1]]
-    return local_pos
+
 
 
 # Define the structure's dimensions
@@ -177,7 +181,7 @@ num_archer_tower_structures = random.randint(1,3)
 num_bunker_structures = random.randint(1,2)
 num_farm_structures = random.choice([1,2])
 num_townhall_structures = 1
-buffer_distance = 5
+buffer_distance = 10
 
 
 def will_overlap(grid, position, structure_width, structure_length,center=True):
@@ -216,8 +220,8 @@ def will_overlap(grid, position, structure_width, structure_length,center=True):
 
 # Function to generate a random position for the structure
 def generate_random_position(structure_width):
-    random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width)
-    random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width)
+    random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
+    random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
     height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]
     return (random_x, height, random_z)
 
@@ -323,7 +327,7 @@ for _ in range(num_farm_structures):
 
 
 
-from Grid import a_star_search
+from Grid import a_star_search,build_paths_from_grid
 # for i in range(20):
 #     center=generate_random_position(archer_tower_size)
 #     local_pos= getlocal(center)
@@ -354,7 +358,7 @@ for goal in goals:
 time.sleep(5)
 grid.print_grid()
 
-# build_paths_from_grid(editor, grid,Block("spruce_planks"),[STARTX,1,STARTZ],heigtmap=heightmap)
+build_paths_from_grid(editor, grid,Block("spruce_planks"),[STARTX,-1,ENDX],heigtmap=heightmap)
 
 
 

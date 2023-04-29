@@ -372,6 +372,11 @@ def archer_tower(editor, starting_pos,biome,size,grid,local_pos):
     editor.placeBlock(position, Block("air"))
     # editor.placeBlock(starting_pos + np.array([size-1, 2, 0]), Block("air"))
 
+    pos=local_pos+rotate_point_around_origin([size-2, 1, 0], rotation_angle)
+    pos=pos.astype(int)
+    grid.set_grid(pos[0],pos[2],3)
+
+
     position = starting_pos +rotate_point_around_origin(np.array([size-2, 1, 0]), rotation_angle)
     position=position.astype(int)
     door_dir=rotate_direction("west", rotation_angle)

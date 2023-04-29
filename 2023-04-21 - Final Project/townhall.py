@@ -167,6 +167,8 @@ def townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block
     for x in range(door_start_x, door_start_x + door_width):
         position = starting_pos + np.array([x, 1, door_start_z])
         # change the hinge to the other side
+        local_pos=grid_local+np.array([x,0,door_start_z])
+        grid.set_grid(local_pos[0],local_pos[2],3)
         if x == door_start_x:
             editor.placeBlock(position, Block('spruce_door[facing=north,half=lower,hinge=left,open=false,powered=false]'))
         else:
