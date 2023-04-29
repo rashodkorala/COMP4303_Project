@@ -202,9 +202,21 @@ def barracks(editor, center,biome=None,grid=None,width=None,grid_start_pos=0):
     # roof_starting_pos=center+rotate_point_around_origin(np.array([0, house_height-1, 0]), rotation_angle)
     # roof_starting_pos=roof_starting_pos.astype(int)
     
+    #add legs
+    min_y=heightmap.min()
+    for y in range(min_y,0,-1):
+        for x in range(-house_width // 2, house_width // 2 + 1):
+            for z in range(-house_width // 2, house_width // 2 + 1):
+                is_corner = abs(x) == house_width // 2 and abs(z) == house_width // 2
+                if is_corner:
+                    position=center + rotate_point_around_origin(np.array([x, base_level-y, z]), rotation_angle)
+                    position=position.astype(int)
+                    editor.placeBlock(position, Block("spruce_planks"))
+
+
     #clean the area
-    for x in range(-house_width, house_width):
-        for z in range(-house_width, house_width):
+    for x in range(-house_width//2-1, house_width//2+1):
+        for z in range(-house_width//2-1, house_width//2+1):
             for y in range(house_height):
                 position=center + rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
                 position=position.astype(int)
@@ -212,18 +224,17 @@ def barracks(editor, center,biome=None,grid=None,width=None,grid_start_pos=0):
     
     
     #build the floor
-    min_y=heightmap.min()
-    for y in range(min_y,0,-1):
-        for x in range(-house_width // 2, house_width // 2 + 1):
-            for z in range(-house_width // 2, house_width // 2 + 1):
-                #replaces the default floor with preferred block
-                local_pos=grid_start_pos+rotate_point_around_origin(np.array([x, 0, z]), rotation_angle)
-                local_pos=local_pos.astype(int)
-                grid.set_grid(local_pos[0],local_pos[2],1)
-                position=center + rotate_point_around_origin(np.array([x, base_level-y, z]), rotation_angle)
-                position=position.astype(int)
-                editor.placeBlock(position, Block("spruce_planks"))
-                #add the x,z coordinates to the grid
+    
+    for x in range(-house_width // 2, house_width // 2 + 1):
+        for z in range(-house_width // 2, house_width // 2 + 1):
+            #replaces the default floor with preferred block
+            local_pos=grid_start_pos+rotate_point_around_origin(np.array([x, 0, z]), rotation_angle)
+            local_pos=local_pos.astype(int)
+            grid.set_grid(local_pos[0],local_pos[2],1)
+            position=center + rotate_point_around_origin(np.array([x, base_level-1, z]), rotation_angle)
+            position=position.astype(int)
+            editor.placeBlock(position, Block("spruce_planks"))
+            #add the x,z coordinates to the grid
             
 
     # Build the walls
@@ -421,4 +432,4 @@ for i in range(3):
 # biome="plain_biome"
 # width=6
 # grid_start=[0,0,0]
-# barracks(editor,center,biome,grid,width,grid_start)
+# barracks(editor,center,biome,grid,width,grid_start) 

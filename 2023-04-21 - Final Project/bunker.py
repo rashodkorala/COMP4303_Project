@@ -141,6 +141,8 @@ def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
                     editor.placeBlock(position, Block(wall_block_type))
                 else:
                     editor.placeBlock(position, Block('air'))
+
+    
      # Create floor
     for x in range(length):
         for z in range(width):
@@ -254,11 +256,11 @@ def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
 
 
 # Set the starting position and block types
-starting_pos = buildArea.begin+np.array([25,0,25])
+# starting_pos = buildArea.begin+np.array([25,0,25])
 
 
 # Call the function to create the wooden barrack in Minecraft
-rotation_angle = 90
+# rotation_angle = 90
 
 # bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, rotation_angle)
 
