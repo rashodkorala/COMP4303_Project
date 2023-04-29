@@ -279,26 +279,31 @@ def build_inverted_pyramid(editor, size,pyramid_starting_pos,grid,grid_local):
                 if x==1:
                     local_pos=grid_local+np.array([size-2-x, y, z])
                     grid.set_grid(local_pos[0],local_pos[2],3)
-                editor.placeBlock(starting_pos + np.array([size-2-x, y, z]), Block("air"))
+                editor.placeBlock(pyramid_starting_pos + np.array([size-2-x, y, z]), Block("air"))
     
-pyramid_size = 14#random.randint(10, 14)
-print(pyramid_size)
-starting_pos = buildArea.begin
-pyramid_block_type = Block("sandstone")
+
 #choose two random numbers between 0 and 4
-rand1=random.randint(0, 4)
-while True:
-    rand2=random.randint(0, 4)
-    if rand1!=rand2:
-        break
-print(rand1,rand2)
 
-random_block_array=[block_array[rand1],block_array[rand2]]
 
-build_inverted_pyramid(editor,pyramid_size, pyramid_block_type, starting_pos,random_block_array)
-pyramid_size = pyramid_size - pyramid_size//2 - pyramid_size//4
-pyramid_block_type = Block("chiseled_sandstone")
 
-build_inner_pyramid(editor, pyramid_size, pyramid_block_type, starting_pos+np.array([0,pyramid_size//2-1,0]))
+
+def main(size,starting_position,grid,grid_local):
+    pyramid_size = size
+    print(pyramid_size)
+    starting_pos = starting_position
+    pyramid_block_type = Block("sandstone")
+    rand1=random.randint(0, 4)
+    while True:
+        rand2=random.randint(0, 4)
+        if rand1!=rand2:
+            break
+    print(rand1,rand2)
+
+    random_block_array=[block_array[rand1],block_array[rand2]]
+    build_inverted_pyramid(editor,pyramid_size, pyramid_block_type, starting_pos,grid,grid_local)
+    pyramid_size = pyramid_size - pyramid_size//2 - pyramid_size//4
+    pyramid_block_type = Block("chiseled_sandstone")
+
+    build_inner_pyramid(editor, pyramid_size, pyramid_block_type, starting_pos+np.array([0,pyramid_size//2-1,0]))
   
 
