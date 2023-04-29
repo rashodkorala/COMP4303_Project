@@ -180,25 +180,17 @@ def main():
         farm_structure_width = get_farm_dimensions()
         townhall_structure_width = get_townhall_dimensions()
 
-    # Set the number of structures to place
+        # Set the number of structures to place
         num_barracks_structures = random.randint(1,3)
         num_archer_tower_structures = random.randint(1,3)
         num_bunker_structures = random.randint(1,2)
         num_farm_structures = random.choice([1,2])
         num_townhall_structures = 1
-        buffer_distance = 10
+        buffer_distance = 5
 
 
         def will_overlap(grid, position, structure_width, structure_length,center=True):
-            """
-            Check if a new building's position would overlap with other buildings.
-
-            :param grid: Grid object representing the world
-            :param position: tuple (x, z) of the new building's top-left corner
-            :param structure_width: width of the new building
-            :param structure_length: length of the new building
-            :return: True if the new building would overlap with other buildings, False otherwise
-            """
+            
             #everything except bunker and townhall
             if center:
                 x,y,z = position
@@ -210,11 +202,11 @@ def main():
 
                 for i in range(top_left_x, top_left_x + structure_width):
                     for j in range(top_left_z, top_left_z + structure_length):
-                        if grid.is_oob(i, j) or grid.get_grid(i, j) == 1 or grid.get_grid(i, j) == 4:
+                        if grid.is_oob(i, j) or grid.get_grid(i, j) == 1:
                             return True
             
             else:
-                x, z = position
+                x,y, z = position
                 for i in range(x, x + structure_width):
                     for j in range(z, z + structure_length):
                         if grid.is_oob(i, j) or grid.get_grid(i, j) == 1 or grid.get_grid(i,j)==4:
@@ -225,13 +217,20 @@ def main():
 
         # Function to generate a random position for the structure
         def generate_random_position(structure_width):
-            random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
-            random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
-            height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]
+            random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width-buffer_distance)
+            random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width-buffer_distance)
+            #check if the position is within the build area
+            while (random_x < buildRect._offset[0] or random_x > buildRect._offset[0] + buildRect.size[0] - structure_width or
+                random_z < buildRect._offset[1] or random_z > buildRect._offset[1] + buildRect.size[1] - structure_width):
+                random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width-buffer_distance)
+                random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width-buffer_distance)
+    
+            height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]    
+
             return (random_x, height, random_z)
 
         # Place the structures at random locations
-        biome = "plains"  # Replace this with the biome detected by your algorithm
+        biome = "plain_biome"  # Replace this with the biome detected by your algorithm
 
         starting_pos = buildArea.begin
         wall_block_type = 'stone_bricks'
@@ -245,16 +244,15 @@ def main():
             local_pos= getlocal(random_center)
             print(local_pos)
             # townhall(editor,random_center,biome,grid,townhall_structure_width)
-            is_overlap=will_overlap(grid,local_pos,townhall_structure_width,townhall_structure_width)
+            is_overlap=will_overlap(grid,local_pos,townhall_structure_width,townhall_structure_width,False)
             print(is_overlap)
 
             while is_overlap:
                 random_center = generate_random_position(townhall_structure_width)
                 local_pos= getlocal(random_center)
-                is_overlap=will_overlap(grid,local_pos,townhall_structure_width,townhall_structure_width)
+                is_overlap=will_overlap(grid,local_pos,townhall_structure_width,townhall_structure_width,False)
                 print(is_overlap)
-                if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2:
-                    break
+
             townhall(editor,random_center,wall_block_type, roof_block_type, floor_block_type, window_block_type,grid,local_pos) 
 
         for _ in range(num_bunker_structures):
@@ -279,7 +277,7 @@ def main():
             local_pos= getlocal(random_center)
             print(local_pos)
             # barracks(editor,random_center,biome,grid,house_structure_width)
-            is_overlap=will_overlap(grid,local_pos,house_structure_width,house_structure_width)
+            is_overlap=will_overlap(grid,local_pos,house_structure_width,house_structure_width,False)
             print(is_overlap)
 
             while is_overlap:
