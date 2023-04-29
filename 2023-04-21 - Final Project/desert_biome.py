@@ -114,7 +114,11 @@ for point in buildRect.outline:
         point_with_offset = addY(point, y)
         local_pos=getlocal(point_with_offset)
         grid.set_grid(local_pos[0],local_pos[2],1)
-        editor.placeBlock(addY(point, y), Block("mossy_stone_bricks"))
+        editor.placeBlock(addY(point, y), Block("red_sandstone"))
+        editor.placeBlock(addY(point, y+1), Block("sandstone"))
+        editor.placeBlock(addY(point, y+2), Block("sandstone"))
+        editor.placeBlock(addY(point, y+3), Block("red_sandstone"))
+        editor.placeBlock(addY(point, y+4), Block("torch"))
         
         # Place the second layer of blocks
         #editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
