@@ -162,7 +162,8 @@ print(f"Biome at {vec}: {biome}")
 
 if "plains" in biome:
     #run plains code
-    desert_biome()
+    print("Plains biome detected")
+    plains_biome()
 
 if "desert" in biome:
     #run desert code

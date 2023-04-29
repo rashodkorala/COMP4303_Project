@@ -12,7 +12,7 @@ import numpy as np
 from gdpc import __url__, Editor, Block, geometry
 from gdpc.exceptions import InterfaceConnectionError, BuildAreaNotSetError
 from gdpc.vector_tools import addY
-
+from Grid import Grid
 
 # Create an editor object.
 # The Editor class provides a high-level interface to interact with the Minecraft world.
@@ -201,20 +201,29 @@ def barracks(editor, center,biome=None,grid=None,width=None,grid_start_pos=0):
     base_level=0
     # roof_starting_pos=center+rotate_point_around_origin(np.array([0, house_height-1, 0]), rotation_angle)
     # roof_starting_pos=roof_starting_pos.astype(int)
-
+    
+    #clean the area
+    for x in range(-house_width, house_width):
+        for z in range(-house_width, house_width):
+            for y in range(house_height):
+                position=center + rotate_point_around_origin(np.array([x, y, z]), rotation_angle)
+                position=position.astype(int)
+                editor.placeBlock(position, Block("air"))
     
     
     #build the floor
-    for x in range(-house_width // 2, house_width // 2 + 1):
-        for z in range(-house_width // 2, house_width // 2 + 1):
-            #replaces the default floor with preferred block
-            local_pos=grid_start_pos+rotate_point_around_origin(np.array([x, base_level-1, z]), rotation_angle)
-            local_pos=local_pos.astype(int)
-            grid.set_grid(local_pos[0],local_pos[2],1)
-            position=center + rotate_point_around_origin(np.array([x, base_level-1, z]), rotation_angle)
-            position=position.astype(int)
-            editor.placeBlock(position, Block("spruce_planks"))
-            #add the x,z coordinates to the grid
+    min_y=heightmap.min()
+    for y in range(min_y,0,-1):
+        for x in range(-house_width // 2, house_width // 2 + 1):
+            for z in range(-house_width // 2, house_width // 2 + 1):
+                #replaces the default floor with preferred block
+                local_pos=grid_start_pos+rotate_point_around_origin(np.array([x, 0, z]), rotation_angle)
+                local_pos=local_pos.astype(int)
+                grid.set_grid(local_pos[0],local_pos[2],1)
+                position=center + rotate_point_around_origin(np.array([x, base_level-y, z]), rotation_angle)
+                position=position.astype(int)
+                editor.placeBlock(position, Block("spruce_planks"))
+                #add the x,z coordinates to the grid
             
 
     # Build the walls
@@ -402,3 +411,11 @@ for i in range(3):
     x = random.randint(0, buildArea.size.x)
     z = random.randint(0,  buildArea.size.z)
     barracks(buildArea.begin + [x, 0, z], editor) """
+
+
+grid=Grid(buildArea.size.x,buildArea.size.z)
+center=buildArea.begin
+biome="plain_biome"
+width=6
+grid_start=[0,0,0]
+barracks(editor,center,biome,grid,width,grid_start)

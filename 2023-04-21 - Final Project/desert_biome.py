@@ -264,7 +264,9 @@ staircase_block_type = 'oak_stairs'
 #         print(is_overlap)
 #         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2:
 #             break
-#     townhall(editor,random_center,wall_block_type, roof_block_type, floor_block_type, window_block_type,grid,local_pos) 
+#     townhall(editor,random_center,wall_block_type, roof_block_type, floor_block_type, window_block_type,grid,local_pos)
+
+
 for _ in range(num_pyr_structures):
     
     #center of the buildRect
