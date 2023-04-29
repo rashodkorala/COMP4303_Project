@@ -190,7 +190,7 @@ def will_overlap(grid, position, structure_width, structure_length,center=True):
 
 # Define the structure's dimensions
 house_structure_width = get_barracks_dimensions()
-archer_structure_width = get_archer_tower_dimensions()
+archer_tower_size = get_archer_tower_dimensions()
 bunker_structure_width = get_bunker_dimensions()
 
 # Set the number of structures to place
@@ -228,11 +228,11 @@ for _ in range(num_barracks_structures):
 
 
 for _ in range(num_archer_tower_structures):
-    random_center = generate_random_position(archer_tower_width)
+    random_center = generate_random_position(archer_tower_size)
     local_pos= getlocal(random_center)
     print(local_pos)
     # barracks(editor,random_center,biome,grid,house_structure_width)
-    is_overlap=will_overlap(grid,local_pos,archer_tower_width,archer_tower_width)
+    is_overlap=will_overlap(grid,local_pos,archer_tower_size,archer_tower_size)
     print(is_overlap)
 
     while is_overlap:
@@ -242,20 +242,20 @@ for _ in range(num_archer_tower_structures):
         print(is_overlap)
         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
             is_overlap=True
-    archer_tower(editor,random_center,biome,archer_tower_width,grid,local_pos)
+    archer_tower(editor,random_center,biome,archer_tower_size,grid,local_pos)
 
 for _ in range(num_bunker_structures):
-    random_center = generate_random_position(bunker_width)
+    random_center = generate_random_position(archer_tower_size)
     local_pos= getlocal(random_center)
     print(local_pos)
     # barracks(editor,random_center,biome,grid,house_structure_width)
-    is_overlap=will_overlap(grid,local_pos,bunker_width,bunker_width)
+    is_overlap=will_overlap(grid,local_pos,bunker_structure_width,bunker_structure_width)
     print(is_overlap)
 
     while is_overlap:
-        random_center = generate_random_position(bunker_width)
+        random_center = generate_random_position(bunker_structure_width)
         local_pos= getlocal(random_center)
-        is_overlap=will_overlap(grid,local_pos,bunker_width,bunker_width)
+        is_overlap=will_overlap(grid,local_pos,bunker_structure_width,bunker_structure_width)
         print(is_overlap)
         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
             is_overlap=True
