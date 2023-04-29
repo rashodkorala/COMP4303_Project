@@ -129,6 +129,7 @@ from barracks import *
 from archer_tower import *
 from bunker import *
 from townhall import *
+from farm import *
 
 
 # Other code here
