@@ -244,7 +244,7 @@ roof_block_type = 'stone'
 floor_block_type = 'oak_planks'
 window_block_type = 'glass_pane'
 staircase_block_type = 'oak_stairs'
-# townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type)
+#townhall(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, window_block_type, staircase_block_type)
 
 
 """ def create_pyramid_and_reflection_in_xz_plane(editor, starting_pos, block_type, height, building_h=20):

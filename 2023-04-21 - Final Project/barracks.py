@@ -413,9 +413,9 @@ for i in range(3):
     barracks(buildArea.begin + [x, 0, z], editor) """
 
 
-grid=Grid(buildArea.size.x,buildArea.size.z)
-center=buildArea.begin
-biome="plain_biome"
-width=6
-grid_start=[0,0,0]
-barracks(editor,center,biome,grid,width,grid_start)
+# grid=Grid(buildArea.size.x,buildArea.size.z)
+# center=buildArea.begin
+# biome="plain_biome"
+# width=6
+# grid_start=[0,0,0]
+# barracks(editor,center,biome,grid,width,grid_start)
