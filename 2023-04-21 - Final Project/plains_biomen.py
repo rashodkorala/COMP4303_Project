@@ -154,6 +154,7 @@ def getlocal(point):
 
 
 
+
 def will_overlap(grid, position, structure_width, structure_length,center=True):
     """
     Check if a new building's position would overlap with other buildings.
@@ -190,7 +191,7 @@ def will_overlap(grid, position, structure_width, structure_length,center=True):
 # Define the structure's dimensions
 house_structure_width = get_barracks_dimensions()
 archer_structure_width = get_archer_tower_dimensions()
-bunker_structure_width = get_bunker_dimensions(5)
+bunker_structure_width = get_bunker_dimensions()
 
 # Set the number of structures to place
 num_barracks_structures = random.randint(0,2)

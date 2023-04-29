@@ -115,14 +115,15 @@ def get_bunker_dimensions(underground_height):
     return width
 
 
-def bunker(editor, starting_pos, biome, width, grid, grid_local=0):
+def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
     #add randome angle out of 90,180,270
     wall_block_type = 'oak_planks'
     roof_block_type = 'spruce_planks'
     floor_block_type = 'oak_planks'
     rotation_angle = 0#random.choice([0,90,180,270])
     
-    length = width 
+    length = underground_height+5 #10 
+    width=length
     
    
     
