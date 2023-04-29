@@ -161,7 +161,7 @@ def get_farm_dimensions():
     return width
 
 def get_igloo_dimensions():
-    width = 5
+    width = 10
     
     return width
 
@@ -233,7 +233,7 @@ def generate_random_position(structure_width):
     return (random_x, height, random_z)
 
 # Place the structures at random locations
-biome = "snowy_plaines"  # Replace this with the biome detected by your algorithm
+biome = "snow_biome"  # Replace this with the biome detected by your algorithm
 
 starting_pos = buildArea.begin
 wall_block_type = 'stone_bricks'
@@ -311,25 +311,6 @@ for _ in range(num_archer_tower_structures):
         if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
             is_overlap=True
     archer_tower(editor,random_center,biome,archer_tower_size,grid,local_pos)
-
-
-
-for _ in range(num_farm_structures):
-    random_center =  generate_random_position(farm_structure_width)
-    local_pos= getlocal(random_center)
-    print(local_pos)
-    # barracks(editor,random_center,biome,grid,house_structure_width)
-    is_overlap=will_overlap(grid,local_pos,farm_structure_width,farm_structure_width)
-    print(is_overlap)
-    while is_overlap:
-        random_center =  generate_random_position(farm_structure_width)
-        local_pos= getlocal(random_center)
-        is_overlap=will_overlap(grid,local_pos,farm_structure_width,farm_structure_width)
-        print(is_overlap)
-        if grid.get_grid(local_pos[0],local_pos[2])==4 or grid.get_grid(local_pos[0],local_pos[2])==1 or grid.get_grid(local_pos[0],local_pos[2])==2 or grid.get_grid(local_pos[0],local_pos[2])==3:
-            is_overlap=True
-    farm(editor, random_center, farm_structure_width, grid, local_pos)
-
 
 
 

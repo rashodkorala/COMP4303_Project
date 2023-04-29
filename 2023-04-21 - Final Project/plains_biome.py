@@ -109,7 +109,7 @@ for point in buildRect.outline:
 
     #building a wall
     
-    for y in range(height, height + 5):
+    for y in range(height, height + 10):
         # Place the first layer of blocks
         point_with_offset = addY(point, y)
         local_pos=getlocal(point_with_offset)
@@ -226,7 +226,7 @@ def generate_random_position(structure_width):
     return (random_x, height, random_z)
 
 # Place the structures at random locations
-biome = "plains"  # Replace this with the biome detected by your algorithm
+biome = "plain_biome"  # Replace this with the biome detected by your algorithm
 
 starting_pos = buildArea.begin
 wall_block_type = 'stone_bricks'

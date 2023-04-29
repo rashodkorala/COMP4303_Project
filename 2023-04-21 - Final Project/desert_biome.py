@@ -175,7 +175,7 @@ archer_tower_size = get_archer_tower_dimensions()
 bunker_underground_height = get_bunker_dimensions()
 farm_structure_width = get_farm_dimensions()
 townhall_structure_width = get_townhall_dimensions()
-pyr_structure_width = random.randint(8,12)
+pyr_structure_width = random.randint(10,14)
 
 # Set the number of structures to place
 num_barracks_structures = random.randint(1,3)
@@ -236,7 +236,7 @@ def generate_random_position(structure_width):
     return (random_x, height, random_z)
 
 # Place the structures at random locations
-biome = "desert"  # Replace this with the biome detected by your algorithm
+biome = "desert_biome"  # Replace this with the biome detected by your algorithm
 
 starting_pos = buildArea.begin
 wall_block_type = 'stone_bricks'

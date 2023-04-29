@@ -326,6 +326,13 @@ def archer_tower(editor, starting_pos,biome,size,grid,local_pos):
 
 
     # Build the pyramid
+    if biome == "plains" or biome == "forest":
+        roof_block_type = random.choice([])
+    if biome == "snow_biome":
+        roof_block_type = random.choice(["blue_ice", "quartz_block", "bricks"])
+    if biome == "desert":
+        roof_block_type = random.choice(["sandstone", "red_sandstone", "crying_obsidian"])
+        
     for y in range(floor_height):
         for i in range(size):
             for j in range(-size + i + 1  , size - i):
@@ -383,8 +390,15 @@ def archer_tower(editor, starting_pos,biome,size,grid,local_pos):
     editor.placeBlock(position, Block(f'spruce_door[facing={door_dir} ,half=lower,hinge=left]'))
 
     roof_pos=starting_pos + np.array([0, floor_height, 0])
+
     # Build the roof
-    roof_block_type = "spruce_planks"
+    if biome == "plain_biome" or biome == "jungle_biome":
+        roof_block_type = random.choice(["minecraft:acacia_planks", "minecraft:dark_oak_planks"])
+    if biome == "snow_biome":
+        roof_block_type = random.choice(["blue_ice", "quartz_block", "bricks"])
+    if biome == "desert_biome":
+        roof_block_type = random.choice(["sandstone", "red_sandstone", "crying_obsidian"])
+    
     roof_size=size+1
     for y in range(10):
         for i in range(roof_size-y):

@@ -97,15 +97,7 @@ print(f"Heightmap shape: {heightmap.shape}")
 # def add(vec1, vec2):
 #     return tuple(a + b for a, b in zip(vec1, vec2))
 
-desert_roof_blocks = ["minecraft:nether_bricks", "minecraft:deepslate_bricks"]
-plains_jungles_roof_blocks = ["minecraft:stone_bricks", "minecraft:dark_oak_planks"]
-snow_roof_blocks = ["minecraft:blue_ice", "minecraft:black_stained_glass"]
 
-desert_wall_blocks = ["minecraft:mud_bricks", "minecraft:infested_chiseled_stone_bricks"] 
-plains_jungles_wall_blocks = ["minecraft:sandstone", "minecraft:chiseled_red_sandstone"]
-snow_wall_blocks = ["minecraft:bricks", "minecraft:stripped_oak_log"]
-floor_blocks= ["minecraft:polished_andesite", "minecraft:polished_diorite", "minecraft:polished_granite"]
-block_selection = random.randint(0,1)
 
 def rotate_point_around_origin(point, angle_degrees):
     angle_radians = np.radians(angle_degrees)
@@ -123,29 +115,42 @@ def rotate_direction(original_direction, rotation_angle):
     new_index = (index + int(rotation_angle / 90)) % len(directions)
     return directions[new_index]
 
+
+desert_roof_blocks = random.choice(["minecraft:nether_bricks", "minecraft:deepslate_bricks"])
+plains_jungles_roof_blocks = random.choice(["minecraft:stone_bricks", "minecraft:dark_oak_planks"])
+snow_roof_blocks = random.choice(["minecraft:oak_log", "minecraft:black_stained_glass"])
+
+desert_wall_blocks = random.choice(["minecraft:sandstone", "minecraft:chiseled_red_sandstone"])
+plains_jungles_wall_blocks =  random.choice(["minecraft:mud_bricks", "minecraft:infested_chiseled_stone_bricks"])
+snow_wall_blocks = random.choice(["minecraft:bricks", "minecraft:stripped_oak_log"])
+floor_blocks= random.choice(["minecraft:polished_andesite", "minecraft:oak_planks"])
+block_selection = random.randint(0,1)
+
 def blocks_for_this_biome(part, biome):
     block = None
-    if "desert" in biome:
+    if biome == "desert_biome":
         if "roof" in part:
-            block = Block(desert_roof_blocks[block_selection])
+            block = Block(desert_roof_blocks)
         if "walls" in part:
-            block = Block(desert_wall_blocks[block_selection])
+            block = Block(desert_wall_blocks)
+        if "floor" in part:
+            block = Block(floor_blocks)
 
-    elif "plains" in biome or "jungle" in biome:
+    elif biome == "plain_biome" or biome == "jungle_biome":
         if "roof" in part:
-            block = Block(plains_jungles_roof_blocks[block_selection])
+            block = Block(plains_jungles_roof_blocks)
         if "walls" in part:
-            block = Block(plains_jungles_wall_blocks[block_selection])
+            block = Block(plains_jungles_wall_blocks)
 
-    elif "snow" in biome or "snowy" in biome:
+    elif biome == "snow_biome":
         if "roof" in part:
-            block = Block(snow_roof_blocks[block_selection])
+            block = Block(snow_roof_blocks)
         if "walls" in part:
-            block = Block(snow_wall_blocks[block_selection])
+            block = Block(snow_wall_blocks)
 
     #need to improve else condition
     elif biome is None:
-       block = Block(floor_blocks[block_selection])
+       block = Block(floor_blocks)
 
     return block
 
@@ -183,15 +188,21 @@ def barracks(editor, center,biome=None,grid=None,width=None,grid_start_pos=0):
 
     house_width = width
     house_height = house_width
-    biome = "plains"
+    if biome is None:
+
+        biome = "plains"
+    else:
+
+        wall_block=blocks_for_this_biome("walls", biome)
+        roof_block=blocks_for_this_biome("roof", biome)
+        floor_block=blocks_for_this_biome("floor", biome)
+
     rotation_angle=random.choice([0, 90, 180, 270])
     base_level=0
     # roof_starting_pos=center+rotate_point_around_origin(np.array([0, house_height-1, 0]), rotation_angle)
     # roof_starting_pos=roof_starting_pos.astype(int)
 
-    wall_block=blocks_for_this_biome("walls", biome)
-    roof_block=blocks_for_this_biome("roof", biome)
-    floor_block=blocks_for_this_biome("floor", biome)
+    
     
     #build the floor
     for x in range(-house_width // 2, house_width // 2 + 1):
