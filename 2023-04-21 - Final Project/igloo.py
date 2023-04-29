@@ -106,6 +106,7 @@ def rotate_point_around_origin(point, angle_degrees):
     angle_radians = np.radians(angle_degrees)
     cos_angle = np.cos(angle_radians)
     sin_angle = np.sin(angle_radians)
+    
 
     rotated_x = point[0] * cos_angle - point[2] * sin_angle
     rotated_z = point[0] * sin_angle + point[2] * cos_angle
@@ -270,6 +271,6 @@ def igloo(editor, center_pos, block_type, radius,grid,grid_local,rotation_angle=
     editor.placeBlock(position, Block(f'campfire[facing={campfire_dir},lit=true]'))
 # Call the build_igloo() function to create an igloo rotated around the Y-axis by 45 degrees
 center_pos = buildArea.begin+np.array([0, 0, 0])
-igloo(editor, center_pos, "snow_block", 5, rotation_angle=0)
+# igloo(editor, center_pos, "blue_ice", 5, rotation_angle=0)
 
 
