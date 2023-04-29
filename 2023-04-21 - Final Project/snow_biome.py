@@ -114,7 +114,11 @@ for point in buildRect.outline:
         point_with_offset = addY(point, y)
         local_pos=getlocal(point_with_offset)
         grid.set_grid(local_pos[0],local_pos[2],1)
-        editor.placeBlock(addY(point, y), Block("blue_ice"))
+        editor.placeBlock(addY(point, y), Block("snow_block"))
+        editor.placeBlock(addY(point, y+2), Block("dark_oak_planks"))
+        editor.placeBlock(addY(point, y+3), Block("snow_block"))
+        editor.placeBlock(addY(point, y+4), Block("glowstone"))
+        editor.placeBlock(addY(point, y+5), Block("torch"))
         
         # Place the second layer of blocks
         #editor.placeBlock(addY(point+1, height+8), Block("mossy_stone_bricks"))
@@ -220,13 +224,13 @@ def will_overlap(grid, position, structure_width, structure_length,center=True):
 
 # Function to generate a random position for the structure
 def generate_random_position(structure_width):
-    random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
-    random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
+    random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width)
+    random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width)
     #check if the position is within the build area
     while (random_x < buildRect._offset[0] or random_x > buildRect._offset[0] + buildRect.size[0] - structure_width or
             random_z < buildRect._offset[1] or random_z > buildRect._offset[1] + buildRect.size[1] - structure_width):
-        random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
-        random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
+        random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width)
+        random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width)
     
     height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]    
 
