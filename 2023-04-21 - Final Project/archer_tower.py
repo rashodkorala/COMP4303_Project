@@ -312,9 +312,8 @@ def add_windows(editor, starting_pos, window_type, height, building_h, interval,
 def get_archer_tower_dimensions():
     building_height = random.randint(10, 20)
     size = random.choice([4, 6])
-    building_width = size
-    building_length = size
-    return building_height, size, building_width, building_length
+    
+    return size
 
 
 def archer_tower(editor, starting_pos,biome,size,grid,local_pos):
