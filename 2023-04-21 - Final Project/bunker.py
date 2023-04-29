@@ -110,20 +110,19 @@ def rotate_direction(original_direction, rotation_angle):
     return directions[new_index]
 
 def get_bunker_dimensions(underground_height):
-    width = underground_height + random.choice[(3,5)]
+    width = random.randint(3,5)
     
     return width
 
 
-def bunker(editor, starting_pos,biome,grid,underground_height=5,grid_local=0):
+def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
     #add randome angle out of 90,180,270
     wall_block_type = 'oak_planks'
     roof_block_type = 'spruce_planks'
     floor_block_type = 'oak_planks'
     rotation_angle = 0#random.choice([0,90,180,270])
     
-    width = underground_height + 5 #9
-    length = width #9
+    length = width 
     
    
     
