@@ -227,17 +227,17 @@ def will_overlap(grid, position, structure_width, structure_length,center=True):
 
 # Function to generate a random position for the structure
 def generate_random_position(structure_width):
-    random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
-    random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
-    #check if the position is within the build area
-    while (random_x < buildRect._offset[0] or random_x > buildRect._offset[0] + buildRect.size[0] - structure_width or
-            random_z < buildRect._offset[1] or random_z > buildRect._offset[1] + buildRect.size[1] - structure_width):
-        random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width+buffer_distance)
-        random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width+buffer_distance)
+            random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width-buffer_distance)
+            random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width-buffer_distance)
+            #check if the position is within the build area
+            while (random_x < buildRect._offset[0] or random_x > buildRect._offset[0] + buildRect.size[0] - structure_width or
+                random_z < buildRect._offset[1] or random_z > buildRect._offset[1] + buildRect.size[1] - structure_width):
+                random_x = random.randint(buildRect._offset[0]+buffer_distance, buildRect._offset[0] + buildRect.size[0] - structure_width-buffer_distance)
+                random_z = random.randint(buildRect._offset[1]+buffer_distance, buildRect._offset[1] + buildRect.size[1] - structure_width-buffer_distance)
     
-    height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]    
+            height = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"][(random_x - buildRect._offset[0], random_z - buildRect._offset[1])]    
 
-    return (random_x, height, random_z)
+            return (random_x, height, random_z)
 
 # Place the structures at random locations
 biome = "desert_biome"  # Replace this with the biome detected by your algorithm

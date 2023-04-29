@@ -255,7 +255,7 @@ def build_stage_floor(editor, starting_pos, block_type, floor_width,local_pos, f
     for y in range(min,0,-1):
         for i in range(-floor_width, floor_width + 1):
             for j in range(-floor_width, floor_width + 1):
-                is_corner = (i == -floor_width or i == floor_width) and (j == -floor_width or j == floor_width)
+                is_corner = abs(i) == floor_width  and abs(j) == floor_width 
             
             if is_corner:
                 position = starting_pos + np.array([i, floor_height-y, j])
