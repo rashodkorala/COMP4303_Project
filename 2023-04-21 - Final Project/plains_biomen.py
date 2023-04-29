@@ -143,6 +143,11 @@ def get_archer_tower_dimensions():
     
     return size
 
+def get_bunker_dimensions(underground_height):
+    width = underground_height + random.choice[(3,5)]
+    
+    return width
+
 def getlocal(point):
     local_pos=[point[0]-buildRect._offset[0],0,point[2]-buildRect._offset[1]]
     return local_pos
