@@ -275,7 +275,7 @@ center_pos = buildArea.begin+np.array([0, 0, 0])
 from Grid import Grid
 grid = Grid(buildArea.size.x, buildArea.size.z)
 grid_local =[10,9,10]
-radius = 5w
+radius = 5
 rotation = 0
 center=buildArea.begin
 block_type="snow_block"
