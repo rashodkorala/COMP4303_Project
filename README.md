@@ -9,7 +9,7 @@
 
 * Project Demo: https://youtu.be/PuGqi19sx1Y
 * Project Trailer: https://youtu.be/o1nl9afBga8
-* Project  Presentation: https://youtu.be/jyh3QossUFA
+* Project  Presentation: https://youtu.be/CDOX4Y-bGvs
 
 ## Project setup:
 
