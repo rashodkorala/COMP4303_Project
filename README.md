@@ -8,7 +8,7 @@
 ## Project Videos:
 
 * Project Demo: https://youtu.be/PuGqi19sx1Y
-* Project Trailer: https://youtu.be/inD8aGprgAg
+* Project Trailer: https://youtu.be/o1nl9afBga8
 * Project  Presentation: https://youtu.be/jyh3QossUFA
 
 ## Project setup:
