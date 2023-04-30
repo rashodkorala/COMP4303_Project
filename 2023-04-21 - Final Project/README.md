@@ -1,10 +1,10 @@
 # Minecraft Project Feature Checklist
 
-- [ ] Specialty chosen:Theme or style of decoration that heavily plays into narrative
+- [x] Specialty chosen:Theme or style of decoration that heavily plays into narrative
 - [ ] Adaptivity
-  - [ ] Settlement avoids 'steamroller' approach
+  - [x] Settlement avoids 'steamroller' approach
   - [ ] At least 2 structures adapted to terrain features
-    - [ ] Near or on steep cliff
+    - [x] Near or on steep cliff
     - [ ] Near or on water or ice
     - [x] In or around trees
     - [x] Flat terrain
@@ -15,16 +15,16 @@
   - [x] Buildings randomized in size / shape
   - [x] Building interiors accessible and decorated
   - [x] Building interiors randomized
-  - [ ] Paths between major builings / attractions
-  - [ ] Paths generated via M.S.T. or other algorithm
+  - [x] Paths between major builings / attractions
+  - [x] Paths generated via M.S.T. or other algorithm
   - [ ] At least one "moving" feature (minecart, elevator, lift, etc)
   - [x] Some CA / Noise / other generative algorithm used in some form
   - [x] Defensive structure(s) created
 - [x] Narrative
   - [x] Include the 'story' of your village
   - [x] Construction must make sense within that narrative
-- [ ] Aesthetics
+- [x] Aesthetics
   - [x] Color of blocks chosen based on biome
   - [x] Building types constructed with different materials
   - [x] Decorations places where appropriate
-  - [ ] At least 1 outdoor feature (farm, etc)
+  - [x] At least 1 outdoor feature (farm, etc)
