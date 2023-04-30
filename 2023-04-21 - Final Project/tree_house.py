@@ -138,6 +138,8 @@ def build_treehouse(editor, starting_pos,tree_height,platform_radius,grid,grid_s
     for y in range(tree_height):
         for x in range(-trunk_size // 2, trunk_size // 2 + 1):
             for z in range(-trunk_size // 2, trunk_size // 2 + 1):
+                local_pos=grid_pos+ np.array([x, y, z])
+                grid.set_grid(local_pos[0],local_pos[2], 3)
                 editor.placeBlock(starting_pos + np.array([x, y, z]), Block("oak_log"))
 
     # Add windows
