@@ -3,9 +3,9 @@
 - [x] Specialty chosen:Theme or style of decoration that heavily plays into narrative
 - [ ] Adaptivity
   - [x] Settlement avoids 'steamroller' approach
-  - [ ] At least 2 structures adapted to terrain features
+  - [x] At least 2 structures adapted to terrain features
     - [x] Near or on steep cliff
-    - [ ] Near or on water or ice
+    - [x] Near or on water or ice
     - [x] In or around trees
     - [x] Flat terrain
   - [ ] One specific feature for at least 4 biomes
