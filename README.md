@@ -14,9 +14,5 @@
 ## Project setup:
 
 1. Clone the repo
-2. In the biomes folder there are different folders for each biome
-3. Click preferred biomes folder to test
-4. Open [name of biome]_biome.py
-5. Run the the scripts
-
+2. run the main.py to run the biome specifc generation
 
