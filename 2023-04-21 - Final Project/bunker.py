@@ -93,6 +93,49 @@ heightmap = worldSlice.heightmaps["MOTION_BLOCKING_NO_LEAVES"]
 
 print(f"Heightmap shape: {heightmap.shape}")
 
+
+desert_roof_blocks = random.choice(["minecraft:nether_bricks", "minecraft:deepslate_bricks"])
+plains_jungles_roof_blocks = random.choice(["minecraft:stone_bricks", "minecraft:dark_oak_planks"])
+snow_roof_blocks = random.choice(["minecraft:oak_log", "minecraft:black_stained_glass"])
+
+desert_wall_blocks = random.choice(["minecraft:sandstone", "minecraft:chiseled_red_sandstone"])
+plains_jungles_wall_blocks =  random.choice(["minecraft:mud_bricks", "minecraft:infested_chiseled_stone_bricks"])
+snow_wall_blocks = random.choice(["minecraft:bricks", "minecraft:stripped_oak_log"])
+floor_blocks= random.choice(["minecraft:polished_andesite", "minecraft:oak_planks"])
+def blocks_for_this_biome(part, biome):
+    block = None
+    if biome == "desert_biome":
+        if "roof" in part:
+            block = Block(desert_roof_blocks)
+        if "walls" in part:
+            block = Block(desert_wall_blocks)
+        if "floor" in part:
+            block = Block(floor_blocks)
+        if "floor" in part:
+            block = Block(floor_blocks)
+
+    elif biome == "plain_biome" or biome == "jungle_biome":
+        if "roof" in part:
+            block = Block(plains_jungles_roof_blocks)
+        if "walls" in part:
+            block = Block(plains_jungles_wall_blocks)
+        if "floor" in part:
+            block = Block(floor_blocks)
+
+    elif biome == "snow_biome":
+        if "roof" in part:
+            block = Block(snow_roof_blocks)
+        if "walls" in part:
+            block = Block(snow_wall_blocks)
+        if "floor" in part:
+            block = Block(floor_blocks)
+
+    #need to improve else condition
+    elif biome is None:
+       block = Block(floor_blocks)
+
+    return block
+
 def rotate_point_around_origin(point, angle_degrees):
     angle_radians = np.radians(angle_degrees)
     cos_angle = np.cos(angle_radians)
@@ -117,10 +160,10 @@ def get_bunker_dimensions(underground_height):
 
 def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
     #add randome angle out of 90,180,270
-    wall_block_type = 'oak_planks'
-    roof_block_type = 'spruce_planks'
-    floor_block_type = 'oak_planks'
-    rotation_angle = 0#random.choice([0,90,180,270])
+    wall_block_type = blocks_for_this_biome("walls", biome)
+    roof_block_type = blocks_for_this_biome("roof", biome)
+    floor_block_type = blocks_for_this_biome("floor", biome)
+    rotation_angle = random.choice([0,90,180,270])
     width=underground_height+5
     length = width 
     
@@ -238,7 +281,8 @@ def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
     # position=starting_pos+np.array([1,2,width-2])
     position=starting_pos+rotate_point_around_origin(np.array([1,2,width-2]), rotation_angle)
     position = position.astype(int)
-    editor.placeBlock(position, Block('potted_cactus'))
+    pot_type="potted_"+random.choice(["dandelion", "poppy", "blue_orchid", "allium", "azure_bluet", "red_tulip", "orange_tulip", "white_tulip", "pink_tulip", "oxeye_daisy", "cornflower", "lily_of_the_valley"])
+    editor.placeBlock(position, Block(f'{pot_type}'))
 
     #place a bed
     for z in range(2, width-2):
@@ -246,7 +290,8 @@ def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
         position=starting_pos+rotate_point_around_origin(np.array([length-3,1,z]), rotation_angle)
         position = position.astype(int)
         bed_direction = rotate_direction('east', rotation_angle)
-        editor.placeBlock(position, Block(f'red_bed[facing={bed_direction},part=foot]'))
+        bed_type=random.choice(["red_bed","white_bed","black_bed","blue_bed","brown_bed","cyan_bed","gray_bed","green_bed","light_blue_bed","light_gray_bed","lime_bed","magenta_bed","orange_bed","pink_bed","purple_bed","yellow_bed"])
+        editor.placeBlock(position, Block(f'{bed_type}[facing={bed_direction},part=foot]'))
 
     return length
 
@@ -255,39 +300,20 @@ def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
     
 
 
-# Set the starting position and block types
-# starting_pos = buildArea.begin+np.array([25,0,25])
-
-
-# Call the function to create the wooden barrack in Minecraft
-# rotation_angle = 90
-
-# bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, rotation_angle)
 
     
 
-# from Grid import Grid
+from Grid import Grid
 
-# grid = Grid(buildArea.size.x, buildArea.size.z)
-# grid.print_grid()
+grid = Grid(buildArea.size.x, buildArea.size.z)
+grid.print_grid()
 
-# starting_pos=buildArea.begin
-# wall_block_type='oak_planks'
-# roof_block_type='oak_slab[type=top]'
-# floor_block_type='oak_planks'
-# biome="plains_biome"
+starting_pos=buildArea.begin
+wall_block_type='oak_planks'
+roof_block_type='oak_slab[type=top]'
+floor_block_type='oak_planks'
+biome="plain_biome"
 
-# underground_height=5
-# grid_local=[0,0,0]
-# bunker(editor,starting_pos,biome,underground_height,grid,grid_local)
-
-
-
-# # Set the starting position and block types
-# # starting_pos = buildArea.begin+np.array([25,0,25])
-
-
-# # Call the function to create the wooden barrack in Minecraft
-# # rotation_angle = 90
-
-# # bunker(editor, starting_pos, wall_block_type, roof_block_type, floor_block_type, rotation_angle)
+underground_height=5
+grid_local=[0,0,0]
+bunker(editor,starting_pos,biome,underground_height,grid,grid_local)
