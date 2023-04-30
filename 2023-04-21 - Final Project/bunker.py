@@ -303,17 +303,17 @@ def bunker(editor, starting_pos, biome,underground_height, grid, grid_local=0):
 
     
 
-from Grid import Grid
+# from Grid import Grid
 
-grid = Grid(buildArea.size.x, buildArea.size.z)
-grid.print_grid()
+# grid = Grid(buildArea.size.x, buildArea.size.z)
+# grid.print_grid()
 
-starting_pos=buildArea.begin
-wall_block_type='oak_planks'
-roof_block_type='oak_slab[type=top]'
-floor_block_type='oak_planks'
-biome="plain_biome"
+# starting_pos=buildArea.begin
+# wall_block_type='oak_planks'
+# roof_block_type='oak_slab[type=top]'
+# floor_block_type='oak_planks'
+# biome="plain_biome"
 
-underground_height=5
-grid_local=[0,0,0]
-bunker(editor,starting_pos,biome,underground_height,grid,grid_local)
+# underground_height=5
+# grid_local=[0,0,0]
+# bunker(editor,starting_pos,biome,underground_height,grid,grid_local)
