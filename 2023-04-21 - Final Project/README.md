@@ -1,7 +1,7 @@
 # Minecraft Project Feature Checklist
 
 - [x] Specialty chosen:Theme or style of decoration that heavily plays into narrative
-- [ ] Adaptivity
+- [x] Adaptivity
   - [x] Settlement avoids 'steamroller' approach
   - [x] At least 2 structures adapted to terrain features
     - [x] Near or on steep cliff
