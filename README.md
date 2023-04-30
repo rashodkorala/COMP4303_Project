@@ -1,4 +1,4 @@
-# COMP4303_Realm Craft_nbt
+# COMP4303_Realm Craft
 
 ## Project Group Members:
 
