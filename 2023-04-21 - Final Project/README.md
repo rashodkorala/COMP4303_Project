@@ -8,7 +8,7 @@
     - [x] Near or on water or ice
     - [x] In or around trees
     - [x] Flat terrain
-  - [ ] One specific feature for at least 4 biomes
+  - [x] One specific feature for at least 4 biomes
 - [ ] Functionality
   - [x] Building count and placement randomized, does not create the exact same city twice
   - [x] Settlement contains 4 'types' of building
