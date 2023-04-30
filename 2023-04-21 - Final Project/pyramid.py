@@ -312,3 +312,5 @@ def main(editor,size,starting_position,grid,grid_local):
 
     build_inner_pyramid(editor, pyramid_size, pyramid_block_type, starting_pos+np.array([0,pyramid_size//2-1,0]))
   
+
+

@@ -14,6 +14,9 @@ from gdpc.vector_tools import addY
 from plains_biome import main as plains_biome
 from desert_biome import main as desert_biome
 
+from snow_biome import main as snow_biome
+from jungle_biome import main as jungle_biome
+
 # Create an editor object.
 # The Editor class provides a high-level interface to interact with the Minecraft world.
 editor = Editor()
@@ -168,13 +171,14 @@ if "plains" in biome:
 if "desert" in biome:
     #run desert code
     print("Desert biome detected")
+    desert_biome()
 
 if "jungle" in biome:
     #run jungle code
     print("Jungle biome detected")
-    # jungle_biome()
+    jungle_biome()
 
 if "snow" in biome:
     #run snow code
     print("Snow biome detected")
-    # snow_biome()
+    snow_biome()

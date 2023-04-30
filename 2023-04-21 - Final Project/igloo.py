@@ -271,6 +271,15 @@ def igloo(editor, center_pos, block_type, radius,grid,grid_local,rotation_angle=
     editor.placeBlock(position, Block(f'campfire[facing={campfire_dir},lit=true]'))
 # Call the build_igloo() function to create an igloo rotated around the Y-axis by 45 degrees
 center_pos = buildArea.begin+np.array([0, 0, 0])
-# igloo(editor, center_pos, "blue_ice", 5, rotation_angle=0)
+
+from Grid import Grid
+grid = Grid(buildArea.size.x, buildArea.size.z)
+grid_local =[10,9,10]
+radius = 5w
+rotation = 0
+center=buildArea.begin
+block_type="snow_block"
+igloo(editor,center,block_type,radius,grid,grid_local,rotation)
+
 
 
