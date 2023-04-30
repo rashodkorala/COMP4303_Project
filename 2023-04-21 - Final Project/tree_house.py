@@ -114,7 +114,7 @@ def build_treehouse(editor, starting_pos,tree_height,platform_radius,grid,grid_s
     block_type = Block("jungle_planks")
     # Generate the tree
     platform_height = tree_height-5
-    house_height= platform_radius
+    house_height= tree_height-5
     rotation_angle = random.choice([0, 90, 180, 270])
     # Create the platform
     for x in range(-platform_radius, platform_radius + 1):

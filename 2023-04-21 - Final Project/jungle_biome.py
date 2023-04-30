@@ -118,9 +118,13 @@ for point in buildRect.outline:
         
         # Place the second layer of blocks
         editor.placeBlock(addY(point, height), Block("mossy_stone_bricks"))
-        editor.placeBlock(addY(point, height+1), Block("mud_bricks"))
-        editor.placeBlock(addY(point, height+2), Block("glowstone"))
-        editor.placeBlock(addY(point, height+3), Block("mud_walls"))
+        editor.placeBlock(addY(point, height+1), Block("mossy_stone_bricks"))
+        editor.placeBlock(addY(point, height+2), Block("mud_bricks"))
+        editor.placeBlock(addY(point, height+3), Block("mud_bricks"))
+        editor.placeBlock(addY(point, height+4), Block("glowstone"))
+        editor.placeBlock(addY(point, height+5), Block("mud_brick_wall"))
+        editor.placeBlock(addY(point, height+6), Block("jungle_fence"))
+
         
         
 
