@@ -15,4 +15,5 @@
 
 1. Clone the repo
 2. run the main.py to run the biome specifc generation
+3. in case main.py doesn't work run specipic biome file 
 
